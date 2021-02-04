@@ -1,43 +1,30 @@
 // import AbsoluteOrientationSensor from AbsoluteOrientationSensor
 import React, { useState } from 'react'
+
 import "./link.css"
-// import { Accelerometer, Magnetometer, Gyroscope } from 'expo-sensors'
 
 export default function Link() {
-  let [coords, setCoords] = useState(null)
-
-  // get permissions function
+  let [coords, setCoords] = useState(null);
+  let [direcc, setDirecc] = useState(null);
 
   const handleClickForLocation = () => {
-    // navigator.permissions.query({name: 'geolocation'}).then(result => {
-    //   console.log(result)
-    //   if (result.state === 'granted') {
-        navigator.geolocation.getCurrentPosition((position) => {
-          setCoords(position.coords)
-        });
-    //   } else {
-    //     console.log('permission denied')
-    //   }
-    // })
-    console.log(navigator)
-    console.log(window)
-
+    navigator.geolocation.getCurrentPosition((position) => {
+      setCoords(position.coords)
+    });
   }
 
+    // get permissions function??
   const handleClickForDirection = () => {
-    console.log('hi')
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener("deviceorientation", (event) => {
+        console.log(event.webkitCompassHeading)
+        setDirecc(event.webkitCompassHeading) // how does this work? constantly updating?
+      })
+    } else {
+      console.log('no device orientation event...')
+      alert('No device orientation. Please use (1) a mobile device and (2) an alternative browser.')
+    }
   }
-
-  // const options = { frequency: 60, referenceFrame: 'device' };
-  // // const sensor = new window.AbsoluteOrientationSensor(options);
-  // // const sensor = new AbsoluteOrientationSensor(options);
-  // const sensor = new AbsoluteOrientationSensor(options)
-  // console.log(sensor)
-  // console.log(sensor)
-  // console.log(typeof sensor)
-  // console.log(Object.keys(sensor))
-  // console.log(Object.values(sensor))
-  // console.log(JSON.parse(sensor))
 
   return (
     <div className='big-text'>
@@ -56,7 +43,7 @@ export default function Link() {
       Get My Direction
       </button>
       <div>
-        <div>Data placeholder here</div>
+        <div>Direction : { direcc === null ? null: direcc }</div>
       </div>
     </div>
   )
