@@ -14,9 +14,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     phoneNumber = db.Column(db.String(20), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    lastUpdate = db.Column(db.DateTime, nullable=False,
-                           default=datetime.utcnow)
+    created = db.Column(db.DateTime, nullable=False)
+    lastUpdate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     @property
     def password(self):

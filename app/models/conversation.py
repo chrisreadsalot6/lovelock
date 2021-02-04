@@ -25,9 +25,15 @@ class Conversation(db.Model):
     endTime = db.Column(db.DateTime)
 
     initiatorUser = db.relationship(
-        'User', backref=db.backref('conversations'))
+        'User',
+        foreign_keys=[initiatorUserId],
+        backref='initiator_conversations'
+    )
     joinerUser = db.relationship(
-        'User', backref=db.backref('conversations'))
+        'User',
+        foreign_keys=[joinerUserId],
+        backref='joiner_conversations'
+    )
 
     def to_dict(self):
         return {
