@@ -5,17 +5,32 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), nullable=False, unique=True)
-    firstName = db.Column(db.String(100), nullable=False)
-    lastName = db.Column(db.String(100), nullable=False)
+    createdWhen = db.Column(db.DateTime, nullable=False)
+    updatedWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    phoneNumber = db.Column(db.String(20), nullable=False, unique=True)
+    firstName = db.Column(db.String(100), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
-    created = db.Column(db.DateTime, nullable=False)
-    lastUpdate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    lastName = db.Column(db.String(100), nullable=False)
+    phoneNumber = db.Column(db.String(20), nullable=False, unique=True)
+    username = db.Column(db.String(50), nullable=False, unique=True)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "createdWhen": self.createdWhen,
+            "updatedWhen": self.updatedWhen,
+            "email": self.email,
+            "firstName": self.firstName,
+            "lastName": self.lastName,
+            "phoneNumber": self.phoneNumber,
+            "username": self.username,
+        }
 
     @property
     def password(self):
@@ -24,13 +39,3 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.hashed_password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "username": self.username,
-            "email": self.email
-        }

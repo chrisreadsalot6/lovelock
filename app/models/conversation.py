@@ -4,49 +4,50 @@ from .user import User
 
 
 class Conversation(db.Model):
-    __tablename__ = 'conversations'
+    __tablename__ = "conversations"
 
     id = db.Column(db.Integer, primary_key=True)
-    uniqueIdentifier = db.Column(db.String(100), nullable=False)
-    active = db.Column(db.Boolean, nullable=False, default=True)
-    initiatorUserId = db.Column(
-        db.Integer, db.ForeignKey(User.id), nullable=False)
-    joinerUserId = db.Column(
-        db.Integer, db.ForeignKey(User.id))
-    initiatorGPSLocation = db.Column(db.String(100), nullable=False)
-    joinerGPSLocation = db.Column(db.String(100))
-    initiatorDirection = db.Column(db.String(100), nullable=False)
-    joinerDirection = db.Column(db.String(100))
-    midwayGPSLocation = db.Column(db.String(100))
-    midwayCity = db.Column(db.String(50))
-    createTime = db.Column(db.DateTime, nullable=False,
-                           default=datetime.utcnow)
-    startTime = db.Column(db.DateTime)
-    endTime = db.Column(db.DateTime)
+    createdWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    startedWhen = db.Column(db.DateTime)
+    endedWhen = db.Column(db.DateTime)
+    active = db.Column(db.Boolean, nullable=False, default=False)
+    initiatorCompassDirection = db.Column(db.Numeric, nullable=False)
+    initiatorGPSLatitude = db.Column(db.Numeric, nullable=False)
+    initiatorGPSLongitude = db.Column(db.Numeric, nullable=False)
+    initiatorUserId = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    joinerCompassDirection = db.Column(db.Numeric)
+    joinerGPSLatitude = db.Column(db.Numeric)
+    joinerGPSLongitude = db.Column(db.Numeric)
+    joinerUserId = db.Column(db.Integer, db.ForeignKey(User.id))
+    midwayGPSLatitude = db.Column(db.Numeric)
+    midwayGPSLongitude = db.Column(db.Numeric)
+    midwayPointCity = db.Column(db.String(100))
+    uniqueIdentifier = db.Column(db.BigSerial, nullable=False)
 
     initiatorUser = db.relationship(
-        'User',
-        foreign_keys=[initiatorUserId],
-        backref='initiator_conversations'
+        "User", foreign_keys=[initiatorUserId], backref="initiator_conversations"
     )
     joinerUser = db.relationship(
-        'User',
-        foreign_keys=[joinerUserId],
-        backref='joiner_conversations'
+        "User", foreign_keys=[joinerUserId], backref="joiner_conversations"
     )
 
     def to_dict(self):
         return {
-            "uniqueIdentifier": self.uniqueIdentifier,
+            "id": self.id,
+            "createdWhen": self.createdWhen,
+            "startedWhen": self.startedWhen,
+            "endedWhen": self.endedWhen,
             "active": self.active,
+            "initiatorCompassDirection": self.initiatorCompassDirection,
+            "initiatorGPSLatitude": self.initiatorGPSLatitude,
+            "initiatorGPSLongitude": self.initiatorGPSLongitude,
             "initiatorUserId": self.initiatorUserId,
+            "joinerCompassDirection": self.joinerCompassDirection,
+            "joinerGPSLatitude": self.joinerGPSLatitude,
+            "joinerGPSLongitude": self.joinerGPSLongitude,
             "joinerUserId": self.joinerUserId,
-            "initiatorGPSLocation": self.initiatorGPSLocation,
-            "joinerGPSLocation": self.joinerGPSLocation,
-            "initiatorDirection": self.initiatorDirection,
-            "joinerDirection": self.joinerDirection,
-            "midwayGPSLocation": self.midwayGPSLocation,
-            "midwayCity": self.midwayCity,
-            "startTime": self.startTime,
-            "endTime": self.endTime
+            "midwayGPSLatitude": self.midwayGPSLatitude,
+            "midwayGPSLongitude": self.midwayGPSLongitude,
+            "midwayPointCity": self.midwayPointCity,
+            "uniqueIdentifier": self.uniqueIdentifier,
         }

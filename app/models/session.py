@@ -3,22 +3,28 @@ from .user import User
 
 
 class Session(db.Model):
-    __tablename__ = 'sessions'
+    __tablename__ = "sessions"
 
     id = db.Column(db.Integer, primary_key=True)
+    createdWhen = db.Column(db.DateTime)
+    localTimezone = db.Column(db.DateTime)
+    GPSLatitude = db.Column(db.String(100))
+    GPSLongitude = db.Column(db.String(100))
     userId = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
-    GPSLocation = db.Column(db.String(100))
-    weather = db.Column(db.String(255))
-    localTime = db.Column(db.DateTime)
-    createTime = db.Column(db.DateTime)
+    temperatureFahrenheit = db.Column(db.Integer)
+    temperatureFeelsLikeFahrenheit = db.Column(db.Integer)
+    weatherDescription = db.Column(db.String(50))
 
-    user = db.relationship('User', backref=db.backref('sessions'))
+    user = db.relationship("User", backref=db.backref("sessions"))
 
     def to_dict(self):
         return {
             "id": self.id,
+            "localTimezone": self.localTimezone,
+            "GPSLatitude": self.GPSLatitude,
+            "GPSLongitude": self.GPSLongitude,
+            "temperatureFahrenheit": self.temperatureFahrenheit,
+            "temperatureFeelsLikeFahrenheit": self.temperatureFeelsLikeFahrenheit
             "userId": self.userId,
-            "GPSLocation": self.GPSLocation,
-            "weather": self.weather,
-            "localtime": self.localTime
+            "weatherDescription": self.weatherDescription,
         }
