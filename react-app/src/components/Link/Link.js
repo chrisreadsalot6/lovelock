@@ -6,12 +6,26 @@ import "./link.css"
 export default function Link() {
   let [coords, setCoords] = useState(null)
 
-  const handleClick = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setCoords(position.coords)
-      }
-    );
+  // get permissions function
+
+  const handleClickForLocation = () => {
+    // navigator.permissions.query({name: 'geolocation'}).then(result => {
+    //   console.log(result)
+    //   if (result.state === 'granted') {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setCoords(position.coords)
+        });
+    //   } else {
+    //     console.log('permission denied')
+    //   }
+    // })
+    console.log(navigator)
+    console.log(window)
+
+  }
+
+  const handleClickForDirection = () => {
+    console.log('hi')
   }
 
   // const options = { frequency: 60, referenceFrame: 'device' };
@@ -28,15 +42,21 @@ export default function Link() {
   return (
     <div className='big-text'>
       <button
-        onClick={handleClick}
-      >Get My Location
+        onClick={ handleClickForLocation }
+      >
+      Get My Location
       </button>
       <div>
         <div>Latitude: { coords === null ? null : coords.latitude }</div>
         <div>Longitude: { coords === null ? null : coords.longitude }</div>
       </div>
+      <button
+        onClick={ handleClickForDirection }
+      >
+      Get My Direction
+      </button>
       <div>
-        {/* { JSON.parse(sensor) } */}
+        <div>Data placeholder here</div>
       </div>
     </div>
   )
