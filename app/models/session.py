@@ -10,9 +10,9 @@ class Session(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     createdWhen = db.Column(db.DateTime, default=datetime.utcnow)
     updatedWhen = db.Column(db.DateTime, default=datetime.utcnow)
-    localTimezone = db.Column(db.DateTime)
     GPSLatitude = db.Column(db.String(100))
     GPSLongitude = db.Column(db.String(100))
+    localTimezoneOffset = db.Column(db.Integer)
     userId = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     temperatureFahrenheit = db.Column(db.Integer)
     temperatureFeelsLikeFahrenheit = db.Column(db.Integer)
@@ -23,9 +23,9 @@ class Session(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "localTimezone": self.localTimezone,
             "GPSLatitude": self.GPSLatitude,
             "GPSLongitude": self.GPSLongitude,
+            "localTimezoneOffset": self.localTimezoneOffset,
             "temperatureFahrenheit": self.temperatureFahrenheit,
             "temperatureFeelsLikeFahrenheit": self.temperatureFeelsLikeFahrenheit,
             "userId": self.userId,

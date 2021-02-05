@@ -7,21 +7,25 @@ export default function Link() {
   let [coords, setCoords] = useState(null);
   let [direcc, setDirecc] = useState(null);
 
+  console.log(new Date())
+
   const handleClickForLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       setCoords(position.coords)
 
+      const localTimezoneOffset = new Date().getTimezoneOffset();
+
       const postData = {
-        localTimezone: new Date(),
+        localTimezoneOffset: localTimezoneOffset,
         GPSLatitude: position.coords.latitude,
         GPSLongitude: position.coords.longitude,
         userId: sessionStorage.getItem('userId')
       }
   
-      fetch('/api/session', {
+      fetch('/api/session/', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
-        body: postData,
+        body: JSON.stringify(postData),
       });
     });
   }
