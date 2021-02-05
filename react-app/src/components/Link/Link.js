@@ -7,7 +7,7 @@ export default function Link() {
   let [coords, setCoords] = useState(null);
   let [direcc, setDirecc] = useState(null);
 
-  console.log(new Date())
+  const userId = sessionStorage.getItem('userId')
 
   const handleClickForLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -19,12 +19,14 @@ export default function Link() {
         localTimezoneOffset: localTimezoneOffset,
         GPSLatitude: position.coords.latitude,
         GPSLongitude: position.coords.longitude,
-        userId: sessionStorage.getItem('userId')
+        userId: userId,
       }
   
       fetch('/api/session/', {
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(postData),
       });
     });
@@ -39,6 +41,21 @@ export default function Link() {
     if (window.DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", (event) => {
         setDirecc(event.webkitCompassHeading) // how does this work? constantly updating?
+        
+        const postData = {
+          initiatorCompassDirection: event.webkitCompassHeading,
+          initiatorGPSLatitude: coords.latitude,
+          initiatorGPSLongitude: coords.longitude,
+          initiatorUserId: userId
+        }
+
+        fetch('/api/talk/new', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+        })
       })
     } else {
       console.log('no device orientation event...')
@@ -47,6 +64,7 @@ export default function Link() {
   }
 
   const handleClickToCreateConversation = () => {
+    console.log(coords)
     // userId = 1;
     // GPS = {latitude: coords.latitude, longitude: coords.longitude};
     // direction = `${direcc}`;
