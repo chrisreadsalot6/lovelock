@@ -9,33 +9,36 @@ from app.models import db, User
 def seed_users():
 
     demo = User(
-        username="demo",
-        firstName="demo",
-        lastName="demo",
+        createdWhen=datetime.utcnow(),
+        updatedWhen=datetime.utcnow(),
         email="demo@demo.com",
-        phoneNumber="000-000-0000",
+        firstName="demo",
         password="password",
-        created=datetime.utcnow(),
+        lastName="demo",
+        phoneNumber="000-000-0000",
+        username="demo",
     )
 
     demoOne = User(
-        username="DemoOne",
-        firstName="DemoOne",
-        lastName="DemoOne",
-        email="demoOne@aa.io",
-        phoneNumber="111-111-1111",
+        createdWhen=datetime.utcnow(),
+        updatedWhen=datetime.utcnow(),
+        email="demoone@demo.com",
+        firstName="demo",
         password="password",
-        created=datetime.utcnow(),
+        lastName="demo",
+        phoneNumber="111-111-1111",
+        username="demoone",
     )
 
     demoTwo = User(
-        username="DemoTwo",
-        firstName="DemoTwo",
-        lastName="DemoTwo",
-        email="demoTwo@aa.io",
-        phoneNumber="222-222-2222",
+        createdWhen=datetime.utcnow(),
+        updatedWhen=datetime.utcnow(),
+        email="demotwo@demo.com",
+        firstName="demo",
         password="password",
-        created=datetime.utcnow(),
+        lastName="demo",
+        phoneNumber="222-222-2222",
+        username="demotwo",
     )
 
     db.session.add(demo)
@@ -51,5 +54,5 @@ def seed_users():
 
 
 def undo_users():
-    db.session.execute("TRUNCATE users;")
+    db.session.execute("TRUNCATE users CASCADE;")
     db.session.commit()
