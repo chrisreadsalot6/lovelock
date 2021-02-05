@@ -22,7 +22,7 @@ class Conversation(db.Model):
     midwayGPSLatitude = db.Column(db.Numeric)
     midwayGPSLongitude = db.Column(db.Numeric)
     midwayPointCity = db.Column(db.String(100))
-    uniqueIdentifier = db.Column(db.BigSerial, nullable=False)
+    uniqueIdentifier = db.Column(db.BigInteger, nullable=False)
 
     initiatorUser = db.relationship(
         "User", foreign_keys=[initiatorUserId], backref="initiator_conversations"

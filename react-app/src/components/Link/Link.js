@@ -10,6 +10,19 @@ export default function Link() {
   const handleClickForLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       setCoords(position.coords)
+
+      const postData = {
+        localTimezone: new Date(),
+        GPSLatitude: position.coords.latitude,
+        GPSLongitude: position.coords.longitude,
+        userId: sessionStorage.getItem('userId')
+      }
+  
+      fetch('/api/session', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: postData,
+      });
     });
   }
 
@@ -26,23 +39,23 @@ export default function Link() {
   }
 
   const handleClickToCreateConversation = () => {
-    userId = 1;
-    GPS = {latitude: coords.latitude, longitude: coords.longitude};
-    direction = `${direcc}`;
+    // userId = 1;
+    // GPS = {latitude: coords.latitude, longitude: coords.longitude};
+    // direction = `${direcc}`;
 
-    conversationStarterData = {
-      userId,
-      initiatorGPSLocation: GPS,
-      initiatorDirection: direction
-    }
+    // conversationStarterData = {
+    //   userId,
+    //   initiatorGPSLocation: GPS,
+    //   initiatorDirection: direction
+    // }
 
-    fetch('/api/link', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(conversationStarterData)
-    }).then((response) => console.log(response.status))
+    // // fetch('/api/link', {
+    // //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(conversationStarterData)
+    // }).then((response) => console.log(response.status))
     
     // hit backend with data
     // backend will:

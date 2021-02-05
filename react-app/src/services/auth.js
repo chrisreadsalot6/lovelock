@@ -18,7 +18,12 @@ export const login = async (email, password) => {
       password
     })
   });
-  return await response.json();
+  const user = await response.json();
+
+  // set userId on sessionStorage
+  window.sessionStorage.setItem('userId', user.id)
+
+  return user;
 }
 
 export const logout = async () => {

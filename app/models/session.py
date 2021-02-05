@@ -24,7 +24,7 @@ class Session(db.Model):
             "GPSLatitude": self.GPSLatitude,
             "GPSLongitude": self.GPSLongitude,
             "temperatureFahrenheit": self.temperatureFahrenheit,
-            "temperatureFeelsLikeFahrenheit": self.temperatureFeelsLikeFahrenheit
+            "temperatureFeelsLikeFahrenheit": self.temperatureFeelsLikeFahrenheit,
             "userId": self.userId,
             "weatherDescription": self.weatherDescription,
         }
