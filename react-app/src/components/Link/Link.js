@@ -26,6 +26,10 @@ export default function Link() {
     });
   }
 
+    //   return (
+    //     const cleanup = window.removeEventlistener(...)
+    // )
+
   // get permissions function??
   const handleClickForDirection = () => {
     if (window.DeviceOrientationEvent) {

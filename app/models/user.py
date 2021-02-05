@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from .db import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,7 +9,7 @@ class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    createdWhen = db.Column(db.DateTime, nullable=False)
+    createdWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updatedWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(255), nullable=False, unique=True)
     firstName = db.Column(db.String(100), nullable=False)

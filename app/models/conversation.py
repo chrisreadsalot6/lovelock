@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from .db import db
 from .user import User
 
@@ -8,9 +9,9 @@ class Conversation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     createdWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    startedWhen = db.Column(db.DateTime)
-    endedWhen = db.Column(db.DateTime)
+    updatedWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     active = db.Column(db.Boolean, nullable=False, default=False)
+    endedWhen = db.Column(db.DateTime)
     initiatorCompassDirection = db.Column(db.Numeric, nullable=False)
     initiatorGPSLatitude = db.Column(db.Numeric, nullable=False)
     initiatorGPSLongitude = db.Column(db.Numeric, nullable=False)
@@ -22,6 +23,7 @@ class Conversation(db.Model):
     midwayGPSLatitude = db.Column(db.Numeric)
     midwayGPSLongitude = db.Column(db.Numeric)
     midwayPointCity = db.Column(db.String(100))
+    startedWhen = db.Column(db.DateTime)
     uniqueIdentifier = db.Column(db.BigInteger, nullable=False)
 
     initiatorUser = db.relationship(
