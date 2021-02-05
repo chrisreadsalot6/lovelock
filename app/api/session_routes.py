@@ -12,11 +12,7 @@ def get_session():
 
 @session_routes.route("/", methods=["POST"])
 def make_session():
-    # print(dir(request))
-    # print(request.data)
     json = request.json
-
-    # print(json["localTimezone"])
 
     # put this data to a session object
     session = Session(
