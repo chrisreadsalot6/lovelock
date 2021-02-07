@@ -1,38 +1,41 @@
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 import uuid
 
-from app.models import Conversation
+from app.models import db, Talk
 
 talk_routes = Blueprint("talk", __name__)
 
 
 @talk_routes.route("/<int:id>/pull", methods=["GET"])
 def pull_talk_data():
-    return Conversation
+    return None
 
 
 @talk_routes.route("/<int:id>/push", methods=["POST"])
 def push_talk_data():
-    return Conversation
+    return None
 
 
 @talk_routes.route("/join", methods=["POST"])
 def join():
-    return Conversation
+    return None
 
 
 @talk_routes.route("/new", methods=["POST"])
 def create_talk():
     json = request.json
 
-    print(json)
-    #   initiatorCompassDirection: event.webkitCompassHeading,
-    #   initiatorGPSLatitude: coords.latitude,
-    #   initiatorGPSLongitude: coords.longitude,
-    #   initiatorUserId: userId
+    uniqueIdentifier = uuid.uuid4().int
 
-    uniqueId = uuid.uuid4().int
+    talk = Talk(
+        initiatorCompassDirection=json["initiatorCompassDirection"],
+        initiatorGPSLatitude=json["initiatorGPSLatitude"],
+        initiatorGPSLongitude=json["initiatorGPSLongitude"],
+        initiatorUserId=int(json["initiatorUserId"]),
+        uniqueIdentifier=uniqueIdentifier,
+    )
 
-    return "hi"
+    db.session.add(talk)
+    db.session.commit()
 
-    # return Conversation
+    return jsonify(str(uniqueIdentifier))

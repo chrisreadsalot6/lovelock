@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { authenticate } from "./services/auth";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+
+import Link from "./components/Link/Link";
 import LoginForm from "./components/auth/LoginForm";
-import SignUpForm from "./components/auth/SignUpForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import UsersList from "./components/UsersList";
+import SignUpForm from "./components/auth/SignUpForm";
+import Talk from "./components/Talk/Talk"
 import User from "./components/User";
-import Link from "./components/Link/Link";
-import { authenticate } from "./services/auth";
+import UsersList from "./components/UsersList";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -42,6 +44,9 @@ function App() {
         </Route>
         <Route path="/link" exact={true}>
           <Link/>
+        </Route>
+        <Route path="/talk">
+          <Talk/>
         </Route>
         <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
           <UsersList/>

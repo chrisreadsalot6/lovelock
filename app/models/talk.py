@@ -4,8 +4,8 @@ from .db import db
 from .user import User
 
 
-class Conversation(db.Model):
-    __tablename__ = "conversations"
+class Talk(db.Model):
+    __tablename__ = "talks"
 
     id = db.Column(db.Integer, primary_key=True)
     createdWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -24,13 +24,13 @@ class Conversation(db.Model):
     midwayGPSLongitude = db.Column(db.Numeric)
     midwayPointCity = db.Column(db.String(100))
     startedWhen = db.Column(db.DateTime)
-    uniqueIdentifier = db.Column(db.BigInteger, nullable=False)
+    uniqueIdentifier = db.Column(db.Numeric(40, 0), nullable=False)
 
     initiatorUser = db.relationship(
-        "User", foreign_keys=[initiatorUserId], backref="initiator_conversations"
+        "User", foreign_keys=[initiatorUserId], backref="initiator_talks"
     )
     joinerUser = db.relationship(
-        "User", foreign_keys=[joinerUserId], backref="joiner_conversations"
+        "User", foreign_keys=[joinerUserId], backref="joiner_talks"
     )
 
     def to_dict(self):
