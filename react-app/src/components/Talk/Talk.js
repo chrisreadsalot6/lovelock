@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Talk() {
 
-    const handleClickToCreateConversation = () => {
+    // const handleClickToCreateConversation = () => {
     // console.log(coords)
     // userId = 1;
     // GPS = {latitude: coords.latitude, longitude: coords.longitude};
@@ -27,7 +27,7 @@ export default function Talk() {
     // (1) generate a random url
     // (2) insert data into the database
     // (3) return that random url
-  }
+  // }
 
   
   return (

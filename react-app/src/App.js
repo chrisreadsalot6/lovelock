@@ -7,7 +7,8 @@ import LoginForm from "./components/auth/LoginForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
-import Talk from "./components/Talk/Talk"
+import JoinTalk from "./components/JoinTalk/JoinTalk";
+import Talk from "./components/Talk/Talk";
 import User from "./components/User";
 import UsersList from "./components/UsersList";
 
@@ -44,6 +45,9 @@ function App() {
         </Route>
         <Route path="/link" exact={true}>
           <Link/>
+        </Route>
+        <Route path="/talk/join">
+          <JoinTalk/>
         </Route>
         <Route path="/talk">
           <Talk/>

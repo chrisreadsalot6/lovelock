@@ -31,7 +31,7 @@ const NavBar = ({ setAuthenticated }) => {
         </li>
         <li>
           <NavLink to='/link' exact={true} activeClassName="active">
-            Start a Conversation Part I of II
+            Start or Join a Talk
           </NavLink>
         </li>
       </ul>

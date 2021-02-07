@@ -18,10 +18,11 @@ def push_talk_data():
 
 @talk_routes.route("/join", methods=["POST"])
 def join():
+    print("I am here!")
     return None
 
 
-@talk_routes.route("/new", methods=["POST"])
+@talk_routes.route("/create", methods=["POST"])
 def create_talk():
     json = request.json
 
