@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import Arrow from "../Arrow/Arrow";
+
 export default function Talk() {
   const [bearing, setBearing] = useState(null);
   const [geolocation, setGeolocation] = useState();
@@ -29,6 +31,7 @@ export default function Talk() {
       theirLong = geolocationData.initiatorGPSLongitude;
     }
 
+    console.log(typeof myLat);
     // do we lose any precision here?
     myLat = parseFloat(myLat);
     myLong = parseFloat(myLong);
@@ -157,6 +160,7 @@ export default function Talk() {
           <div>Your lovelock bearing: {parseInt(bearing)}</div>
           <div>Your current direction: {myCompassDirection}</div>
           <div>Your partner's compass direction: {linkedCompassDirection}</div>
+          <Arrow />
         </div>
       )}
     </div>
