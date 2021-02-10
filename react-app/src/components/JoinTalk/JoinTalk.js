@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-export default function JoinTalk(readings) {
-
-  console.log(readings);
-
+export default function JoinTalk({ readings }) {
   const [talkId, setTalkId] = useState(null);
 
   const getTalkId = (e) => {
     setTalkId(e.target.value);
-  }
+  };
 
   const joinTalk = () => {
+    sessionStorage.setItem("creatorOrJoiner", "creator");
+    
     const postData = {
       active: true,
-      joinerCompassDirection: readings.compassDirection,
+      joinerCompassDirection: readings["compassDirection"],
       joinerGPSLatitude: readings.GPSLatitude,
       joinerGPSLongitude: readings.GPSLongitude,
       joinerUserId: readings.userId,
@@ -21,21 +20,21 @@ export default function JoinTalk(readings) {
       uniqueIdentifier: talkId,
     };
 
-    fetch('/api/talk/join', {
+    fetch("/api/talk/join", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(postData)
-    })
+      body: JSON.stringify(postData),
+    }).then((response) => console.log(response));
 
-    window.location.href = `/talk/${talkId}`
-  }
+    window.location.href = `/talk/${talkId}`;
+  };
 
   return (
     <div>
-      <input onChange={ (e) => getTalkId(e) } placeholder="Input the Talk Id"/>
-      <button onClick={ joinTalk }>Join Talk</button>
+      <input onChange={(e) => getTalkId(e)} placeholder="Input the Talk Id" />
+      <button onClick={joinTalk}>Join Talk</button>
     </div>
-  )
+  );
 }

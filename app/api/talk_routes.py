@@ -6,20 +6,65 @@ from app.models import db, Talk
 talk_routes = Blueprint("talk", __name__)
 
 
-@talk_routes.route("/<int:id>/pull", methods=["GET"])
-def pull_talk_data():
-    return None
+@talk_routes.route("/<int:talkId>/get-geolocation", methods=["GET"])
+def get_geolocation_data(talkId):
+    talk = Talk.query.filter_by(uniqueIdentifier=talkId).first()
+
+    responseData = {
+        "initiatorUserId": talk.initiatorUserId,
+        "initiatorGPSLatitude": str(talk.initiatorGPSLatitude),
+        "initiatorGPSLongitude": str(talk.initiatorGPSLatitude),
+        "joinerUserId": talk.joinerUserId,
+        "joinerGPSLatitude": str(talk.joinerGPSLatitude),
+        "joinerGPSLongitude": str(talk.joinerGPSLatitude),
+    }
+
+    return jsonify(responseData)
 
 
-@talk_routes.route("/<int:id>/push", methods=["POST"])
-def push_talk_data():
-    return None
+@talk_routes.route("/<int:talkId>/pull-compass", methods=["GET"])
+def pull_compass_data(talkId):
+    talk = Talk.query.filter_by(uniqueIdentifier=talkId).first()
+
+    responseData = {
+        "initiatorCompassDirection": str(talk.initiatorCompassDirection),
+        "joinerCompassDirection": str(talk.joinerCompassDirection),
+    }
+
+    return jsonify(responseData)
+
+
+@talk_routes.route("/<int:talkId>/push-compass", methods=["POST"])
+def push_compass_data(talkId):
+    json = request.json
+
+    talk = Talk.query.filter_by(uniqueIdentifier=talkId).first()
+
+    if json["initiatorOrJoiner"] == "initiator":
+        talk.initiatorCompassDirection = json["compassDirection"]
+    else:
+        talk.joinerCompassDirection = json["compassDirection"]
+
+    db.session.commit()
+
+    return jsonify(str(talk))
 
 
 @talk_routes.route("/join", methods=["POST"])
 def join():
-    print("I am here!")
-    return None
+    json = request.json
+
+    talk = Talk.query.filter_by(uniqueIdentifier=json["uniqueIdentifier"]).first()
+
+    talk.active = True
+    talk.joinerCompassDirection = json["joinerCompassDirection"]
+    talk.joinerGPSLatitude = json["joinerGPSLatitude"]
+    talk.joinerGPSLongitude = json["joinerGPSLongitude"]
+    talk.joinerUserId = json["joinerUserId"]
+
+    db.session.commit()
+
+    return jsonify(str(talk))
 
 
 @talk_routes.route("/create", methods=["POST"])
