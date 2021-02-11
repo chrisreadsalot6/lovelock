@@ -1,37 +1,40 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import LogoutButton from './auth/LogoutButton';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import LogoutButton from "./auth/LogoutButton";
 
-const NavBar = ({ setAuthenticated }) => {
+const NavBar = ({ authenticated, setAuthenticated }) => {
   return (
     <nav>
       <ul>
-        <li>
-          <NavLink to="/" exact={true} activeClassName="active">
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/login" exact={true} activeClassName="active">
-            Login
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/sign-up" exact={true} activeClassName="active">
-            Sign Up
-          </NavLink>
-        </li>
-        <li>
-          <LogoutButton setAuthenticated={setAuthenticated} />
-        </li>
-        <li>
-          <NavLink to='/link' exact={true} activeClassName="active">
-            Start or Join a Talk
-          </NavLink>
-        </li>
+        {authenticated ? (
+          <li>
+            <NavLink to="/" exact={true} activeClassName="active">
+              Home: Start/Join a Talk
+            </NavLink>
+          </li>
+        ) : null}
+        {authenticated ? null : (
+          <li>
+            <NavLink to="/login" exact={true} activeClassName="active">
+              Login
+            </NavLink>
+          </li>
+        )}
+        {authenticated ? null : (
+          <li>
+            <NavLink to="/sign-up" exact={true} activeClassName="active">
+              Sign Up
+            </NavLink>
+          </li>
+        )}
+        {authenticated ? (
+          <li>
+            <LogoutButton setAuthenticated={setAuthenticated} />
+          </li>
+        ) : null}
       </ul>
     </nav>
   );
-}
+};
 
 export default NavBar;

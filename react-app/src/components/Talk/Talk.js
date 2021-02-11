@@ -160,6 +160,19 @@ export default function Talk() {
         },
         body: JSON.stringify(postData),
       });
+
+      // const mouse = () => {
+      //   window.addEventListener("mouseover", (event) => {
+      //     console.log("hi");
+      //     console.dir(event);
+      //     // event.removeEventListener("mouseover", (event) => {
+      //     //   console.log("it's finished, then");
+      //     // });
+      //     window.removeEventListener("mouseover", {null});
+      //   });
+      //   window.removeEventListener("mouseover", mouse);
+      // };
+      // mouse();
     } else {
       window.addEventListener("deviceorientation", (event) => {
         const compassDirection = event.webkitCompassHeading;

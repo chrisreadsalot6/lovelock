@@ -58,7 +58,6 @@ def join():
 
     talk = Talk.query.filter_by(uniqueIdentifier=json["uniqueIdentifier"]).first()
 
-    print(json)
     talk.active = True
     talk.joinerCompassDirection = json["joinerCompassDirection"]
     talk.joinerGPSLatitude = json["joinerGPSLatitude"]
