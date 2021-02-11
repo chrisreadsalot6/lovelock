@@ -11,6 +11,7 @@ export default function Talk() {
   const [myCompassDirection, setMyCompassDirection] = useState();
 
   const [endTheTalk, setEndTheTalk] = useState(false);
+  sessionStorage.setItem("endTheTalk", false);
 
   const initiatorOrJoiner = sessionStorage.getItem("initiatorOrJoiner");
   const talkId = sessionStorage.getItem("talkId");
@@ -102,6 +103,7 @@ export default function Talk() {
 
   const endTalk = () => {
     setEndTheTalk(true);
+    sessionStorage.setItem("endTheTalk", "true");
 
     setBearing(null);
   };
@@ -113,10 +115,8 @@ export default function Talk() {
         "Content-Type": "application/json",
       },
     }).then((response) => {
-      console.log(response);
       response.json().then((data) => {
         setGeolocation(data);
-        console.log(data);
         // need to get updating down to make this move, otherwise, need to pass data through
         calculateBearing(data);
       });
@@ -159,7 +159,7 @@ export default function Talk() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(postData),
-      }).then((response) => console.log(response));
+      });
     } else {
       window.addEventListener("deviceorientation", (event) => {
         const compassDirection = event.webkitCompassHeading;
@@ -179,13 +179,15 @@ export default function Talk() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(postData),
-        }).then((response) => console.log(response));
+        });
 
         pullCompassData();
+
+        console.log(sessionStorage.getItem("endTheTalk"));
       });
-      if (endTheTalk) {
-        window.removeEventListener("deviceorientation"); // maybe this will work?
-      }
+      // if (endTheTalk) {
+      //   window.removeEventListener("deviceorientation"); // maybe this will work?
+      // }
     }
   };
 

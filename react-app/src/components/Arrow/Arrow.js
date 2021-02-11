@@ -8,16 +8,14 @@ export default function Arrow(props) {
   let counterclockwise;
   let locked = false;
 
-  if (bearing > myCompassDirection) {
+  if (parseInt(bearing) > parseInt(myCompassDirection)) {
     clockwise = bearing - myCompassDirection;
     counterclockwise = myCompassDirection + (360 - bearing);
-  } else if (bearing < myCompassDirection) {
+  } else if (parseInt(bearing) < parseInt(myCompassDirection)) {
     clockwise = 360 - myCompassDirection + bearing;
     counterclockwise = myCompassDirection - bearing;
-  } else {
-    if (!(clockwise === undefined && clockwise === undefined)) {
-      locked = true;
-    }
+  } else if (parseInt(bearing) === parseInt(myCompassDirection)) {
+    locked = true;
   }
 
   let goLeftOrRight;
