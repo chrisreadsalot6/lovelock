@@ -1,16 +1,14 @@
 import { authenticate } from "./services/auth";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
+import JoinTalk from "./components/JoinTalk/JoinTalk";
 import Link from "./components/Link/Link";
 import LoginForm from "./components/auth/LoginForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
-import JoinTalk from "./components/JoinTalk/JoinTalk";
 import Talk from "./components/Talk/Talk";
-import User from "./components/User";
-import UsersList from "./components/UsersList";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -52,12 +50,6 @@ function App() {
         <Route path="/talk">
           <Talk/>
         </Route>
-        <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
-          <UsersList/>
-        </ProtectedRoute>
-        <ProtectedRoute path="/users/:userId" exact={true} authenticated={authenticated}>
-          <User />
-        </ProtectedRoute>
         <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
           <h1>My Home Page</h1>
         </ProtectedRoute>
