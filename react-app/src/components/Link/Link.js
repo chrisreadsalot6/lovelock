@@ -53,7 +53,7 @@ export default function Link() {
     });
   };
 
-  const getDirection = () => {
+  const getDirection = (position) => {
     if (detectIfMobileBrowser() === false) {
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
@@ -63,8 +63,8 @@ export default function Link() {
 
       const readingsDict = {
         compassDirection: fakeDirection,
-        GPSLatitude: coords.latitude,
-        GPSLongitude: coords.longitude,
+        GPSLatitude: position.coords.latitude,
+        GPSLongitude: position.coords.latitude,
         userId: userId,
         uniqueIdentifier: talkId,
       };
@@ -79,8 +79,8 @@ export default function Link() {
 
               const readingsDict = {
                 compassDirection: event.webkitCompassHeading,
-                GPSLatitude: coords.latitude,
-                GPSLongitude: coords.longitude,
+                GPSLatitude: position.coords.latitude,
+                GPSLongitude: position.coords.latitude,
                 userId: userId,
                 uniqueIdentifier: talkId,
               };
@@ -122,22 +122,26 @@ export default function Link() {
           },
           body: JSON.stringify(postData),
         });
+
+        getDirection(position);
       });
     }
   };
 
   return (
-    <div className="big-text">
-      <button onClick={getLocation}>First Get Your GPS Location</button>
-      <div>
-        {coords === null ? null : <div>Latitude: {coords.latitude} </div>}
-        {coords === null ? null : <div>Longitude: {coords.longitude} </div>}
-      </div>
-      {coords === null ? null : (
-        <button onClick={getDirection}>
-          Second Get Your First Compass Reading
+    <div>
+      {direcc === null ? (
+        <button onClick={getLocation}>
+          To Create a Talk First Get Your GPS Location and Initial Compass
+          Reading
         </button>
-      )}
+      ) : null}
+      <div>
+        {coords === null ? null : <span>Longitude: {coords.longitude} </span>}
+      </div>
+      <div>
+        {coords === null ? null : <span>Latitude: {coords.latitude} </span>}
+      </div>
       {direcc === null ? null : <div>Direction : {direcc} </div>}
       {direcc === null ? null : (
         <button onClick={createATalk}>Start Your Talk</button>
