@@ -32,7 +32,8 @@ export default function Arrow(props) {
 
   return (
     <div>
-      {goLeftOrRight === "left" ? (
+      {locked === true ? <div>You're locked!</div> : 
+      goLeftOrRight === "left" ? (
         <div>
           <i>Turn to the left!</i>
           <i className="long arrow alternative left icon" />

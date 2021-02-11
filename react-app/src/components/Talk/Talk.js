@@ -9,6 +9,8 @@ export default function Talk() {
   const [linkedCompassDirection, setLinkedCompassDirection] = useState();
   const [myCompassDirection, setMyCompassDirection] = useState();
 
+  const [endTheTalk, setEndTheTalk] = useState(false);
+
   const initiatorOrJoiner = sessionStorage.getItem("initiatorOrJoiner");
   const talkId = sessionStorage.getItem("talkId");
   const userId = sessionStorage.getItem("userId");
@@ -31,7 +33,6 @@ export default function Talk() {
       theirLong = geolocationData.initiatorGPSLongitude;
     }
 
-    console.log(typeof myLat);
     // do we lose any precision here?
     myLat = parseFloat(myLat);
     myLong = parseFloat(myLong);
@@ -71,6 +72,11 @@ export default function Talk() {
     });
   };
 
+  const endTalk = () => {
+    setEndTheTalk(true);
+    setBearing(null);
+  };
+
   const getGeolocationData = () => {
     fetch(`/api/talk/${talkId}/get-geolocation`, {
       method: "get",
@@ -105,6 +111,8 @@ export default function Talk() {
   };
 
   const pushCompassData = () => {
+    getGeolocationData();
+
     if (detectIfMobileBrowser() === false) {
       const compassDirection = 20;
       setMyCompassDirection(compassDirection);
@@ -123,18 +131,18 @@ export default function Talk() {
         body: JSON.stringify(postData),
       }).then((response) => console.log(response));
     } else {
-      window.addEventListener(
-        "deviceorientation",
-        (event) => {
-          const compassDirection = event.webkitCompassHeading;
-          setMyCompassDirection(compassDirection);
-          const postData = {
-            compassDirection: compassDirection,
-            initiatorOrJoiner: initiatorOrJoiner,
-            talkId: talkId,
-            userId: userId,
-          };
+      window.addEventListener("deviceorientation", (event) => {
+        const compassDirection = event.webkitCompassHeading;
+        setMyCompassDirection(compassDirection);
+        const postData = {
+          compassDirection: compassDirection,
+          initiatorOrJoiner: initiatorOrJoiner,
+          talkId: talkId,
+          userId: userId,
+        };
 
+        if (Date.now() % (1000 * 10) === 0) {
+          console.log(Date.now());
           fetch(`/api/talk/${talkId}/push-compass`, {
             method: "post",
             headers: {
@@ -142,19 +150,20 @@ export default function Talk() {
             },
             body: JSON.stringify(postData),
           }).then((response) => console.log(response));
-        },
-        { once: true }
-      );
+          pullCompassData();
+        }
+
+        if (endTheTalk) {
+          window.removeEventListener("deviceorientation"); // maybe this will work?
+        }
+      });
     }
   };
 
   return (
     <div>
       <div>Your unique talk id: {sessionStorage.getItem("talkId")}</div>
-      <button onClick={getGeolocationData}>Get Geolocation Data</button>
-      <button onClick={pullCompassData}>Pull Compass Data</button>
-      <button onClick={pushCompassData}>Push Compass Data</button>
-      <button onClick={calculateBearing}>Find Direction!</button>
+      <button onClick={pushCompassData}>Start & Update Talk</button>
       {bearing === null ? null : (
         <div>
           <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
@@ -166,6 +175,7 @@ export default function Talk() {
           />
         </div>
       )}
+      <button onClick={endTalk}>End Talk</button>
     </div>
   );
 }
