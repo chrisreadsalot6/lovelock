@@ -47,16 +47,13 @@ function App() {
             setAuthenticated={setAuthenticated}
           />
         </Route>
-        <Route path="/link" exact={true}>
-          <Link />
-        </Route>
         <Route path="/talk/join">
           <JoinTalk />
         </Route>
         <Route path="/talk">
           <Talk />
         </Route>
-        <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
+        <ProtectedRoute path="/" authenticated={authenticated}>
           <Link />
         </ProtectedRoute>
       </Switch>
