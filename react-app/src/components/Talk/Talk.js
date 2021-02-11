@@ -50,7 +50,6 @@ export default function Talk() {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const bearing = R * c;
 
-    // const bearing = 20;
     setBearing(bearing);
 
     return bearing;
@@ -79,6 +78,7 @@ export default function Talk() {
         "Content-Type": "application/json",
       },
     }).then((response) => {
+      console.log(response);
       response.json().then((data) => {
         setGeolocation(data);
         // need to get updating down to make this move, otherwise, need to pass data through
@@ -157,10 +157,13 @@ export default function Talk() {
       <button onClick={calculateBearing}>Find Direction!</button>
       {bearing === null ? null : (
         <div>
-          <div>Your lovelock bearing: {parseInt(bearing)}</div>
+          <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
           <div>Your current direction: {myCompassDirection}</div>
           <div>Your partner's compass direction: {linkedCompassDirection}</div>
-          <Arrow />
+          <Arrow
+            bearing={parseInt(bearing)}
+            myCompassDirection={myCompassDirection}
+          />
         </div>
       )}
     </div>

@@ -9,7 +9,7 @@ export default function JoinTalk({ readings }) {
 
   const joinTalk = () => {
     sessionStorage.setItem("creatorOrJoiner", "creator");
-    
+
     const postData = {
       active: true,
       joinerCompassDirection: readings["compassDirection"],
@@ -28,6 +28,7 @@ export default function JoinTalk({ readings }) {
       body: JSON.stringify(postData),
     }).then((response) => console.log(response));
 
+    sessionStorage.setItem("talkId", talkId);
     window.location.href = `/talk/${talkId}`;
   };
 
