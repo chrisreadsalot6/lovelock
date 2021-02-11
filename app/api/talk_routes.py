@@ -13,10 +13,10 @@ def get_geolocation_data(talkId):
     responseData = {
         "initiatorUserId": talk.initiatorUserId,
         "initiatorGPSLatitude": str(talk.initiatorGPSLatitude),
-        "initiatorGPSLongitude": str(talk.initiatorGPSLatitude),
+        "initiatorGPSLongitude": str(talk.initiatorGPSLongitude),
         "joinerUserId": talk.joinerUserId,
         "joinerGPSLatitude": str(talk.joinerGPSLatitude),
-        "joinerGPSLongitude": str(talk.joinerGPSLatitude),
+        "joinerGPSLongitude": str(talk.joinerGPSLongitude),
     }
 
     return jsonify(responseData)
@@ -40,6 +40,8 @@ def push_compass_data(talkId):
 
     talk = Talk.query.filter_by(uniqueIdentifier=talkId).first()
 
+    print(talk)
+
     if json["initiatorOrJoiner"] == "initiator":
         talk.initiatorCompassDirection = json["compassDirection"]
     else:
@@ -56,6 +58,7 @@ def join():
 
     talk = Talk.query.filter_by(uniqueIdentifier=json["uniqueIdentifier"]).first()
 
+    print(json)
     talk.active = True
     talk.joinerCompassDirection = json["joinerCompassDirection"]
     talk.joinerGPSLatitude = json["joinerGPSLatitude"]

@@ -1,11 +1,6 @@
 import React from "react";
 
 export default function Arrow(props) {
-  // const [myCompassDirection, setMyCompassDirection] = useState(
-  //   props["myCompassDirection"]
-  // );
-  // const [bearing, setBearing] = useState(props["bearing"]);
-
   const bearing = props["bearing"];
   const myCompassDirection = props["myCompassDirection"];
 

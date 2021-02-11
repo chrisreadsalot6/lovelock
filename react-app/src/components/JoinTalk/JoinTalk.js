@@ -8,7 +8,7 @@ export default function JoinTalk({ readings }) {
   };
 
   const joinTalk = () => {
-    sessionStorage.setItem("creatorOrJoiner", "creator");
+    sessionStorage.setItem("initiatorOrJoiner", "joiner");
 
     const postData = {
       active: true,

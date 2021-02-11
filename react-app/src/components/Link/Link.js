@@ -65,8 +65,8 @@ export default function Link() {
 
       const readingsDict = {
         compassDirection: fakeDirection,
-        GPSLatitude: (coords === null ? 0 : coords.latitude),
-        GPSLongitude: (coords === null ? 0 : coords.latitude),
+        GPSLatitude: coords === null ? 42.3601 : coords.latitude,
+        GPSLongitude: coords === null ? -71.0589 : coords.longitude,
         userId: userId,
         uniqueIdentifier: talkId,
       };
@@ -82,8 +82,8 @@ export default function Link() {
 
               const readingsDict = {
                 compassDirection: event.webkitCompassHeading,
-                GPSLatitude: (coords === null ? 0 : coords.latitude),
-                GPSLongitude: (coords === null ? 0 : coords.latitude),
+                GPSLatitude: coords === null ? 42.3601 : coords.latitude,
+                GPSLongitude: coords === null ? -71.0589 : coords.longitude,
                 userId: userId,
                 uniqueIdentifier: talkId,
               };

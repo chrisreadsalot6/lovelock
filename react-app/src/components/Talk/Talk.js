@@ -4,7 +4,8 @@ import Arrow from "../Arrow/Arrow";
 
 export default function Talk() {
   const [bearing, setBearing] = useState(null);
-  // const [geolocation, setGeolocation] = useState();
+  const [KMDistance, setKMDistance] = useState(null);
+  const [geolocation, setGeolocation] = useState();
 
   const [linkedCompassDirection, setLinkedCompassDirection] = useState();
   const [myCompassDirection, setMyCompassDirection] = useState();
@@ -21,7 +22,8 @@ export default function Talk() {
     let theirLat;
     let theirLong;
 
-    if (initiatorOrJoiner === "initiator") {
+    // why did I have to flip this direction?
+    if (initiatorOrJoiner !== "initiator") {
       myLat = geolocationData.initiatorGPSLatitude;
       myLong = geolocationData.initiatorGPSLongitude;
       theirLat = geolocationData.joinerGPSLatitude;
@@ -39,6 +41,14 @@ export default function Talk() {
     theirLat = parseFloat(theirLat);
     theirLong = parseFloat(theirLong);
 
+    const myLatRad = myLat * (Math.PI / 180);
+    const myLongRad = myLong * (Math.PI / 180);
+    const theirLatRad = theirLat * (Math.PI / 180);
+    const theirLongRad = theirLong * (Math.PI / 180);
+
+    console.log(myLat, myLong, theirLat, theirLong);
+    console.log(myLatRad, myLongRad, theirLatRad, theirLongRad);
+
     const R = 6371e3;
     const φ1 = (myLat * Math.PI) / 180;
     const φ2 = (theirLat * Math.PI) / 180;
@@ -49,7 +59,25 @@ export default function Talk() {
       Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
       Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const bearing = R * c;
+    const distanceInMeters = R * c;
+
+    console.log(distanceInMeters / 1000);
+
+    setKMDistance(distanceInMeters / 1000);
+
+    // pussies are lat
+    // walking men are long
+
+    const y = Math.sin(theirLongRad - myLongRad) * Math.cos(theirLatRad);
+    const x =
+      Math.cos(myLatRad) * Math.sin(theirLatRad) -
+      Math.sin(myLatRad) *
+        Math.cos(theirLatRad) *
+        Math.cos(theirLongRad - myLongRad);
+    const theta = Math.atan2(y, x);
+    const bearing = ((theta * 180) / Math.PI + 360) % 360;
+
+    console.log(bearing);
 
     setBearing(bearing);
 
@@ -74,6 +102,7 @@ export default function Talk() {
 
   const endTalk = () => {
     setEndTheTalk(true);
+
     setBearing(null);
   };
 
@@ -86,7 +115,8 @@ export default function Talk() {
     }).then((response) => {
       console.log(response);
       response.json().then((data) => {
-        // setGeolocation(data);
+        setGeolocation(data);
+        console.log(data);
         // need to get updating down to make this move, otherwise, need to pass data through
         calculateBearing(data);
       });
@@ -141,22 +171,21 @@ export default function Talk() {
           userId: userId,
         };
 
-        if (Date.now() % (1000 * 10) === 0) {
-          console.log(Date.now());
-          fetch(`/api/talk/${talkId}/push-compass`, {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(postData),
-          }).then((response) => console.log(response));
-          pullCompassData();
-        }
+        // if (Date.now() % (1000 * 10) === 0) {
+        //   console.log(Date.now());
+        fetch(`/api/talk/${talkId}/push-compass`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        }).then((response) => console.log(response));
 
-        if (endTheTalk) {
-          window.removeEventListener("deviceorientation"); // maybe this will work?
-        }
+        pullCompassData();
       });
+      if (endTheTalk) {
+        window.removeEventListener("deviceorientation"); // maybe this will work?
+      }
     }
   };
 
@@ -168,7 +197,9 @@ export default function Talk() {
         <div>
           <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
           <div>Your current direction: {parseInt(myCompassDirection)}</div>
-          <div>Your partner's compass direction: {linkedCompassDirection}</div>
+          <div>
+            Your partner's compass direction: {parseInt(linkedCompassDirection)}
+          </div>
           <Arrow
             bearing={parseInt(bearing)}
             myCompassDirection={myCompassDirection}
