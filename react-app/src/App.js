@@ -39,19 +39,22 @@ function App() {
           />
         </Route>
         <Route path="/sign-up" exact={true}>
-          <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
+          <SignUpForm
+            authenticated={authenticated}
+            setAuthenticated={setAuthenticated}
+          />
         </Route>
         <Route path="/link" exact={true}>
-          <Link/>
+          <Link />
         </Route>
         <Route path="/talk/join">
-          <JoinTalk/>
+          <JoinTalk />
         </Route>
         <Route path="/talk">
-          <Talk/>
+          <Talk />
         </Route>
         <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
-          <h1>My Home Page</h1>
+          <Link />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

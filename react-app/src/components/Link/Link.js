@@ -53,7 +53,9 @@ export default function Link() {
     });
   };
 
-  const getDirection = (position) => {
+  const getDirection = async () => {
+    getLocation();
+
     if (detectIfMobileBrowser() === false) {
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
@@ -63,8 +65,8 @@ export default function Link() {
 
       const readingsDict = {
         compassDirection: fakeDirection,
-        GPSLatitude: position.coords.latitude,
-        GPSLongitude: position.coords.latitude,
+        GPSLatitude: (coords === null ? 0 : coords.latitude),
+        GPSLongitude: (coords === null ? 0 : coords.latitude),
         userId: userId,
         uniqueIdentifier: talkId,
       };
@@ -72,6 +74,7 @@ export default function Link() {
     } else {
       DeviceOrientationEvent.requestPermission().then((permission) => {
         if (permission === "granted") {
+          console.log("there");
           window.addEventListener(
             "deviceorientation",
             (event) => {
@@ -79,8 +82,8 @@ export default function Link() {
 
               const readingsDict = {
                 compassDirection: event.webkitCompassHeading,
-                GPSLatitude: position.coords.latitude,
-                GPSLongitude: position.coords.latitude,
+                GPSLatitude: (coords === null ? 0 : coords.latitude),
+                GPSLongitude: (coords === null ? 0 : coords.latitude),
                 userId: userId,
                 uniqueIdentifier: talkId,
               };
@@ -104,6 +107,7 @@ export default function Link() {
       alert("Please kindly login or signup to get your location.");
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
+        sessionStorage.setItem("position", position);
         setCoords(position.coords);
 
         const localTimezoneOffset = new Date().getTimezoneOffset();
@@ -122,8 +126,6 @@ export default function Link() {
           },
           body: JSON.stringify(postData),
         });
-
-        getDirection(position);
       });
     }
   };
@@ -131,7 +133,7 @@ export default function Link() {
   return (
     <div>
       {direcc === null ? (
-        <button onClick={getLocation}>
+        <button onClick={getDirection}>
           To Create a Talk First Get Your GPS Location and Initial Compass
           Reading
         </button>

@@ -4,7 +4,7 @@ import Arrow from "../Arrow/Arrow";
 
 export default function Talk() {
   const [bearing, setBearing] = useState(null);
-  const [geolocation, setGeolocation] = useState();
+  // const [geolocation, setGeolocation] = useState();
 
   const [linkedCompassDirection, setLinkedCompassDirection] = useState();
   const [myCompassDirection, setMyCompassDirection] = useState();
@@ -86,7 +86,7 @@ export default function Talk() {
     }).then((response) => {
       console.log(response);
       response.json().then((data) => {
-        setGeolocation(data);
+        // setGeolocation(data);
         // need to get updating down to make this move, otherwise, need to pass data through
         calculateBearing(data);
       });
@@ -167,7 +167,7 @@ export default function Talk() {
       {bearing === null ? null : (
         <div>
           <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
-          <div>Your current direction: {myCompassDirection}</div>
+          <div>Your current direction: {parseInt(myCompassDirection)}</div>
           <div>Your partner's compass direction: {linkedCompassDirection}</div>
           <Arrow
             bearing={parseInt(bearing)}
