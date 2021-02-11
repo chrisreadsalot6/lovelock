@@ -9,7 +9,7 @@ const NavBar = ({ authenticated, setAuthenticated }) => {
         {authenticated ? (
           <li>
             <NavLink to="/" exact={true} activeClassName="active">
-              Home: Start/Join a Talk
+              Home: Make/Join a Lock
             </NavLink>
           </li>
         ) : null}

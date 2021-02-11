@@ -13,12 +13,14 @@ export default function Link() {
   const userId = parseInt(sessionStorage.getItem("userId"));
 
   const createATalk = () => {
+    getDirection();
+
     sessionStorage.setItem("initiatorOrJoiner", "initiator");
 
     const postData = {
       initiatorCompassDirection: direcc,
-      initiatorGPSLatitude: coords.latitude,
-      initiatorGPSLongitude: coords.longitude,
+      initiatorGPSLatitude: coords === null ? 42.3601 : coords.latitude,
+      initiatorGPSLongitude: coords === null ? 42.3601 : coords.longitude,
       initiatorUserId: userId,
     };
 
@@ -132,23 +134,8 @@ export default function Link() {
 
   return (
     <div>
-      {direcc === null ? (
-        <button onClick={getDirection}>
-          To Create a Talk First Get Your GPS Location and Initial Compass
-          Reading
-        </button>
-      ) : null}
-      <div>
-        {coords === null ? null : <span>Longitude: {coords.longitude} </span>}
-      </div>
-      <div>
-        {coords === null ? null : <span>Latitude: {coords.latitude} </span>}
-      </div>
-      {direcc === null ? null : <div>Direction : {direcc} </div>}
-      {direcc === null ? null : (
-        <button onClick={createATalk}>Start Your Talk</button>
-      )}
-      {direcc === null ? null : <JoinTalk readings={readings} />}
+      <button onClick={createATalk}>Make a Lock</button>
+      <JoinTalk getDirection={getDirection} readings={readings} />
     </div>
   );
 }
