@@ -1,17 +1,19 @@
 import { Button } from "semantic-ui-react";
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function CreateLock({ getLocation, readings, setUser, user }) {
+  const history = useHistory();
+
   useEffect(() => {
+    const userCopy = { user, initiatorOrJoiner: "initiator" };
+    setUser(userCopy);
     if (readings !== null) {
       createALock();
     }
   }, [readings]);
 
   const createALock = () => {
-    user["initiatorOrJoiner"] = "initiator";
-    setUser(user);
-
     const postData = {
       initiatorCompassDirection: readings.compassDirection,
       initiatorGPSLatitude: readings.GPSLatitude,
@@ -27,7 +29,7 @@ export default function CreateLock({ getLocation, readings, setUser, user }) {
       body: JSON.stringify(postData),
     }).then((result) => {
       result.json().then((data) => {
-        window.location.href = `/talk/${data}`;
+        history.push(`/talk/${data}`);
       });
     });
   };

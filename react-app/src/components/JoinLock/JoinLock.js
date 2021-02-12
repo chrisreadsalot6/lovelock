@@ -1,10 +1,14 @@
 import { Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function JoinLock({ getLocation, readings, setUser, user }) {
   const [talkId, setTalkId] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
+    const userCopy = { ...user, initiatorOrJoiner: "initiator" };
+    setUser(userCopy);
     if (readings !== null) {
       joinALock();
     }
@@ -15,11 +19,6 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
   };
 
   const joinALock = () => {
-
-    console.log(user);
-
-    setUser(user);
-
     const postData = {
       active: true,
       joinerCompassDirection: readings.compassDirection,
@@ -38,7 +37,7 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
       body: JSON.stringify(postData),
     });
 
-    window.location.href = `/talk/${talkId}`;
+    history.push(`/talk/${talkId}`);
   };
 
   return (

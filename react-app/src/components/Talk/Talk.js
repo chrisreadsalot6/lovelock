@@ -1,4 +1,4 @@
-import { Button } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -13,8 +13,6 @@ export default function Talk({ user }) {
   const [myCompassDirection, setMyCompassDirection] = useState();
 
   const { talkId } = useParams();
-  console.log(user);
-  console.log(user["initiatorOrJoiner"]);
 
   const calculateBearing = (geolocationData) => {
     let myLat;
@@ -98,6 +96,7 @@ export default function Talk({ user }) {
   };
 
   const endTalk = () => {
+    setBearing(null);
     if (detectIfMobileBrowser() === true) {
       window.removeEventListener("deviceorientation");
     }
@@ -155,19 +154,6 @@ export default function Talk({ user }) {
         },
         body: JSON.stringify(postData),
       });
-
-      // const mouse = () => {
-      //   window.addEventListener("mouseover", (event) => {
-      //     console.log("hi");
-      //     console.dir(event);
-      //     // event.removeEventListener("mouseover", (event) => {
-      //     //   console.log("it's finished, then");
-      //     // });
-      //     window.removeEventListener("mouseover", {null});
-      //   });
-      //   window.removeEventListener("mouseover", mouse);
-      // };
-      // mouse();
     } else {
       window.addEventListener("deviceorientation", (event) => {
         const compassDirection = event.webkitCompassHeading;
@@ -190,18 +176,24 @@ export default function Talk({ user }) {
         });
 
         pullCompassData();
-
-        console.log(sessionStorage.getItem("endTheTalk"));
       });
     }
   };
 
   return (
     <div>
-      <div>Your unique talk id: {talkId}</div>
-      <Button onClick={pushCompassData} basic color="purple">
-        Start & Update Talk
-      </Button>
+      <Message color="purple">
+        <Message.Header>Your unique talk id</Message.Header>
+        {talkId}
+      </Message>
+      <Button.Group>
+        <Button onClick={pushCompassData} basic color="purple">
+          Start Talk
+        </Button>
+        <Button onClick={endTalk} basic color="purple">
+          End Talk
+        </Button>
+      </Button.Group>
       {bearing === null ? null : (
         <div>
           <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
@@ -215,9 +207,6 @@ export default function Talk({ user }) {
           />
         </div>
       )}
-      <Button onClick={endTalk} basic color="purple">
-        End Talk
-      </Button>
     </div>
   );
 }
