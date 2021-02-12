@@ -7,7 +7,7 @@ export default function JoinTalk({ getDirection, readings }) {
     setTalkId(e.target.value);
   };
 
-  const joinTalk = () => {
+  const joinLock = () => {
     getDirection();
 
     sessionStorage.setItem("initiatorOrJoiner", "joiner");
@@ -37,7 +37,7 @@ export default function JoinTalk({ getDirection, readings }) {
   return (
     <div>
       <input onChange={(e) => getTalkId(e)} placeholder="Input the Talk Id" />
-      <button onClick={joinTalk}>Join a Lock</button>
+      <button onClick={joinLock}>Join a Lock</button>
     </div>
   );
 }

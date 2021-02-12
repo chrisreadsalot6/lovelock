@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 
 import "./link.css";
-import JoinTalk from "../JoinTalk/JoinTalk";
+import CreateLock from "../CreateLock/CreateLock";
+import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link() {
   const [coords, setCoords] = useState(null);
@@ -11,33 +12,6 @@ export default function Link() {
   const [talkId, setTalkId] = useState(null);
 
   const userId = parseInt(sessionStorage.getItem("userId"));
-
-  const createATalk = () => {
-    getDirection();
-
-    sessionStorage.setItem("initiatorOrJoiner", "initiator");
-
-    const postData = {
-      initiatorCompassDirection: direcc,
-      initiatorGPSLatitude: coords === null ? 42.3601 : coords.latitude,
-      initiatorGPSLongitude: coords === null ? 42.3601 : coords.longitude,
-      initiatorUserId: userId,
-    };
-
-    fetch("/api/talk/create", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    }).then((result) => {
-      result.json().then((data) => {
-        setTalkId(data);
-        sessionStorage.setItem("talkId", data);
-        window.location.href = `/talk/${data}`;
-      });
-    });
-  };
 
   const detectIfMobileBrowser = () => {
     const toMatch = [
@@ -134,8 +108,8 @@ export default function Link() {
 
   return (
     <div>
-      <button onClick={createATalk}>Make a Lock</button>
-      <JoinTalk getDirection={getDirection} readings={readings} />
+      <CreateLock getDirection={getDirection} readings={readings} />
+      <JoinLock getDirection={getDirection} readings={readings} />
     </div>
   );
 }

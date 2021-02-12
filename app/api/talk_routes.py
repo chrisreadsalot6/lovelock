@@ -40,8 +40,6 @@ def push_compass_data(talkId):
 
     talk = Talk.query.filter_by(uniqueIdentifier=talkId).first()
 
-    print(talk)
-
     if json["initiatorOrJoiner"] == "initiator":
         talk.initiatorCompassDirection = json["compassDirection"]
     else:
