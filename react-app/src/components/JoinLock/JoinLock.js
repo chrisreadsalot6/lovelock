@@ -42,7 +42,6 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
       },
       body: JSON.stringify(postData),
     });
-    console.log("useHistory", talkId);
     history.push(`/talk/${talkId}`);
   };
 

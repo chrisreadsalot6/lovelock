@@ -43,7 +43,6 @@ export default function Link({ setUser, user }) {
     } else {
       DeviceOrientationEvent.requestPermission().then((permission) => {
         if (permission === "granted") {
-          console.log("there");
           window.addEventListener(
             "deviceorientation",
             (event) => {
@@ -80,7 +79,6 @@ export default function Link({ setUser, user }) {
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
         setCoords(position.coords);
-        console.log(position.coords);
 
         const localTimezoneOffset = new Date().getTimezoneOffset();
 
