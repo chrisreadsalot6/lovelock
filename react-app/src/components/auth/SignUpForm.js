@@ -1,3 +1,4 @@
+import { Button, Input, Label, Form } from "semantic-ui-react";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../services/auth";
@@ -40,46 +41,52 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   }
 
   return (
-    <form onSubmit={onSignUp}>
-      <div>
+    <Form onSubmit={onSignUp}>
+      <Form.Field>
         <label>User Name</label>
         <input
           type="text"
           name="username"
+          placeholder="username"
           onChange={updateUsername}
           value={username}
         ></input>
-      </div>
-      <div>
+      </Form.Field>
+      <Form.Field>
         <label>Email</label>
         <input
           type="text"
           name="email"
+          placeholder="email"
           onChange={updateEmail}
           value={email}
         ></input>
-      </div>
-      <div>
+      </Form.Field>
+      <Form.Field>
         <label>Password</label>
         <input
           type="password"
           name="password"
+          placeholder="password"
           onChange={updatePassword}
           value={password}
         ></input>
-      </div>
-      <div>
+      </Form.Field>
+      <Form.Field>
         <label>Repeat Password</label>
         <input
           type="password"
           name="repeat_password"
+          placeholder="repeat password"
           onChange={updateRepeatPassword}
           value={repeatPassword}
           required={true}
         ></input>
-      </div>
-      <button type="submit">Sign Up</button>
-    </form>
+      </Form.Field>
+      <Button type="submit" basic color="purple">
+        Sign Up
+      </Button>
+    </Form>
   );
 };
 

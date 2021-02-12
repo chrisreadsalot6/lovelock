@@ -1,39 +1,59 @@
-import React from "react";
+import { Menu } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
-import LogoutButton from "./auth/LogoutButton";
+import React from "react";
 
-const NavBar = ({ authenticated, setAuthenticated }) => {
+import { logout } from "../services/auth";
+
+const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
+  const logoutPlus = async () => {
+    await logout();
+    setAuthenticated(false);
+    setUser(null);
+  };
+
   return (
-    <nav>
-      <ul>
-        {authenticated ? (
-          <li>
-            <NavLink to="/" exact={true} activeClassName="active">
-              Home: Make/Join a Lock
-            </NavLink>
-          </li>
-        ) : null}
-        {authenticated ? null : (
-          <li>
-            <NavLink to="/login" exact={true} activeClassName="active">
-              Login
-            </NavLink>
-          </li>
-        )}
-        {authenticated ? null : (
-          <li>
-            <NavLink to="/sign-up" exact={true} activeClassName="active">
-              Sign Up
-            </NavLink>
-          </li>
-        )}
-        {authenticated ? (
-          <li>
-            <LogoutButton setAuthenticated={setAuthenticated} />
-          </li>
-        ) : null}
-      </ul>
-    </nav>
+    <Menu secondary>
+      {!authenticated ? null : (
+        <Menu.Item
+          as={NavLink}
+          to="/"
+          name="Make or Join a Lock"
+          activeClassName="active"
+          color="purple"
+        />
+      )}
+      {authenticated ? null : (
+        <Menu.Item
+          as={NavLink}
+          to="/login"
+          name="Login"
+          activeClassName="active"
+          exact={true}
+          color="purple"
+        />
+      )}
+      {authenticated ? null : (
+        <Menu.Item
+          as={NavLink}
+          to="/sign-up"
+          name="Signup"
+          activeClassName="active"
+          exact={true}
+          color="purple"
+        />
+      )}
+      {!authenticated ? null : (
+        <Menu.Item
+          as={NavLink}
+          to="/"
+          name="Logout"
+          activeClassName="active"
+          exact={true}
+          color="purple"
+          onClick={logoutPlus}
+        />
+      )}
+    </Menu>
   );
 };
 

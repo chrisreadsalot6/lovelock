@@ -1,7 +1,7 @@
 import { Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
-export default function JoinLock({ getLocation, readings, user }) {
+export default function JoinLock({ getLocation, readings, setUser, user }) {
   const [talkId, setTalkId] = useState(null);
 
   useEffect(() => {
@@ -15,7 +15,10 @@ export default function JoinLock({ getLocation, readings, user }) {
   };
 
   const joinALock = () => {
-    user["initiatorOrJoiner"] = "joiner";
+
+    console.log(user);
+
+    setUser(user);
 
     const postData = {
       active: true,

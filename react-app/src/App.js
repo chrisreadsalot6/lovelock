@@ -35,6 +35,7 @@ function App() {
       <NavBar
         authenticated={authenticated}
         setAuthenticated={setAuthenticated}
+        setUser={setUser}
       />
       <Switch>
         <Route path="/login" exact={true}>
@@ -54,11 +55,11 @@ function App() {
         <Route path="/talk/join">
           <JoinLock />
         </Route>
-        <Route path="/talk">
+        <Route path="/talk/:talkId">
           <Talk user={user} />
         </Route>
         <ProtectedRoute path="/" authenticated={authenticated}>
-          <Link user={user} />
+          <Link setUser={setUser} user={user} />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

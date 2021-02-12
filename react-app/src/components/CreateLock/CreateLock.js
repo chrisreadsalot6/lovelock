@@ -1,7 +1,7 @@
 import { Button } from "semantic-ui-react";
 import React, { useEffect } from "react";
 
-export default function CreateLock({ getLocation, readings, user }) {
+export default function CreateLock({ getLocation, readings, setUser, user }) {
   useEffect(() => {
     if (readings !== null) {
       createALock();
@@ -10,6 +10,7 @@ export default function CreateLock({ getLocation, readings, user }) {
 
   const createALock = () => {
     user["initiatorOrJoiner"] = "initiator";
+    setUser(user);
 
     const postData = {
       initiatorCompassDirection: readings.compassDirection,

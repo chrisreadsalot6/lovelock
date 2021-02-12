@@ -1,3 +1,4 @@
+import { Button } from "semantic-ui-react";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -11,11 +12,7 @@ export default function Talk({ user }) {
   const [linkedCompassDirection, setLinkedCompassDirection] = useState();
   const [myCompassDirection, setMyCompassDirection] = useState();
 
-  const [endTheTalk, setEndTheTalk] = useState(false);
-
-  // talkId
-  const talkId = 123;
-  console.log(useParams());
+  const { talkId } = useParams();
   console.log(user);
   console.log(user["initiatorOrJoiner"]);
 
@@ -101,8 +98,9 @@ export default function Talk({ user }) {
   };
 
   const endTalk = () => {
-    setEndTheTalk(true);
-    window.removeEventListener("deviceorientation");
+    if (detectIfMobileBrowser() === true) {
+      window.removeEventListener("deviceorientation");
+    }
   };
 
   const getGeolocationData = () => {
@@ -200,8 +198,10 @@ export default function Talk({ user }) {
 
   return (
     <div>
-      <div>Your unique talk id: {"placeholder"}</div>
-      <button onClick={pushCompassData}>Start & Update Talk</button>
+      <div>Your unique talk id: {talkId}</div>
+      <Button onClick={pushCompassData} basic color="purple">
+        Start & Update Talk
+      </Button>
       {bearing === null ? null : (
         <div>
           <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
@@ -215,7 +215,9 @@ export default function Talk({ user }) {
           />
         </div>
       )}
-      <button onClick={endTalk}>End Talk</button>
+      <Button onClick={endTalk} basic color="purple">
+        End Talk
+      </Button>
     </div>
   );
 }
