@@ -5,7 +5,7 @@ import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link({ setUser, user }) {
-  const [coords, setCoords] = useState(null);
+  const [compass, setCompass] = useState(null);
   const [readings, setReadings] = useState(null);
 
   const detectIfMobileBrowser = () => {
@@ -30,31 +30,14 @@ export default function Link({ setUser, user }) {
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );
       const fakeDirection = 1;
-
-      const readingsDict = {
-        compassDirection: fakeDirection,
-        GPSLatitude: coords.latitude,
-        GPSLongitude: coords.longitude,
-        // GPSLatitude: coords === null ? 42.3601 : coords.latitude,
-        // GPSLongitude: coords === null ? -71.0589 : coords.longitude,
-        userId: user.id,
-      };
-      setReadings(readingsDict);
+      setCompass(fakeDirection);
     } else {
       DeviceOrientationEvent.requestPermission().then((permission) => {
         if (permission === "granted") {
           window.addEventListener(
             "deviceorientation",
             (event) => {
-              const readingsDict = {
-                compassDirection: event.webkitCompassHeading,
-                GPSLatitude: coords.latitude,
-                GPSLongitude: coords.longitude,
-                // GPSLatitude: coords === null ? 42.3601 : coords.latitude,
-                // GPSLongitude: coords === null ? -71.0589 : coords.longitude,
-                userId: user.id,
-              };
-              setReadings(readingsDict);
+              setCompass(event.webkitCompassHeading);
             },
             { once: true }
           );
@@ -68,17 +51,25 @@ export default function Link({ setUser, user }) {
   };
 
   useEffect(() => {
-    if (coords !== null) {
-      getDirection();
+    if (compass !== null) {
+      getLocation();
     }
-  }, [coords]);
+  }, [compass]);
 
   const getLocation = () => {
     if (user.id === null) {
       alert("Please kindly login or signup to get your location.");
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
-        setCoords(position.coords);
+        const readingsDict = {
+          compassDirection: compass,
+          GPSLatitude: position.coords.latitude,
+          GPSLongitude: position.coords.longitude,
+          // GPSLatitude: coords === null ? 42.3601 : coords.latitude,
+          // GPSLongitude: coords === null ? -71.0589 : coords.longitude,
+          userId: user.id,
+        };
+        setReadings(readingsDict);
 
         const localTimezoneOffset = new Date().getTimezoneOffset();
 
@@ -103,13 +94,13 @@ export default function Link({ setUser, user }) {
   return (
     <div>
       <CreateLock
-        getLocation={getLocation}
+        getLocation={getDirection}
         readings={readings}
         setUser={setUser}
         user={user}
       />
       <JoinLock
-        getLocation={getLocation}
+        getLocation={getDirection}
         readings={readings}
         setUser={setUser}
         user={user}
