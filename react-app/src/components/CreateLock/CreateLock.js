@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function createLock({ getDirection, readings }) {
-  const createATalk = () => {
+  const createALock = () => {
     getDirection();
 
     sessionStorage.setItem("initiatorOrJoiner", "initiator");
@@ -24,12 +24,13 @@ export default function createLock({ getDirection, readings }) {
         sessionStorage.setItem("talkId", data);
         window.location.href = `/talk/${data}`;
       });
+      s;
     });
   };
 
   return (
     <div>
-      <button onClick={createLock}>Create a Lock</button>
+      <button onClick={createALock}>Create a Lock</button>
     </div>
   );
 }

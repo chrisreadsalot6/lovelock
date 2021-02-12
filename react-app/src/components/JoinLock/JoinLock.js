@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-export default function JoinTalk({ getDirection, readings }) {
+export default function joinLock({ getDirection, readings }) {
   const [talkId, setTalkId] = useState(null);
 
   const getTalkId = (e) => {
     setTalkId(e.target.value);
   };
 
-  const joinLock = () => {
+  const joinALock = () => {
     getDirection();
 
     sessionStorage.setItem("initiatorOrJoiner", "joiner");
@@ -37,7 +37,7 @@ export default function JoinTalk({ getDirection, readings }) {
   return (
     <div>
       <input onChange={(e) => getTalkId(e)} placeholder="Input the Talk Id" />
-      <button onClick={joinLock}>Join a Lock</button>
+      <button onClick={joinALock}>Join a Lock</button>
     </div>
   );
 }
