@@ -2,25 +2,23 @@ import { Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function JoinLock({
-  block,
-  getLocation,
-  readings,
-  setBlock,
-  setUser,
-  user,
-}) {
+export default function JoinLock({ getLocation, readings, setUser, user }) {
   const [talkId, setTalkId] = useState(null);
   const history = useHistory();
+  const [join, setJoin] = useState(null);
 
   useEffect(() => {
-    if (readings !== null && !block) {
-      setBlock(true);
-      const userCopy = { ...user, initiatorOrJoiner: "initiator" };
-      setUser(userCopy);
+    if (readings !== null && join === true) {
       joinALock();
     }
   }, [readings]);
+
+  const getLocationJoin = () => {
+    setJoin(true);
+    const userCopy = { ...user, initiatorOrJoiner: "joiner" };
+    setUser(userCopy);
+    getLocation();
+  };
 
   const getTalkId = (e) => {
     setTalkId(e.target.value);
@@ -52,7 +50,7 @@ export default function JoinLock({
     <div>
       <div className="ui action input">
         <input onChange={(e) => getTalkId(e)} placeholder="Enter 123 to Demo" />
-        <Button onClick={getLocation} basic color="purple">
+        <Button onClick={getLocationJoin} basic color="purple">
           Join a Lock
         </Button>
       </div>

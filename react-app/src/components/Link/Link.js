@@ -4,7 +4,7 @@ import "./link.css";
 import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 
-export default function Link({ block, setBlock, setUser, user }) {
+export default function Link({ setUser, user }) {
   const [coords, setCoords] = useState(null);
   const [readings, setReadings] = useState(null);
 
@@ -105,18 +105,14 @@ export default function Link({ block, setBlock, setUser, user }) {
   return (
     <div>
       <CreateLock
-        block={block}
         getLocation={getLocation}
         readings={readings}
-        setBlock={setBlock}
         setUser={setUser}
         user={user}
       />
       <JoinLock
-        block={block}
         getLocation={getLocation}
         readings={readings}
-        setBlock={setBlock}
         setUser={setUser}
         user={user}
       />

@@ -14,7 +14,6 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState(null);
-  const [block, setBlock] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -60,12 +59,7 @@ function App() {
           <Talk user={user} />
         </Route>
         <ProtectedRoute path="/" authenticated={authenticated}>
-          <Link
-            setUser={setUser}
-            user={user}
-            block={block}
-            setBlock={setBlock}
-          />
+          <Link setUser={setUser} user={user} />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
