@@ -1,16 +1,20 @@
-import React, { useState } from "react";
 import { Button } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
 
 export default function JoinLock({ getLocation, readings, user }) {
   const [talkId, setTalkId] = useState(null);
+
+  useEffect(() => {
+    if (readings !== null) {
+      joinALock();
+    }
+  }, [readings]);
 
   const getTalkId = (e) => {
     setTalkId(e.target.value);
   };
 
   const joinALock = () => {
-    getLocation();
-
     user["initiatorOrJoiner"] = "joiner";
 
     const postData = {
@@ -38,7 +42,7 @@ export default function JoinLock({ getLocation, readings, user }) {
     <div>
       <div className="ui action input">
         <input onChange={(e) => getTalkId(e)} placeholder="Enter 123 to Demo" />
-        <Button onClick={joinALock} basic color="purple">
+        <Button onClick={getLocation} basic color="purple">
           Join a Lock
         </Button>
       </div>

@@ -69,7 +69,9 @@ export default function Link({ user }) {
   };
 
   useEffect(() => {
-    getDirection();
+    if (coords !== null) {
+      getDirection();
+    }
   }, [coords]);
 
   const getLocation = () => {
@@ -78,6 +80,7 @@ export default function Link({ user }) {
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
         setCoords(position.coords);
+        console.log(position.coords);
 
         const localTimezoneOffset = new Date().getTimezoneOffset();
 

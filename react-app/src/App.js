@@ -20,9 +20,9 @@ function App() {
       const user = await authenticate();
       if (!user.errors) {
         setAuthenticated(true);
+        setUser(user);
       }
       setLoaded(true);
-      setUser(user);
     })();
   }, []);
 

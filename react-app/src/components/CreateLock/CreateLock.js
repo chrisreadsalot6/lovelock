@@ -1,10 +1,14 @@
-import React from "react";
 import { Button } from "semantic-ui-react";
+import React, { useEffect } from "react";
 
-export default function createLock({ getLocation, readings, user }) {
+export default function CreateLock({ getLocation, readings, user }) {
+  useEffect(() => {
+    if (readings !== null) {
+      createALock();
+    }
+  }, [readings]);
+
   const createALock = () => {
-    getLocation();
-
     user["initiatorOrJoiner"] = "initiator";
 
     const postData = {
@@ -29,7 +33,7 @@ export default function createLock({ getLocation, readings, user }) {
 
   return (
     <div>
-      <Button onClick={createALock} basic color="purple">
+      <Button onClick={getLocation} basic color="purple">
         Create a Lock
       </Button>
     </div>

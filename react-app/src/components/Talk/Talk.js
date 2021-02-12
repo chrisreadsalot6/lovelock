@@ -1,8 +1,9 @@
-import React, { useParams, useState } from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import Arrow from "../Arrow/Arrow";
 
-export default function Talk() {
+export default function Talk({ user }) {
   const [bearing, setBearing] = useState(null);
   const [KMDistance, setKMDistance] = useState(null);
   const [geolocation, setGeolocation] = useState();
@@ -11,14 +12,12 @@ export default function Talk() {
   const [myCompassDirection, setMyCompassDirection] = useState();
 
   const [endTheTalk, setEndTheTalk] = useState(false);
-  sessionStorage.setItem("endTheTalk", false);
 
-  const initiatorOrJoiner = sessionStorage.getItem("initiatorOrJoiner");
-  const talkId = sessionStorage.getItem("talkId");
-  const userId = sessionStorage.getItem("userId");
-
-  const params = useParams();
-  console.log(params);
+  // talkId
+  const talkId = 123;
+  console.log(useParams());
+  console.log(user);
+  console.log(user["initiatorOrJoiner"]);
 
   const calculateBearing = (geolocationData) => {
     let myLat;
@@ -27,7 +26,7 @@ export default function Talk() {
     let theirLong;
 
     // why did I have to flip this direction?
-    if (initiatorOrJoiner !== "initiator") {
+    if (user["initiatorOrJoiner"] !== "initiator") {
       myLat = geolocationData.initiatorGPSLatitude;
       myLong = geolocationData.initiatorGPSLongitude;
       theirLat = geolocationData.joinerGPSLatitude;
@@ -103,9 +102,7 @@ export default function Talk() {
 
   const endTalk = () => {
     setEndTheTalk(true);
-    sessionStorage.setItem("endTheTalk", "true");
-
-    setBearing(null);
+    window.removeEventListener("deviceorientation");
   };
 
   const getGeolocationData = () => {
@@ -131,7 +128,7 @@ export default function Talk() {
       },
     }).then((response) => {
       response.json().then((data) => {
-        if (initiatorOrJoiner === "initiator") {
+        if (user["initiatorOrJoiner"] === "initiator") {
           setLinkedCompassDirection(data.joinerCompassDirection);
         } else {
           setLinkedCompassDirection(data.initiatorCompassDirection);
@@ -148,9 +145,9 @@ export default function Talk() {
       setMyCompassDirection(compassDirection);
       const postData = {
         compassDirection: compassDirection,
-        initiatorOrJoiner: initiatorOrJoiner,
+        initiatorOrJoiner: user["initiatorOrJoiner"],
         talkId: talkId,
-        userId: userId,
+        userId: user.id,
       };
 
       fetch(`/api/talk/${talkId}/push-compass`, {
@@ -179,9 +176,9 @@ export default function Talk() {
         setMyCompassDirection(compassDirection);
         const postData = {
           compassDirection: compassDirection,
-          initiatorOrJoiner: initiatorOrJoiner,
+          initiatorOrJoiner: user["initiatorOrJoiner"],
           talkId: talkId,
-          userId: userId,
+          userId: user.id,
         };
 
         // if (Date.now() % (1000 * 10) === 0) {
@@ -198,15 +195,12 @@ export default function Talk() {
 
         console.log(sessionStorage.getItem("endTheTalk"));
       });
-      // if (endTheTalk) {
-      //   window.removeEventListener("deviceorientation"); // maybe this will work?
-      // }
     }
   };
 
   return (
     <div>
-      <div>Your unique talk id: {sessionStorage.getItem("talkId")}</div>
+      <div>Your unique talk id: {"placeholder"}</div>
       <button onClick={pushCompassData}>Start & Update Talk</button>
       {bearing === null ? null : (
         <div>
