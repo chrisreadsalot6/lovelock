@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useParams, useState } from "react";
 
 import Arrow from "../Arrow/Arrow";
 
@@ -16,6 +16,9 @@ export default function Talk() {
   const initiatorOrJoiner = sessionStorage.getItem("initiatorOrJoiner");
   const talkId = sessionStorage.getItem("talkId");
   const userId = sessionStorage.getItem("userId");
+
+  const params = useParams();
+  console.log(params);
 
   const calculateBearing = (geolocationData) => {
     let myLat;
@@ -65,9 +68,6 @@ export default function Talk() {
     console.log(distanceInMeters / 1000);
 
     setKMDistance(distanceInMeters / 1000);
-
-    // pussies are lat
-    // walking men are long
 
     const y = Math.sin(theirLongRad - myLongRad) * Math.cos(theirLatRad);
     const x =

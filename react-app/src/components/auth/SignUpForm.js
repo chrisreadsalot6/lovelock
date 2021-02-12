@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Redirect } from 'react-router-dom';
-import { signUp } from '../../services/auth';
+import { Redirect } from "react-router-dom";
+import { signUp } from "../../services/auth";
 
-const SignUpForm = ({authenticated, setAuthenticated}) => {
+const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +14,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
       const user = await signUp(username, email, password);
       if (!user.errors) {
         setAuthenticated(true);
+        setUser(user);
       }
     }
   };

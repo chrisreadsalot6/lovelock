@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Button } from "semantic-ui-react";
 
-export default function JoinLock({ getDirection, readings }) {
+export default function JoinLock({ getLocation, readings, user }) {
   const [talkId, setTalkId] = useState(null);
 
   const getTalkId = (e) => {
@@ -8,13 +9,13 @@ export default function JoinLock({ getDirection, readings }) {
   };
 
   const joinALock = () => {
-    getDirection();
+    getLocation();
 
-    sessionStorage.setItem("initiatorOrJoiner", "joiner");
+    user["initiatorOrJoiner"] = "joiner";
 
     const postData = {
       active: true,
-      joinerCompassDirection: readings["compassDirection"],
+      joinerCompassDirection: readings.compassDirection,
       joinerGPSLatitude: readings.GPSLatitude,
       joinerGPSLongitude: readings.GPSLongitude,
       joinerUserId: readings.userId,
@@ -28,16 +29,19 @@ export default function JoinLock({ getDirection, readings }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
-    }).then((response) => console.log(response));
+    });
 
-    sessionStorage.setItem("talkId", talkId);
     window.location.href = `/talk/${talkId}`;
   };
 
   return (
     <div>
-      <input onChange={(e) => getTalkId(e)} placeholder="Input the Talk Id" />
-      <button onClick={joinALock}>Join a Lock</button>
+      <div className="ui action input">
+        <input onChange={(e) => getTalkId(e)} placeholder="Enter 123 to Demo" />
+        <Button onClick={joinALock} basic color="purple">
+          Join a Lock
+        </Button>
+      </div>
     </div>
   );
 }

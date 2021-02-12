@@ -1,9 +1,6 @@
 import React from "react";
 
-export default function Arrow(props) {
-  const bearing = props["bearing"];
-  const myCompassDirection = props["myCompassDirection"];
-
+export default function Arrow({ bearing, myCompassDirection }) {
   let clockwise;
   let counterclockwise;
   let locked = false;
@@ -27,12 +24,9 @@ export default function Arrow(props) {
 
   return (
     <div>
-      {locked === true ? 
-      (
+      {locked === true ? (
         <div>You're locked!</div>
-      ) 
-      : 
-      goLeftOrRight === "left" ? (
+      ) : goLeftOrRight === "left" ? (
         <div>
           <i>Turn to the left!</i>
           <i className="long arrow alternative left icon" />

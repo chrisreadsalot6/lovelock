@@ -13,6 +13,7 @@ import Talk from "./components/Talk/Talk";
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -21,6 +22,7 @@ function App() {
         setAuthenticated(true);
       }
       setLoaded(true);
+      setUser(user);
     })();
   }, []);
 
@@ -39,22 +41,24 @@ function App() {
           <LoginForm
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
+            setUser={setUser}
           />
         </Route>
         <Route path="/sign-up" exact={true}>
           <SignUpForm
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
+            setUser={setUser}
           />
         </Route>
         <Route path="/talk/join">
           <JoinLock />
         </Route>
         <Route path="/talk">
-          <Talk />
+          <Talk user={user} />
         </Route>
         <ProtectedRoute path="/" authenticated={authenticated}>
-          <Link />
+          <Link user={user} />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>

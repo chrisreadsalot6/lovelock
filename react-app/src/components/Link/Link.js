@@ -1,17 +1,12 @@
-// import AbsoluteOrientationSensor from AbsoluteOrientationSensor
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./link.css";
 import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 
-export default function Link() {
+export default function Link({ user }) {
   const [coords, setCoords] = useState(null);
-  const [direcc, setDirecc] = useState(null);
   const [readings, setReadings] = useState(null);
-  const [talkId, setTalkId] = useState(null);
-
-  const userId = parseInt(sessionStorage.getItem("userId"));
 
   const detectIfMobileBrowser = () => {
     const toMatch = [
@@ -29,22 +24,20 @@ export default function Link() {
     });
   };
 
-  const getDirection = async () => {
-    getLocation();
-
+  const getDirection = () => {
     if (detectIfMobileBrowser() === false) {
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );
       const fakeDirection = 1;
-      setDirecc(fakeDirection);
 
       const readingsDict = {
         compassDirection: fakeDirection,
-        GPSLatitude: coords === null ? 42.3601 : coords.latitude,
-        GPSLongitude: coords === null ? -71.0589 : coords.longitude,
-        userId: userId,
-        uniqueIdentifier: talkId,
+        GPSLatitude: coords.latitude,
+        GPSLongitude: coords.longitude,
+        // GPSLatitude: coords === null ? 42.3601 : coords.latitude,
+        // GPSLongitude: coords === null ? -71.0589 : coords.longitude,
+        userId: user.id,
       };
       setReadings(readingsDict);
     } else {
@@ -54,18 +47,15 @@ export default function Link() {
           window.addEventListener(
             "deviceorientation",
             (event) => {
-              setDirecc(event.webkitCompassHeading); // how does this work? constantly updating?
-
               const readingsDict = {
                 compassDirection: event.webkitCompassHeading,
-                GPSLatitude: coords === null ? 42.3601 : coords.latitude,
-                GPSLongitude: coords === null ? -71.0589 : coords.longitude,
-                userId: userId,
-                uniqueIdentifier: talkId,
+                GPSLatitude: coords.latitude,
+                GPSLongitude: coords.longitude,
+                // GPSLatitude: coords === null ? 42.3601 : coords.latitude,
+                // GPSLongitude: coords === null ? -71.0589 : coords.longitude,
+                userId: user.id,
               };
               setReadings(readingsDict);
-              // const cleanup = window.removeEventListener("deviceorientation") // lookup documentation
-              // console.log(cleanup)
             },
             { once: true }
           );
@@ -78,12 +68,15 @@ export default function Link() {
     }
   };
 
+  useEffect(() => {
+    getDirection();
+  }, [coords]);
+
   const getLocation = () => {
-    if (userId === null) {
+    if (user.id === null) {
       alert("Please kindly login or signup to get your location.");
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
-        sessionStorage.setItem("position", position);
         setCoords(position.coords);
 
         const localTimezoneOffset = new Date().getTimezoneOffset();
@@ -92,7 +85,7 @@ export default function Link() {
           localTimezoneOffset: localTimezoneOffset,
           GPSLatitude: position.coords.latitude,
           GPSLongitude: position.coords.longitude,
-          userId: userId,
+          userId: user.id,
         };
 
         fetch("/api/session/", {
@@ -108,8 +101,8 @@ export default function Link() {
 
   return (
     <div>
-      <CreateLock getDirection={getDirection} readings={readings} />
-      <JoinLock getDirection={getDirection} readings={readings} />
+      <CreateLock getLocation={getLocation} readings={readings} user={user} />
+      <JoinLock getLocation={getLocation} readings={readings} user={user} />
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import React from "react";
+import { Button } from "semantic-ui-react";
 
-export default function createLock({ getDirection, readings }) {
+export default function createLock({ getLocation, readings, user }) {
   const createALock = () => {
-    getDirection();
+    getLocation();
 
-    sessionStorage.setItem("initiatorOrJoiner", "initiator");
+    user["initiatorOrJoiner"] = "initiator";
 
     const postData = {
-      initiatorCompassDirection: readings["compassDirection"],
+      initiatorCompassDirection: readings.compassDirection,
       initiatorGPSLatitude: readings.GPSLatitude,
       initiatorGPSLongitude: readings.GPSLongitude,
       initiatorUserId: readings.userId,
@@ -21,7 +22,6 @@ export default function createLock({ getDirection, readings }) {
       body: JSON.stringify(postData),
     }).then((result) => {
       result.json().then((data) => {
-        sessionStorage.setItem("talkId", data);
         window.location.href = `/talk/${data}`;
       });
     });
@@ -29,7 +29,9 @@ export default function createLock({ getDirection, readings }) {
 
   return (
     <div>
-      <button onClick={createALock}>Create a Lock</button>
+      <Button onClick={createALock} basic color="purple">
+        Create a Lock
+      </Button>
     </div>
   );
 }
