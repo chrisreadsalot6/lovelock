@@ -2,14 +2,22 @@ import { Button } from "semantic-ui-react";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function CreateLock({ getLocation, readings, setUser, user }) {
+export default function CreateLock({
+  block,
+  getLocation,
+  readings,
+  setBlock,
+  setUser,
+  user,
+}) {
   const history = useHistory();
 
   useEffect(() => {
-    const userCopy = { user, initiatorOrJoiner: "initiator" };
-    setUser(userCopy);
-    if (readings !== null) {
+    if (readings !== null && !block) {
+      setBlock(true);
       createALock();
+      const userCopy = { user, initiatorOrJoiner: "initiator" };
+      setUser(userCopy);
     }
   }, [readings]);
 

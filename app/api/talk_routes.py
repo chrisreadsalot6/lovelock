@@ -54,6 +54,8 @@ def push_compass_data(talkId):
 def join():
     json = request.json
 
+    print(json)
+
     talk = Talk.query.filter_by(uniqueIdentifier=json["uniqueIdentifier"]).first()
 
     talk.active = True

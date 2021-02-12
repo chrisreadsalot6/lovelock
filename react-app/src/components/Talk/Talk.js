@@ -13,6 +13,7 @@ export default function Talk({ user }) {
   const [myCompassDirection, setMyCompassDirection] = useState();
 
   const { talkId } = useParams();
+  console.log("talk page", talkId);
 
   const calculateBearing = (geolocationData) => {
     let myLat;
