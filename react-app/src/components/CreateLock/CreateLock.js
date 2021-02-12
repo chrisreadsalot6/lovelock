@@ -24,7 +24,6 @@ export default function createLock({ getDirection, readings }) {
         sessionStorage.setItem("talkId", data);
         window.location.href = `/talk/${data}`;
       });
-      s;
     });
   };
 

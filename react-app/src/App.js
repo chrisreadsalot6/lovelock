@@ -2,7 +2,7 @@ import { authenticate } from "./services/auth";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
-import JoinTalk from "./components/JoinTalk/JoinTalk";
+import JoinLock from "./components/JoinLock/JoinLock";
 import Link from "./components/Link/Link";
 import LoginForm from "./components/auth/LoginForm";
 import NavBar from "./components/NavBar";
@@ -48,7 +48,7 @@ function App() {
           />
         </Route>
         <Route path="/talk/join">
-          <JoinTalk />
+          <JoinLock />
         </Route>
         <Route path="/talk">
           <Talk />

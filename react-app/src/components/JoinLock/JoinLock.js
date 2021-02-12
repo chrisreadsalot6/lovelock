@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function joinLock({ getDirection, readings }) {
+export default function JoinLock({ getDirection, readings }) {
   const [talkId, setTalkId] = useState(null);
 
   const getTalkId = (e) => {
