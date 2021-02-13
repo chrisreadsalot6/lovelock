@@ -12,13 +12,13 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
   };
 
   return (
+    // removed activeClassName="active" from all
     <Menu secondary>
       {authenticated ? null : (
         <Menu.Item
           as={NavLink}
           to="/login"
           name="Login"
-          activeClassName="active"
           exact={true}
           color="purple"
         />
@@ -28,7 +28,6 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
           as={NavLink}
           to="/sign-up"
           name="Signup"
-          activeClassName="active"
           exact={true}
           color="purple"
         />
@@ -39,7 +38,6 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
           to="/"
           exact={true}
           name="Make or Join a Lock"
-          activeClassName="active"
           color="purple"
         />
       )}
@@ -49,7 +47,6 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
           to="/"
           exact={true}
           name="Logout"
-          activeClassName="active"
           color="purple"
           onClick={logoutPlus}
         />
