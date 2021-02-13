@@ -111,7 +111,7 @@ export default function Talk({ user }) {
     }).then((response) => {
       response.json().then((data) => {
         setGeolocation(data);
-        // need to get updating down to make this move, otherwise, need to pass data through
+        // useEffect instead of passing data?
         calculateBearing(data);
       });
     });
