@@ -98,7 +98,7 @@ export default function Talk({ user }) {
   const endTalk = () => {
     setBearing(null);
     if (detectIfMobileBrowser() === true) {
-      window.removeEventListener("deviceorientation");
+      window.removeEventListener("deviceorientation", inner);
     }
   };
 
@@ -155,29 +155,31 @@ export default function Talk({ user }) {
         body: JSON.stringify(postData),
       });
     } else {
-      window.addEventListener("deviceorientation", (event) => {
-        const compassDirection = event.webkitCompassHeading;
-        setMyCompassDirection(compassDirection);
-        const postData = {
-          compassDirection: compassDirection,
-          initiatorOrJoiner: user["initiatorOrJoiner"],
-          talkId: talkId,
-          userId: user.id,
-        };
-
-        // if (Date.now() % (1000 * 10) === 0) {
-        //   console.log(Date.now());
-        fetch(`/api/talk/${talkId}/push-compass`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        });
-
-        pullCompassData();
-      });
+      window.addEventListener("deviceorientation", inner);
     }
+  };
+
+  const inner = (event) => {
+    const compassDirection = event.webkitCompassHeading;
+    setMyCompassDirection(compassDirection);
+    const postData = {
+      compassDirection: compassDirection,
+      initiatorOrJoiner: user["initiatorOrJoiner"],
+      talkId: talkId,
+      userId: user.id,
+    };
+
+    // if (Date.now() % (1000 * 10) === 0) {
+    //   console.log(Date.now());
+    fetch(`/api/talk/${talkId}/push-compass`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+
+    pullCompassData();
   };
 
   return (

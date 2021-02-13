@@ -4,6 +4,10 @@ import "./link.css";
 import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 
+// Boston
+// Latitude 42.3601
+// Longitude -71.0589
+
 export default function Link({ setUser, user }) {
   const [compass, setCompass] = useState(null);
   const [readings, setReadings] = useState(null);
@@ -65,8 +69,6 @@ export default function Link({ setUser, user }) {
           compassDirection: compass,
           GPSLatitude: position.coords.latitude,
           GPSLongitude: position.coords.longitude,
-          // GPSLatitude: coords === null ? 42.3601 : coords.latitude,
-          // GPSLongitude: coords === null ? -71.0589 : coords.longitude,
           userId: user.id,
         };
         setReadings(readingsDict);
