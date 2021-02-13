@@ -1,4 +1,4 @@
-import { Button, Input, Label, Form } from "semantic-ui-react";
+import { Button, Input, Label, Form, Grid } from "semantic-ui-react";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../services/auth";
@@ -6,6 +6,7 @@ import { signUp } from "../../services/auth";
 const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState([]);
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
@@ -16,7 +17,12 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
       if (!user.errors) {
         setAuthenticated(true);
         setUser(user);
+      } else {
+        setErrors(user.errors);
       }
+    } else {
+      const err = "password: passwords do not match";
+      setErrors([err]);
     }
   };
 
@@ -41,52 +47,72 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   }
 
   return (
-    <Form onSubmit={onSignUp}>
-      <Form.Field>
-        <label>User Name</label>
-        <input
-          type="text"
-          name="username"
-          placeholder="username"
-          onChange={updateUsername}
-          value={username}
-        ></input>
-      </Form.Field>
-      <Form.Field>
-        <label>Email</label>
-        <input
-          type="text"
-          name="email"
-          placeholder="email"
-          onChange={updateEmail}
-          value={email}
-        ></input>
-      </Form.Field>
-      <Form.Field>
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          onChange={updatePassword}
-          value={password}
-        ></input>
-      </Form.Field>
-      <Form.Field>
-        <label>Repeat Password</label>
-        <input
-          type="password"
-          name="repeat_password"
-          placeholder="repeat password"
-          onChange={updateRepeatPassword}
-          value={repeatPassword}
-          required={true}
-        ></input>
-      </Form.Field>
-      <Button type="submit" basic color="purple">
-        Sign Up
-      </Button>
-    </Form>
+    <Grid>
+      <Grid.Column textAlign="center">
+        <Form onSubmit={onSignUp}>
+          <Form.Field inline>
+            {/* <label>User Name</label> */}
+            <Input
+              type="text"
+              name="username"
+              placeholder="username"
+              onChange={updateUsername}
+              value={username}
+              required={true}
+              size="massive"
+            />
+          </Form.Field>
+          <Form.Field inline>
+            {/* <label>Email</label> */}
+            <Input
+              type="email"
+              name="email"
+              placeholder="email"
+              onChange={updateEmail}
+              value={email}
+              required={true}
+              size="massive"
+            />
+          </Form.Field>
+          <Form.Field inline>
+            {/* <label>Password</label> */}
+            <Input
+              type="password"
+              name="password"
+              placeholder="password"
+              onChange={updatePassword}
+              value={password}
+              required={true}
+              size="massive"
+            />
+          </Form.Field>
+          <Form.Field inline>
+            {/* <label>Repeat Password</label> */}
+            <Input
+              type="password"
+              name="repeat_password"
+              placeholder="repeat password"
+              onChange={updateRepeatPassword}
+              value={repeatPassword}
+              required={true}
+              size="massive"
+            />
+            {errors.map((error) => {
+              if (error.includes("password")) {
+                return (
+                  <Label pointing prompt size="large">
+                    {error}
+                  </Label>
+                );
+              }
+            })}
+          </Form.Field>
+          <Button type="submit" basic color="purple" size="massive">
+            Sign Up
+          </Button>
+        </Form>
+      </Grid.Column>
+    </Grid>
   );
 };
 

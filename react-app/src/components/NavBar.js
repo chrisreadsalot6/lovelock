@@ -13,7 +13,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
 
   return (
     // removed activeClassName="active" from all
-    <Menu secondary>
+    <Menu secondary size="massive">
       {authenticated ? null : (
         <Menu.Item
           as={NavLink}
@@ -21,6 +21,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
           name="Login"
           exact={true}
           color="purple"
+          position="right"
         />
       )}
       {authenticated ? null : (
@@ -39,6 +40,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
           exact={true}
           name="Make or Join a Lock"
           color="purple"
+          position="right"
         />
       )}
       {!authenticated ? null : (
