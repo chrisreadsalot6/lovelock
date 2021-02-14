@@ -1,5 +1,5 @@
 import { Button, Grid, Message } from "semantic-ui-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Arrow from "../Arrow/Arrow";
@@ -15,6 +15,10 @@ export default function Talk({ user }) {
 
   const { talkId } = useParams();
 
+  useEffect(() => {
+    calculateBearing();
+  }, [geolocation]);
+
   const calculateBearing = (geolocationData) => {
     let myLat;
     let myLong;
@@ -23,15 +27,15 @@ export default function Talk({ user }) {
 
     // why did I have to flip this direction?
     if (user["initiatorOrJoiner"] !== "initiator") {
-      myLat = geolocationData.initiatorGPSLatitude;
-      myLong = geolocationData.initiatorGPSLongitude;
-      theirLat = geolocationData.joinerGPSLatitude;
-      theirLong = geolocationData.joinerGPSLongitude;
+      myLat = geolocation.initiatorGPSLatitude;
+      myLong = geolocation.initiatorGPSLongitude;
+      theirLat = geolocation.joinerGPSLatitude;
+      theirLong = geolocation.joinerGPSLongitude;
     } else {
-      myLat = geolocationData.joinerGPSLatitude;
-      myLong = geolocationData.joinerGPSLongitude;
-      theirLat = geolocationData.initiatorGPSLatitude;
-      theirLong = geolocationData.initiatorGPSLongitude;
+      myLat = geolocation.joinerGPSLatitude;
+      myLong = geolocation.joinerGPSLongitude;
+      theirLat = geolocation.initiatorGPSLatitude;
+      theirLong = geolocation.initiatorGPSLongitude;
     }
 
     // do we lose any precision here?
@@ -113,8 +117,6 @@ export default function Talk({ user }) {
     }).then((response) => {
       response.json().then((data) => {
         setGeolocation(data);
-        // useEffect instead of passing data?
-        calculateBearing(data);
       });
     });
   };
