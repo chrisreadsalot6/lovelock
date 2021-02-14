@@ -31,6 +31,8 @@ def pull_compass_data(talkId):
         "joinerCompassDirection": str(talk.joinerCompassDirection),
     }
 
+    print("pull-compass route", responseData)
+
     return jsonify(responseData)
 
 
@@ -39,6 +41,8 @@ def push_compass_data(talkId):
     json = request.json
 
     talk = Talk.query.filter_by(uniqueIdentifier=talkId).first()
+
+    print("push-compass", json)
 
     if json["initiatorOrJoiner"] == "initiator":
         talk.initiatorCompassDirection = json["compassDirection"]

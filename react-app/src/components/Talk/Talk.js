@@ -143,6 +143,11 @@ export default function Talk({ user }) {
     if (detectIfMobileBrowser() === false) {
       const compassDirection = 20;
       setMyCompassDirection(compassDirection);
+
+      // this breaks on a page refresh
+      // it'd be better to add it to the original user object
+      console.log(user["initiatorOrJoiner"]);
+
       const postData = {
         compassDirection: compassDirection,
         initiatorOrJoiner: user["initiatorOrJoiner"],
@@ -157,6 +162,7 @@ export default function Talk({ user }) {
         },
         body: JSON.stringify(postData),
       });
+      pullCompassData();
     } else {
       window.addEventListener("deviceorientation", inner, { once: true });
     }
@@ -165,6 +171,7 @@ export default function Talk({ user }) {
   const inner = (event) => {
     const compassDirection = event.webkitCompassHeading;
     setMyCompassDirection(compassDirection);
+
     const postData = {
       compassDirection: compassDirection,
       initiatorOrJoiner: user["initiatorOrJoiner"],
@@ -209,21 +216,36 @@ export default function Talk({ user }) {
                 End Talk
               </Button>
             )}
+          </Grid.Row>
+        </Grid.Column>
+      </Grid>
+      <Grid textAlign="center" style={{ height: "100vh" }}>
+        <Grid.Column>
+          <Grid.Row>
             {bearing === null ? null : (
-              <div>
-                <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
-                <div>
-                  Your current direction: {parseInt(myCompassDirection)}
-                </div>
+              <>
                 <div>
                   Your partner's compass direction:{" "}
                   {parseInt(linkedCompassDirection)}
+                </div>
+                <div>
+                  Your partner's lovelock bearing: {360 - parseInt(bearing)}
+                </div>
+              </>
+            )}
+          </Grid.Row>
+          <Grid.Row>
+            {bearing === null ? null : (
+              <>
+                <div>Your lovelock bearing: {parseInt(bearing)}</div>
+                <div>
+                  Your current direction: {parseInt(myCompassDirection)}
                 </div>
                 <Arrow
                   bearing={parseInt(bearing)}
                   myCompassDirection={myCompassDirection}
                 />
-              </div>
+              </>
             )}
           </Grid.Row>
         </Grid.Column>
