@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Arrow({ bearing, myCompassDirection }) {
+  const [locked, setLocked] = useState(false);
+
   let clockwise;
   let counterclockwise;
-  let locked = false;
 
   if (parseInt(bearing) > parseInt(myCompassDirection)) {
     clockwise = bearing - myCompassDirection;
@@ -12,7 +13,7 @@ export default function Arrow({ bearing, myCompassDirection }) {
     clockwise = 360 - myCompassDirection + bearing;
     counterclockwise = myCompassDirection - bearing;
   } else if (parseInt(bearing) === parseInt(myCompassDirection)) {
-    locked = true;
+    setLocked(true);
   }
 
   let goLeftOrRight;

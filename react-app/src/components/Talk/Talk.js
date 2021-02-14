@@ -7,7 +7,7 @@ import Arrow from "../Arrow/Arrow";
 export default function Talk({ user }) {
   const [bearing, setBearing] = useState(null);
   const [KMDistance, setKMDistance] = useState(null);
-  const [geolocation, setGeolocation] = useState();
+  const [geolocation, setGeolocation] = useState(null);
   const [toggleButton, setToggleButton] = useState(true);
 
   const [linkedCompassDirection, setLinkedCompassDirection] = useState();
@@ -16,7 +16,9 @@ export default function Talk({ user }) {
   const { talkId } = useParams();
 
   useEffect(() => {
-    calculateBearing();
+    if (geolocation !== null) {
+      calculateBearing();
+    }
   }, [geolocation]);
 
   const calculateBearing = (geolocationData) => {
@@ -166,7 +168,7 @@ export default function Talk({ user }) {
       });
       pullCompassData();
     } else {
-      window.addEventListener("deviceorientation", inner, { once: true });
+      window.addEventListener("deviceorientation", inner); // , { once: true }
     }
   };
 
