@@ -1,4 +1,4 @@
-import { Button, Message } from "semantic-ui-react";
+import { Button, Grid, Message } from "semantic-ui-react";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -8,6 +8,7 @@ export default function Talk({ user }) {
   const [bearing, setBearing] = useState(null);
   const [KMDistance, setKMDistance] = useState(null);
   const [geolocation, setGeolocation] = useState();
+  const [toggleButton, setToggleButton] = useState(true);
 
   const [linkedCompassDirection, setLinkedCompassDirection] = useState();
   const [myCompassDirection, setMyCompassDirection] = useState();
@@ -96,6 +97,7 @@ export default function Talk({ user }) {
   };
 
   const endTalk = () => {
+    setToggleButton(true);
     setBearing(null);
     if (detectIfMobileBrowser() === true) {
       window.removeEventListener("deviceorientation", inner);
@@ -135,6 +137,7 @@ export default function Talk({ user }) {
   };
 
   const pushCompassData = () => {
+    setToggleButton(false);
     getGeolocationData();
 
     if (detectIfMobileBrowser() === false) {
@@ -183,32 +186,48 @@ export default function Talk({ user }) {
   };
 
   return (
-    <div>
-      <Message color="purple">
-        <Message.Header>Your unique talk id</Message.Header>
-        {talkId}
-      </Message>
-      <Button.Group>
-        <Button onClick={pushCompassData} basic color="purple">
-          Start Talk
-        </Button>
-        <Button onClick={endTalk} basic color="purple">
-          End Talk
-        </Button>
-      </Button.Group>
-      {bearing === null ? null : (
-        <div>
-          <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
-          <div>Your current direction: {parseInt(myCompassDirection)}</div>
-          <div>
-            Your partner's compass direction: {parseInt(linkedCompassDirection)}
-          </div>
-          <Arrow
-            bearing={parseInt(bearing)}
-            myCompassDirection={myCompassDirection}
-          />
-        </div>
-      )}
-    </div>
+    <>
+      <Grid verticalAlign="middle" textAlign="center">
+        <Grid.Column>
+          <Grid.Row>
+            <Message color="purple">
+              <Message.Header>Your unique talk id</Message.Header>
+              {talkId}
+            </Message>
+          </Grid.Row>
+        </Grid.Column>
+      </Grid>
+      <Grid verticalAlign="middle" textAlign="center">
+        <Grid.Column>
+          <Grid.Row>
+            {toggleButton ? (
+              <Button onClick={pushCompassData} basic color="purple">
+                Start Talk
+              </Button>
+            ) : (
+              <Button onClick={endTalk} basic color="purple">
+                End Talk
+              </Button>
+            )}
+            {bearing === null ? null : (
+              <div>
+                <div>Your lovelock calculated bearing: {parseInt(bearing)}</div>
+                <div>
+                  Your current direction: {parseInt(myCompassDirection)}
+                </div>
+                <div>
+                  Your partner's compass direction:{" "}
+                  {parseInt(linkedCompassDirection)}
+                </div>
+                <Arrow
+                  bearing={parseInt(bearing)}
+                  myCompassDirection={myCompassDirection}
+                />
+              </div>
+            )}
+          </Grid.Row>
+        </Grid.Column>
+      </Grid>
+    </>
   );
 }

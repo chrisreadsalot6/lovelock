@@ -46,7 +46,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
       {!authenticated ? null : (
         <Menu.Item
           as={NavLink}
-          to="/"
+          to="/logout"
           exact={true}
           name="Logout"
           color="purple"

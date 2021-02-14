@@ -1,3 +1,4 @@
+import { Grid } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import "./link.css";
@@ -94,19 +95,25 @@ export default function Link({ setUser, user }) {
   };
 
   return (
-    <div>
-      <CreateLock
-        getLocation={getDirection}
-        readings={readings}
-        setUser={setUser}
-        user={user}
-      />
-      <JoinLock
-        getLocation={getDirection}
-        readings={readings}
-        setUser={setUser}
-        user={user}
-      />
-    </div>
+    <Grid style={{ height: "90vh" }} textAlign="center" verticalAlign="middle">
+      <Grid.Column>
+        <Grid.Row>
+          <CreateLock
+            getLocation={getDirection}
+            readings={readings}
+            setUser={setUser}
+            user={user}
+          />
+        </Grid.Row>
+        <Grid.Row>
+          <JoinLock
+            getLocation={getDirection}
+            readings={readings}
+            setUser={setUser}
+            user={user}
+          />
+        </Grid.Row>
+      </Grid.Column>
+    </Grid>
   );
 }

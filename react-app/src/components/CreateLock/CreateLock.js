@@ -42,7 +42,7 @@ export default function CreateLock({ getLocation, readings, setUser, user }) {
 
   return (
     <div>
-      <Button onClick={getLocationCreate} basic color="purple">
+      <Button onClick={getLocationCreate} basic color="purple" size="massive">
         Create a Lock
       </Button>
     </div>

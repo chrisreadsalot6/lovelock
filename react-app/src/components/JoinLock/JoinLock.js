@@ -1,4 +1,4 @@
-import { Button } from "semantic-ui-react";
+import { Button, Input } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -48,10 +48,17 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
   return (
     <div>
       <div className="ui action input">
-        <input onChange={(e) => getTalkId(e)} placeholder="Enter 123 to Demo" />
-        <Button onClick={getLocationJoin} basic color="purple">
-          Join a Lock
-        </Button>
+        <Input
+          onChange={(e) => getTalkId(e)}
+          placeholder="Enter 123 to Demo"
+          action={{
+            color: "purple",
+            basic: true,
+            size: "massive",
+            onClick: getLocationJoin,
+            content: "Join a Lock",
+          }}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Button, Input, Label, Form, Grid } from "semantic-ui-react";
+import { Button, Image, Input, Label, Form, Grid } from "semantic-ui-react";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../services/auth";
@@ -47,8 +47,15 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   }
 
   return (
-    <Grid>
+    <Grid style={{ height: "70vh" }} verticalAlign="middle">
       <Grid.Column textAlign="center">
+        <Image
+          src="/lovelock.png"
+          alt="image"
+          verticalAlign="middle"
+          size="small"
+          style={{ margin: "2em" }}
+        />
         <Form onSubmit={onSignUp}>
           <Form.Field inline>
             {/* <label>User Name</label> */}
