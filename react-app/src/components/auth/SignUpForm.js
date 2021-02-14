@@ -111,6 +111,8 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
                     {error}
                   </Label>
                 );
+              } else {
+                return null;
               }
             })}
           </Form.Field>

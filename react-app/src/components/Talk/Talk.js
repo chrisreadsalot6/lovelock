@@ -158,7 +158,7 @@ export default function Talk({ user }) {
         body: JSON.stringify(postData),
       });
     } else {
-      window.addEventListener("deviceorientation", inner);
+      window.addEventListener("deviceorientation", inner, { once: true });
     }
   };
 

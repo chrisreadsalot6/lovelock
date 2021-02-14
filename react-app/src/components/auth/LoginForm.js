@@ -59,6 +59,8 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
                       {error}
                     </Label>
                   );
+                } else {
+                  return null;
                 }
               })}
             </Form.Field>
@@ -78,6 +80,8 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
                       {error}
                     </Label>
                   );
+                } else {
+                  return null;
                 }
               })}
             </Form.Field>

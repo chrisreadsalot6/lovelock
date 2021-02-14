@@ -1,4 +1,4 @@
-import { Button, Input } from "semantic-ui-react";
+import { Input } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
