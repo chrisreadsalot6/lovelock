@@ -10,11 +10,25 @@ export default function Talk({ user }) {
   const [geolocation, setGeolocation] = useState(null);
   const [toggleButton, setToggleButton] = useState(true);
 
+  const [viewHeight, setViewHeight] = useState("82vh");
+  const [mobile, setMobile] = useState(null);
+
+  const [lockIdColor, setLockIdColor] = useState("purple");
+
   const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
   const [myCompassDirection, setMyCompassDirection] = useState(null);
   const [compassReadingCount, setCompassReadingCount] = useState(0);
 
   const { talkId } = useParams();
+
+  useEffect(() => {
+    const isMobile = detectIfMobileBrowser();
+    setMobile(isMobile);
+
+    if (isMobile === false) {
+      setViewHeight("91vh");
+    }
+  }, []);
 
   useEffect(() => {
     if (geolocation !== null) {
@@ -29,6 +43,14 @@ export default function Talk({ user }) {
     pushAndPullData();
     // }
   }, [myCompassDirection]);
+
+  useEffect(() => {
+    if (bearing === null) {
+      setLockIdColor("purple");
+    } else {
+      setLockIdColor("");
+    }
+  }, [bearing]);
 
   const calculateBearing = () => {
     let myLat;
@@ -208,24 +230,13 @@ export default function Talk({ user }) {
   };
 
   return (
-    <Container style={{}}>
-      <Grid verticalAlign="middle" textAlign="center" style={{ height: "5vh" }}>
-        <Grid.Column width={7}>
-          <Grid.Row>
-            <Message color="purple" size="large">
-              <Message.Header>Your unique lock id</Message.Header>
-              {talkId}
-            </Message>
-          </Grid.Row>
-        </Grid.Column>
-      </Grid>
+    <Container>
       <Grid
-        verticalAlign="middle"
         textAlign="center"
-        style={{ height: "7.5vh" }}
+        style={{ height: viewHeight, padding: "0", margin: "0" }}
       >
-        <Grid.Column>
-          <Grid.Row>
+        <Grid.Row style={{ paddingTop: "10vh" }}>
+          <Grid.Column>
             {toggleButton ? (
               <Button
                 onClick={pushCompassData}
@@ -240,12 +251,11 @@ export default function Talk({ user }) {
                 End Talk
               </Button>
             )}
-          </Grid.Row>
-        </Grid.Column>
-      </Grid>
-      <Grid textAlign="center" style={{ height: "60vh" }}>
-        <Grid.Column>
-          <Grid.Row>
+          </Grid.Column>
+        </Grid.Row>
+        {/* </Grid>
+      <Grid textAlign="center" style={{ height: "60vh" }}> */}
+        {/* <Grid.Row>
             {bearing === null || linkedCompassDirection === "None" ? null : (
               <>
                 <div>
@@ -258,13 +268,19 @@ export default function Talk({ user }) {
                 </div>
               </>
             )}
-          </Grid.Row>
-          <Grid.Row>
-            {bearing === null || linkedCompassDirection === "None" ? null : (
-              <div>Your lovelock bearing: {parseInt(bearing)}</div>
-            )}
+          </Grid.Row> */}
+        <Grid.Row>
+          <Grid.Column>
             {bearing === null ? null : (
-              <div>Your current direction: {parseInt(myCompassDirection)}</div>
+              <div className="ui message compact massive purple">
+                Pointing {parseInt(myCompassDirection)}&deg;
+                <br />
+                {linkedCompassDirection === "None" ? null : (
+                  <div>
+                    Look towards {parseInt(linkedCompassDirection)}&deg;
+                  </div>
+                )}
+              </div>
             )}
             {bearing === null || linkedCompassDirection === "None" ? null : (
               <Arrow
@@ -272,8 +288,16 @@ export default function Talk({ user }) {
                 myCompassDirection={myCompassDirection}
               />
             )}
-          </Grid.Row>
-        </Grid.Column>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row verticalAlign="Bottom">
+          <Grid.Column verticalAlign="middle">
+            <Message color={lockIdColor} size="large" compact>
+              <Message.Header>Your unique lock id</Message.Header>
+              {talkId}
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Container>
   );

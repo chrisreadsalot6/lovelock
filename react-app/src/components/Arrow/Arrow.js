@@ -26,17 +26,25 @@ export default function Arrow({ bearing, myCompassDirection }) {
   return (
     <div>
       {locked === true ? (
-        <div>You're locked!</div>
+        <>
+          <div className="ui compact message">You're locked!</div>
+          <i className="lock massive"></i>
+        </>
       ) : goLeftOrRight === "left" ? (
-        <div>
-          <i>Turn to the left!</i>
-          <i className="long arrow alternative left icon" />
-        </div>
+        <>
+          <div>
+            <i className="long arrow alternative left icon massive" />
+          </div>
+          <i>Turn Left!</i>
+        </>
       ) : (
-        <div>
-          <i>Turn to the right!</i>
-          <i className="long arrow alternative right icon" />
-        </div>
+        <>
+          <div>
+            <i className="long arrow alternative right icon massive" />
+          </div>
+          <i>Turn Right!</i>
+          {/* <i className="icon lock massive"></i> */}
+        </>
       )}
     </div>
   );
