@@ -15,6 +15,8 @@ export default function Talk({ user }) {
 
   const [lockIdColor, setLockIdColor] = useState("purple");
 
+  const [locked, setLocked] = useState(true);
+
   const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
   const [myCompassDirection, setMyCompassDirection] = useState(null);
   const [compassReadingCount, setCompassReadingCount] = useState(0);
@@ -40,6 +42,7 @@ export default function Talk({ user }) {
     console.log("compasscount", compassReadingCount);
     // if (compassReadingCount > 0 && compassReadingCount % 10 === 0) {
     //   console.log("HERE");
+    checkIfLocked();
     pushAndPullData();
     // }
   }, [myCompassDirection]);
@@ -51,6 +54,12 @@ export default function Talk({ user }) {
       setLockIdColor("");
     }
   }, [bearing]);
+
+  const checkIfLocked = () => {
+    if (parseInt(bearing) === parseInt(myCompassDirection)) {
+      setLocked(true);
+    }
+  };
 
   const calculateBearing = () => {
     let myLat;
@@ -253,43 +262,53 @@ export default function Talk({ user }) {
             )}
           </Grid.Column>
         </Grid.Row>
-        {/* </Grid>
-      <Grid textAlign="center" style={{ height: "60vh" }}> */}
-        {/* <Grid.Row>
-            {bearing === null || linkedCompassDirection === "None" ? null : (
-              <>
-                <div>
-                  Your partner's compass direction:{" "}
-                  {parseInt(linkedCompassDirection)}
+        {!locked ? (
+          <Grid.Row>
+            <Grid.Column>
+              {bearing === null ? null : (
+                <div className="ui message compact massive purple">
+                  Pointing {parseInt(myCompassDirection)}&deg;
+                  <br />
+                  {linkedCompassDirection === "None" ? null : (
+                    <div>
+                      Look towards {parseInt(linkedCompassDirection)}&deg;
+                    </div>
+                  )}
                 </div>
-                <div>
-                  You are {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
-                  miles apart
-                </div>
-              </>
-            )}
-          </Grid.Row> */}
-        <Grid.Row>
-          <Grid.Column>
-            {bearing === null ? null : (
-              <div className="ui message compact massive purple">
-                Pointing {parseInt(myCompassDirection)}&deg;
-                <br />
-                {linkedCompassDirection === "None" ? null : (
+              )}
+              {bearing === null || linkedCompassDirection === "None" ? null : (
+                <Arrow
+                  bearing={parseInt(bearing)}
+                  myCompassDirection={myCompassDirection}
+                />
+              )}
+            </Grid.Column>
+          </Grid.Row>
+        ) : (
+          <Grid.Row>
+            <Grid.Column>
+              {bearing === null || linkedCompassDirection === "None" ? null : (
+                <>
                   <div>
-                    Look towards {parseInt(linkedCompassDirection)}&deg;
+                    <i className="ui icon lock massive purple inverted"></i>
                   </div>
-                )}
-              </div>
-            )}
-            {bearing === null || linkedCompassDirection === "None" ? null : (
-              <Arrow
-                bearing={parseInt(bearing)}
-                myCompassDirection={myCompassDirection}
-              />
-            )}
-          </Grid.Column>
-        </Grid.Row>
+                  <Message size="massive" color="purple" compact>
+                    {/* Your partner's compass direction:{" "}
+                  {parseInt(linkedCompassDirection)} */}
+                    Straight That-A-Way!
+                    <br />
+                    Over the Horizon
+                    <br />
+                    You are{" "}
+                    {parseInt(parseFloat(KMDistance) * 0.62137119223733)} miles
+                    away
+                  </Message>
+                </>
+              )}
+            </Grid.Column>
+          </Grid.Row>
+        )}
+
         <Grid.Row verticalAlign="Bottom">
           <Grid.Column verticalAlign="middle">
             <Message color={lockIdColor} size="large" compact>
