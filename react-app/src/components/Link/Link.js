@@ -1,4 +1,4 @@
-import { Grid } from "semantic-ui-react";
+import { Divider, Grid, Segment } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import "./link.css";
@@ -95,25 +95,38 @@ export default function Link({ setUser, user }) {
   };
 
   return (
-    <Grid style={{ height: "80vh" }} textAlign="center" verticalAlign="middle">
-      <Grid.Column>
+    <Segment
+      textAlign="center"
+      basic
+      style={{ padding: "0", margin: "0", height: "92vh" }}
+    >
+      <Grid
+        textAlign="center"
+        verticalAlign="middle"
+        columns={2}
+        style={{ padding: "0", margin: "0", height: "92vh" }}
+      >
+        <Divider vertical>Or</Divider>
+
         <Grid.Row>
-          <CreateLock
-            getLocation={getDirection}
-            readings={readings}
-            setUser={setUser}
-            user={user}
-          />
+          <Grid.Column>
+            <CreateLock
+              getLocation={getDirection}
+              readings={readings}
+              setUser={setUser}
+              user={user}
+            />
+          </Grid.Column>
+          <Grid.Column>
+            <JoinLock
+              getLocation={getDirection}
+              readings={readings}
+              setUser={setUser}
+              user={user}
+            />
+          </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <JoinLock
-            getLocation={getDirection}
-            readings={readings}
-            setUser={setUser}
-            user={user}
-          />
-        </Grid.Row>
-      </Grid.Column>
-    </Grid>
+      </Grid>
+    </Segment>
   );
 }

@@ -1,4 +1,4 @@
-import { Button, Grid, Message } from "semantic-ui-react";
+import { Button, Container, Grid, Message } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -208,7 +208,7 @@ export default function Talk({ user }) {
   };
 
   return (
-    <>
+    <Container style={{}}>
       <Grid verticalAlign="middle" textAlign="center" style={{ height: "5vh" }}>
         <Grid.Column width={7}>
           <Grid.Row>
@@ -275,6 +275,6 @@ export default function Talk({ user }) {
           </Grid.Row>
         </Grid.Column>
       </Grid>
-    </>
+    </Container>
   );
 }
