@@ -11,7 +11,18 @@ import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link({ setUser, user }) {
   const [compass, setCompass] = useState(null);
+  const [viewHeight, setViewHeight] = useState("82vh");
+  const [mobile, setMobile] = useState(null);
   const [readings, setReadings] = useState(null);
+
+  useEffect(() => {
+    const isMobile = detectIfMobileBrowser();
+    setMobile(isMobile);
+
+    if (isMobile === false) {
+      setViewHeight("91vh");
+    }
+  }, []);
 
   const detectIfMobileBrowser = () => {
     const toMatch = [
@@ -30,7 +41,7 @@ export default function Link({ setUser, user }) {
   };
 
   const getDirection = () => {
-    if (detectIfMobileBrowser() === false) {
+    if (mobile === false) {
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );
@@ -98,14 +109,14 @@ export default function Link({ setUser, user }) {
     <Segment
       textAlign="center"
       basic
-      style={{ padding: "0", margin: "0", height: "91vh" }}
+      style={{ padding: "0", margin: "0", height: viewHeight }}
     >
       <Grid
         textAlign="center"
         verticalAlign="middle"
         columns={2}
         basic
-        style={{ padding: "0", margin: "0", height: "91vh" }}
+        style={{ padding: "0", margin: "0", height: viewHeight }}
       >
         <Divider vertical>Or</Divider>
 
