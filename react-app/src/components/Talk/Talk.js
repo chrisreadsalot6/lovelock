@@ -56,7 +56,6 @@ export default function Talk({ user }) {
   }, [bearing]);
 
   const checkIfLocked = () => {
-    console.log(bearing, myCompassDirection);
     if (parseInt(bearing) === parseInt(myCompassDirection)) {
       setLocked(true);
     } else {
@@ -272,10 +271,16 @@ export default function Talk({ user }) {
                 <div className="ui message compact massive purple">
                   Pointing {parseInt(myCompassDirection)}&deg;
                   <br />
-                  Look towards {parseInt(bearing)}&deg;
+                  {isNaN(bearing) ? (
+                    <div>Waiting for Partner to Join</div>
+                  ) : (
+                    <div>Look towards {parseInt(bearing)}&deg;</div>
+                  )}
                 </div>
               )}
-              {bearing === null || linkedCompassDirection === "None" ? null : (
+              {bearing === null ||
+              isNaN(bearing) ||
+              linkedCompassDirection === "None" ? null : (
                 <Arrow
                   bearing={parseInt(bearing)}
                   myCompassDirection={myCompassDirection}
