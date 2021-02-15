@@ -104,6 +104,7 @@ export default function Link({ setUser, user }) {
         textAlign="center"
         verticalAlign="middle"
         columns={2}
+        basic
         style={{ padding: "0", margin: "0", height: "92vh" }}
       >
         <Divider vertical>Or</Divider>
