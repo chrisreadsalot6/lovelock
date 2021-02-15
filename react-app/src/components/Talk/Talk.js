@@ -15,7 +15,7 @@ export default function Talk({ user }) {
 
   const [lockIdColor, setLockIdColor] = useState("purple");
 
-  const [locked, setLocked] = useState(true);
+  const [locked, setLocked] = useState(false);
 
   const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
   const [myCompassDirection, setMyCompassDirection] = useState(null);
@@ -68,7 +68,7 @@ export default function Talk({ user }) {
     let theirLong;
 
     // why did I have to flip this direction?
-    if (user["initiatorOrJoiner"] !== "initiator") {
+    if (user["initiatorOrJoiner"] === "initiator") {
       myLat = geolocation.initiatorGPSLatitude;
       myLong = geolocation.initiatorGPSLongitude;
       theirLat = geolocation.joinerGPSLatitude;
@@ -269,11 +269,7 @@ export default function Talk({ user }) {
                 <div className="ui message compact massive purple">
                   Pointing {parseInt(myCompassDirection)}&deg;
                   <br />
-                  {linkedCompassDirection === "None" ? null : (
-                    <div>
-                      Look towards {parseInt(linkedCompassDirection)}&deg;
-                    </div>
-                  )}
+                  Look towards {parseInt(bearing)}&deg;
                 </div>
               )}
               {bearing === null || linkedCompassDirection === "None" ? null : (
