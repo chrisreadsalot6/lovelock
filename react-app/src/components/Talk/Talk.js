@@ -56,8 +56,11 @@ export default function Talk({ user }) {
   }, [bearing]);
 
   const checkIfLocked = () => {
+    console.log(bearing, myCompassDirection);
     if (parseInt(bearing) === parseInt(myCompassDirection)) {
       setLocked(true);
+    } else {
+      setLocked(false);
     }
   };
 
@@ -227,7 +230,7 @@ export default function Talk({ user }) {
       });
       pullCompassData();
     } else {
-      window.addEventListener("deviceorientation", inner); // , { once: true }
+      window.addEventListener("deviceorientation", inner); //, { once: true });
     }
   };
 

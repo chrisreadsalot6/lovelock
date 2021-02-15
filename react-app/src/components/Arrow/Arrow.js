@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Arrow({ bearing, myCompassDirection }) {
-  const [locked, setLocked] = useState(false);
+  // const [locked, setLocked] = useState(false);
 
   let clockwise;
   let counterclockwise;
@@ -12,9 +12,10 @@ export default function Arrow({ bearing, myCompassDirection }) {
   } else if (parseInt(bearing) < parseInt(myCompassDirection)) {
     clockwise = 360 - myCompassDirection + bearing;
     counterclockwise = myCompassDirection - bearing;
-  } else if (parseInt(bearing) === parseInt(myCompassDirection)) {
-    setLocked(true);
   }
+  // else if (parseInt(bearing) === parseInt(myCompassDirection)) {
+  //   setLocked(true);
+  // }
 
   let goLeftOrRight;
   if (clockwise <= counterclockwise) {
@@ -38,7 +39,6 @@ export default function Arrow({ bearing, myCompassDirection }) {
             <i className="long arrow alternative right icon massive" />
           </div>
           <i>Turn Right!</i>
-          {/* <i className="icon lock massive"></i> */}
         </>
       )}
     </div>
