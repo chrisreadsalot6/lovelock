@@ -95,7 +95,7 @@ export default function Link({ setUser, user }) {
   };
 
   return (
-    <Grid style={{ height: "90vh" }} textAlign="center" verticalAlign="middle">
+    <Grid style={{ height: "80vh" }} textAlign="center" verticalAlign="middle">
       <Grid.Column>
         <Grid.Row>
           <CreateLock

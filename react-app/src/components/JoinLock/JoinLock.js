@@ -50,7 +50,7 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
       <div className="ui action input">
         <Input
           onChange={(e) => getTalkId(e)}
-          placeholder="Enter 123 to Demo"
+          placeholder="Enter a Unique Lock Id"
           action={{
             color: "purple",
             basic: true,

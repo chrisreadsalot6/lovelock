@@ -10,8 +10,9 @@ export default function Talk({ user }) {
   const [geolocation, setGeolocation] = useState(null);
   const [toggleButton, setToggleButton] = useState(true);
 
-  const [linkedCompassDirection, setLinkedCompassDirection] = useState();
-  const [myCompassDirection, setMyCompassDirection] = useState();
+  const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
+  const [myCompassDirection, setMyCompassDirection] = useState(null);
+  const [compassReadingCount, setCompassReadingCount] = useState(0);
 
   const { talkId } = useParams();
 
@@ -21,7 +22,15 @@ export default function Talk({ user }) {
     }
   }, [geolocation]);
 
-  const calculateBearing = (geolocationData) => {
+  useEffect(() => {
+    console.log("compasscount", compassReadingCount);
+    // if (compassReadingCount > 0 && compassReadingCount % 10 === 0) {
+    //   console.log("HERE");
+    pushAndPullData();
+    // }
+  }, [myCompassDirection]);
+
+  const calculateBearing = () => {
     let myLat;
     let myLong;
     let theirLat;
@@ -79,8 +88,6 @@ export default function Talk({ user }) {
     const theta = Math.atan2(y, x);
     const bearing = ((theta * 180) / Math.PI + 360) % 360;
 
-    console.log(bearing);
-
     setBearing(bearing);
 
     return bearing;
@@ -103,9 +110,11 @@ export default function Talk({ user }) {
   };
 
   const endTalk = () => {
+    console.log("here I am");
     setToggleButton(true);
     setBearing(null);
     if (detectIfMobileBrowser() === true) {
+      console.log("now, here");
       window.removeEventListener("deviceorientation", inner);
     }
   };
@@ -140,6 +149,27 @@ export default function Talk({ user }) {
     });
   };
 
+  const pushAndPullData = () => {
+    const postData = {
+      compassDirection: myCompassDirection,
+      initiatorOrJoiner: user.initiatorOrJoiner,
+      talkId: talkId,
+      userId: user.id,
+    };
+
+    // if (Date.now() % (1000 * 10) === 0) {
+    //   console.log(Date.now());
+    fetch(`/api/talk/${talkId}/push-compass`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+
+    pullCompassData();
+  };
+
   const pushCompassData = () => {
     setToggleButton(false);
     getGeolocationData();
@@ -148,12 +178,10 @@ export default function Talk({ user }) {
       const compassDirection = 20;
       setMyCompassDirection(compassDirection);
 
-      // this breaks on a page refresh
-      // it'd be better to add it to the original user object
-      console.log(user["initiatorOrJoiner"]);
-
       const postData = {
         compassDirection: compassDirection,
+        // this breaks on a page refresh
+        // it'd be better to add it to the original user object
         initiatorOrJoiner: user["initiatorOrJoiner"],
         talkId: talkId,
         userId: user.id,
@@ -173,83 +201,76 @@ export default function Talk({ user }) {
   };
 
   const inner = (event) => {
-    const compassDirection = event.webkitCompassHeading;
-    setMyCompassDirection(compassDirection);
-
-    const postData = {
-      compassDirection: compassDirection,
-      initiatorOrJoiner: user["initiatorOrJoiner"],
-      talkId: talkId,
-      userId: user.id,
-    };
-
-    // if (Date.now() % (1000 * 10) === 0) {
-    //   console.log(Date.now());
-    fetch(`/api/talk/${talkId}/push-compass`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
-
-    pullCompassData();
+    const newCount = compassReadingCount + 1;
+    console.log("inner compass count", newCount);
+    setCompassReadingCount(newCount);
+    setMyCompassDirection(event.webkitCompassHeading);
   };
 
   return (
     <>
-      <Grid verticalAlign="middle" textAlign="center">
-        <Grid.Column>
+      <Grid verticalAlign="middle" textAlign="center" style={{ height: "5vh" }}>
+        <Grid.Column width={7}>
           <Grid.Row>
-            <Message color="purple">
-              <Message.Header>Your unique talk id</Message.Header>
+            <Message color="purple" size="large">
+              <Message.Header>Your unique lock id</Message.Header>
               {talkId}
             </Message>
           </Grid.Row>
         </Grid.Column>
       </Grid>
-      <Grid verticalAlign="middle" textAlign="center">
+      <Grid
+        verticalAlign="middle"
+        textAlign="center"
+        style={{ height: "7.5vh" }}
+      >
         <Grid.Column>
           <Grid.Row>
             {toggleButton ? (
-              <Button onClick={pushCompassData} basic color="purple">
+              <Button
+                onClick={pushCompassData}
+                basic
+                color="purple"
+                size="massive"
+              >
                 Start Talk
               </Button>
             ) : (
-              <Button onClick={endTalk} basic color="purple">
+              <Button onClick={endTalk} basic color="purple" size="massive">
                 End Talk
               </Button>
             )}
           </Grid.Row>
         </Grid.Column>
       </Grid>
-      <Grid textAlign="center" style={{ height: "100vh" }}>
+      <Grid textAlign="center" style={{ height: "60vh" }}>
         <Grid.Column>
           <Grid.Row>
-            {bearing === null ? null : (
+            {bearing === null || linkedCompassDirection === "None" ? null : (
               <>
                 <div>
                   Your partner's compass direction:{" "}
                   {parseInt(linkedCompassDirection)}
                 </div>
                 <div>
-                  Your partner's lovelock bearing: {360 - parseInt(bearing)}
+                  You are {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
+                  miles apart
                 </div>
               </>
             )}
           </Grid.Row>
           <Grid.Row>
+            {bearing === null || linkedCompassDirection === "None" ? null : (
+              <div>Your lovelock bearing: {parseInt(bearing)}</div>
+            )}
             {bearing === null ? null : (
-              <>
-                <div>Your lovelock bearing: {parseInt(bearing)}</div>
-                <div>
-                  Your current direction: {parseInt(myCompassDirection)}
-                </div>
-                <Arrow
-                  bearing={parseInt(bearing)}
-                  myCompassDirection={myCompassDirection}
-                />
-              </>
+              <div>Your current direction: {parseInt(myCompassDirection)}</div>
+            )}
+            {bearing === null || linkedCompassDirection === "None" ? null : (
+              <Arrow
+                bearing={parseInt(bearing)}
+                myCompassDirection={myCompassDirection}
+              />
             )}
           </Grid.Row>
         </Grid.Column>
