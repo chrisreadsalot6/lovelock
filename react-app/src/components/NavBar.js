@@ -4,8 +4,6 @@ import React from "react";
 
 import { logout } from "../services/auth";
 
-// import favicon from "./react-app/public/favicon.ico";
-
 const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
   const logoutPlus = async () => {
     await logout();
@@ -14,7 +12,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
   };
 
   return (
-    <Segment color="purple" style={{ marginBottom: "0" }}>
+    <Segment color="purple" style={{ borderBottom: "0", margin: "0" }}>
       <Menu secondary size="massive">
         {!authenticated ? null : (
           <Menu.Item as={NavLink} to="/" exact={true}>

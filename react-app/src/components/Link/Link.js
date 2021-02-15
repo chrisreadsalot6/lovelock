@@ -98,14 +98,14 @@ export default function Link({ setUser, user }) {
     <Segment
       textAlign="center"
       basic
-      style={{ padding: "0", margin: "0", height: "92vh" }}
+      style={{ padding: "0", margin: "0", height: "91vh" }}
     >
       <Grid
         textAlign="center"
         verticalAlign="middle"
         columns={2}
         basic
-        style={{ padding: "0", margin: "0", height: "92vh" }}
+        style={{ padding: "0", margin: "0", height: "91vh" }}
       >
         <Divider vertical>Or</Divider>
 
