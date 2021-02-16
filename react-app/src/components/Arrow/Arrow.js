@@ -13,9 +13,6 @@ export default function Arrow({ bearing, myCompassDirection }) {
     clockwise = 360 - myCompassDirection + bearing;
     counterclockwise = myCompassDirection - bearing;
   }
-  // else if (parseInt(bearing) === parseInt(myCompassDirection)) {
-  //   setLocked(true);
-  // }
 
   let goLeftOrRight;
   if (clockwise <= counterclockwise) {
@@ -29,14 +26,14 @@ export default function Arrow({ bearing, myCompassDirection }) {
       {goLeftOrRight === "left" ? (
         <>
           <div>
-            <i className="long arrow alternative left icon massive" />
+            <i className="long arrow alternative left icon massive purple inverted" />
           </div>
           <i>Turn Left!</i>
         </>
       ) : (
         <>
           <div>
-            <i className="long arrow alternative right icon massive" />
+            <i className="long arrow alternative right icon massive purple inverted" />
           </div>
           <i>Turn Right!</i>
         </>
