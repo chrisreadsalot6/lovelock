@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
 export default function Arrow({ bearing, myCompassDirection }) {
-  // const [locked, setLocked] = useState(false);
-
   let clockwise;
   let counterclockwise;
 
