@@ -1,4 +1,5 @@
 import { Button, Container, Grid, Message } from "semantic-ui-react";
+import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -240,88 +241,100 @@ export default function Talk({ user }) {
     setMyCompassDirection(event.webkitCompassHeading);
   };
 
-  return (
-    <Container>
-      <Grid
-        textAlign="center"
-        style={{ height: viewHeight, padding: "0", margin: "0" }}
-      >
-        <Grid.Row style={{ paddingTop: "10vh" }}>
-          <Grid.Column>
-            {toggleButton ? (
-              <Button
-                onClick={pushCompassData}
-                basic
-                color="purple"
-                size="massive"
-              >
-                Start Talk
-              </Button>
-            ) : (
-              <Button onClick={endTalk} basic color="purple" size="massive">
-                End Talk
-              </Button>
-            )}
-          </Grid.Column>
-        </Grid.Row>
-        {!locked ? (
-          <Grid.Row>
-            <Grid.Column>
-              {bearing === null ? null : (
-                <div className="ui message compact massive purple">
-                  Pointing {parseInt(myCompassDirection)}&deg;
-                  <br />
-                  {isNaN(bearing) ? (
-                    <div>Waiting for Partner to Join</div>
-                  ) : (
-                    <div>Look towards {parseInt(bearing)}&deg;</div>
-                  )}
-                </div>
-              )}
-              {bearing === null ||
-              isNaN(bearing) ||
-              linkedCompassDirection === "None" ? null : (
-                <Arrow
-                  bearing={parseInt(bearing)}
-                  myCompassDirection={myCompassDirection}
-                />
-              )}
-            </Grid.Column>
-          </Grid.Row>
-        ) : (
-          <Grid.Row>
-            <Grid.Column>
-              {bearing === null || linkedCompassDirection === "None" ? null : (
-                <>
-                  <div>
-                    <i className="ui icon lock massive purple inverted"></i>
-                  </div>
-                  <Message size="massive" color="purple" compact>
-                    {/* Your partner's compass direction:{" "}
-                  {parseInt(linkedCompassDirection)} */}
-                    Straight That-A-Way!
-                    <br />
-                    Over the Horizon
-                    <br />
-                    You are{" "}
-                    {parseInt(parseFloat(KMDistance) * 0.62137119223733)} miles
-                    away
-                  </Message>
-                </>
-              )}
-            </Grid.Column>
-          </Grid.Row>
-        )}
+  const w = window.innerWidth;
+  const h = window.innerHeight;
 
-        <Grid.Row verticalAlign="Bottom">
-          <Grid.Column verticalAlign="middle">
-            <Message color={lockIdColor} size="large" compact>
-              <Message.Header>Your unique lock id</Message.Header>
-              {talkId}
-            </Message>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
+  return (
+    <>
+      <Container>
+        <Grid
+          textAlign="center"
+          style={{ height: viewHeight, padding: "0", margin: "0" }}
+        >
+          <Grid.Row style={{ paddingTop: "10vh" }}>
+            <Grid.Column>
+              {toggleButton ? (
+                <Button
+                  onClick={pushCompassData}
+                  basic
+                  color="purple"
+                  size="massive"
+                >
+                  Start Talk
+                </Button>
+              ) : (
+                <Button onClick={endTalk} basic color="purple" size="massive">
+                  End Talk
+                </Button>
+              )}
+            </Grid.Column>
+          </Grid.Row>
+          {!locked ? (
+            <Grid.Row>
+              <Grid.Column>
+                {bearing === null ? null : (
+                  <div className="ui message compact massive purple">
+                    Pointing {parseInt(myCompassDirection)}&deg;
+                    <br />
+                    {isNaN(bearing) ? (
+                      <div>Waiting for Partner to Join</div>
+                    ) : (
+                      <div>Look towards {parseInt(bearing)}&deg;</div>
+                    )}
+                  </div>
+                )}
+                {bearing === null ||
+                isNaN(bearing) ||
+                linkedCompassDirection === "None" ? null : (
+                  <Arrow
+                    bearing={parseInt(bearing)}
+                    myCompassDirection={myCompassDirection}
+                  />
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          ) : (
+            <Grid.Row>
+              <Grid.Column>
+                {bearing === null ||
+                linkedCompassDirection === "None" ? null : (
+                  <>
+                    <div>
+                      <i className="ui icon lock massive purple inverted"></i>
+                    </div>
+                    <Message size="massive" color="purple" compact>
+                      {/* Your partner's compass direction:{" "}
+                    {parseInt(linkedCompassDirection)} */}
+                      Straight That-A-Way!
+                      <br />
+                      Over the Horizon
+                      <br />
+                      You are{" "}
+                      {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
+                      miles away
+                    </Message>
+                  </>
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          )}
+
+          <Grid.Row verticalAlign="Bottom">
+            <Grid.Column verticalAlign="middle">
+              <Message color={lockIdColor} size="large" compact>
+                <Message.Header>Your unique lock id</Message.Header>
+                {talkId}
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
+      <MetaTags>
+        <meta
+          name="viewport"
+          content={`width=${document.documentElement.clientWidth}, height=${document.documentElement.clientHeight}`}
+        />
+      </MetaTags>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { Divider, Grid, Segment } from "semantic-ui-react";
+import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 
 import "./link.css";
@@ -58,8 +59,9 @@ export default function Link({ setUser, user }) {
             { once: true }
           );
         } else {
+          console.log("here");
           alert(
-            "User permission denied. In order to use the app, please allow permission."
+            "User permission denied. In order to use the app, please restart safari and allow permission."
           );
         }
       });
@@ -105,40 +107,55 @@ export default function Link({ setUser, user }) {
     }
   };
 
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  console.log(document.documentElement.clientWidth);
+
+  console.log(w, h);
+
   return (
-    <Segment
-      textAlign="center"
-      basic
-      style={{ padding: "0", margin: "0", height: viewHeight }}
-    >
-      <Grid
+    <>
+      <Segment
         textAlign="center"
-        verticalAlign="middle"
-        columns={2}
         basic
         style={{ padding: "0", margin: "0", height: viewHeight }}
       >
-        <Divider vertical>Or</Divider>
+        <Grid
+          textAlign="center"
+          verticalAlign="middle"
+          columns={2}
+          basic
+          style={{ padding: "0", margin: "0", height: viewHeight }}
+        >
+          <Divider vertical>Or</Divider>
 
-        <Grid.Row>
-          <Grid.Column>
-            <CreateLock
-              getLocation={getDirection}
-              readings={readings}
-              setUser={setUser}
-              user={user}
-            />
-          </Grid.Column>
-          <Grid.Column>
-            <JoinLock
-              getLocation={getDirection}
-              readings={readings}
-              setUser={setUser}
-              user={user}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+          <Grid.Row>
+            <Grid.Column>
+              <CreateLock
+                getLocation={getDirection}
+                readings={readings}
+                setUser={setUser}
+                user={user}
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <JoinLock
+                getLocation={getDirection}
+                readings={readings}
+                setUser={setUser}
+                user={user}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+      <MetaTags>
+        <meta
+          name="viewport"
+          content={`width=${document.documentElement.clientWidth}, height=${document.documentElement.clientHeight}`}
+        />
+      </MetaTags>
+    </>
   );
 }
