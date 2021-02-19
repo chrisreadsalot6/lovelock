@@ -13,8 +13,7 @@ def get_session():
 @session_routes.route("/", methods=["POST"])
 def make_session():
     json = request.json
-
-    # put this data to a session object
+    
     session = Session(
         localTimezoneOffset=json["localTimezoneOffset"],
         GPSLatitude=json["GPSLatitude"],
