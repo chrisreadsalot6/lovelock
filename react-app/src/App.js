@@ -1,6 +1,7 @@
 import { authenticate } from "./services/auth";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import MetaTags from "react-meta-tags";
 
 import JoinLock from "./components/JoinLock/JoinLock";
 import Link from "./components/Link/Link";
@@ -31,38 +32,43 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <NavBar
-        authenticated={authenticated}
-        setAuthenticated={setAuthenticated}
-        setUser={setUser}
-      />
-      <Switch>
-        <Route path="/login" exact={true}>
-          <LoginForm
-            authenticated={authenticated}
-            setAuthenticated={setAuthenticated}
-            setUser={setUser}
-          />
-        </Route>
-        <Route path="/sign-up" exact={true}>
-          <SignUpForm
-            authenticated={authenticated}
-            setAuthenticated={setAuthenticated}
-            setUser={setUser}
-          />
-        </Route>
-        <Route path="/talk/join">
-          <JoinLock />
-        </Route>
-        <Route path="/talk/:talkId">
-          <Talk user={user} />
-        </Route>
-        <ProtectedRoute path="/" authenticated={authenticated}>
-          <Link setUser={setUser} user={user} />
-        </ProtectedRoute>
-      </Switch>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <NavBar
+          authenticated={authenticated}
+          setAuthenticated={setAuthenticated}
+          setUser={setUser}
+        />
+        <Switch>
+          <Route path="/login" exact={true}>
+            <LoginForm
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+              setUser={setUser}
+            />
+          </Route>
+          <Route path="/sign-up" exact={true}>
+            <SignUpForm
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+              setUser={setUser}
+            />
+          </Route>
+          <Route path="/talk/join">
+            <JoinLock />
+          </Route>
+          <Route path="/talk/:talkId">
+            <Talk user={user} />
+          </Route>
+          <ProtectedRoute path="/" authenticated={authenticated}>
+            <Link setUser={setUser} user={user} />
+          </ProtectedRoute>
+        </Switch>
+      </BrowserRouter>
+      <MetaTags>
+        <meta name="viewport" content={`width=${window.screen.width * 1.25}`} />
+      </MetaTags>
+    </>
   );
 }
 

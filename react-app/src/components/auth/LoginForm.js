@@ -33,7 +33,10 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
 
   return (
     <>
-      <Grid style={{ height: "70vh" }} verticalAlign="middle">
+      <Grid
+        style={{ height: "70vh", padding: "0px", margin: "0px" }}
+        verticalAlign="middle"
+      >
         <Grid.Column textAlign="center">
           <Image
             src="/lovelock.png"

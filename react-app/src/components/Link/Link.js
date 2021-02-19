@@ -13,6 +13,7 @@ import JoinLock from "../JoinLock/JoinLock";
 export default function Link({ setUser, user }) {
   const [compass, setCompass] = useState(null);
   const [viewHeight, setViewHeight] = useState("82vh");
+  const [viewHeightThird, setViewHeightThird] = useState("22vh");
   const [mobile, setMobile] = useState(null);
   const [readings, setReadings] = useState(null);
 
@@ -22,6 +23,7 @@ export default function Link({ setUser, user }) {
 
     if (isMobile === false) {
       setViewHeight("91vh");
+      setViewHeightThird("25vh");
     }
   }, []);
 
@@ -107,55 +109,48 @@ export default function Link({ setUser, user }) {
     }
   };
 
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
-  console.log(document.documentElement.clientWidth);
-
-  console.log(w, h);
-
   return (
     <>
       <Segment
-        textAlign="center"
         basic
         style={{ padding: "0", margin: "0", height: viewHeight }}
+        verticalAlign="middle"
       >
         <Grid
           textAlign="center"
           verticalAlign="middle"
-          columns={2}
           basic
           style={{ padding: "0", margin: "0", height: viewHeight }}
         >
-          <Divider vertical>Or</Divider>
-
-          <Grid.Row>
-            <Grid.Column>
+          <Grid.Column style={{ height: viewHeight }} verticalAlign="middle">
+            <Grid.Row
+              style={{ padding: "0", margin: "0", height: viewHeightThird }}
+            ></Grid.Row>
+            <Grid.Row verticalAlign="middle">
               <CreateLock
                 getLocation={getDirection}
                 readings={readings}
                 setUser={setUser}
                 user={user}
               />
-            </Grid.Column>
-            <Grid.Column>
+            </Grid.Row>
+            <Grid.Row
+              style={{ padding: "0", margin: "0", height: viewHeightThird }}
+            ></Grid.Row>
+            <Grid.Row verticalAlign="middle">
               <JoinLock
                 getLocation={getDirection}
                 readings={readings}
                 setUser={setUser}
                 user={user}
               />
-            </Grid.Column>
-          </Grid.Row>
+            </Grid.Row>
+            <Grid.Row
+              style={{ padding: "0", margin: "0", height: viewHeightThird }}
+            ></Grid.Row>
+          </Grid.Column>
         </Grid>
       </Segment>
-      <MetaTags>
-        <meta
-          name="viewport"
-          content={`width=${document.documentElement.clientWidth}, height=${document.documentElement.clientHeight}`}
-        />
-      </MetaTags>
     </>
   );
 }

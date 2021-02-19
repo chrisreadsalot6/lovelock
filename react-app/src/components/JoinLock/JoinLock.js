@@ -45,7 +45,6 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
     history.push(`/talk/${talkId}`);
 
     // reset zoom
-    
   };
 
   return (
