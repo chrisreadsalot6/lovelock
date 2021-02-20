@@ -241,9 +241,6 @@ export default function Talk({ user }) {
     setMyCompassDirection(event.webkitCompassHeading);
   };
 
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
   return (
     <>
       <Container>
