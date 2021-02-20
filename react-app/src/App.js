@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import MetaTags from "react-meta-tags";
 
+import Footer from "./components/Footer/Footer";
 import JoinLock from "./components/JoinLock/JoinLock";
 import Link from "./components/Link/Link";
 import LoginForm from "./components/auth/LoginForm";
@@ -30,6 +31,8 @@ function App() {
   if (!loaded) {
     return null;
   }
+
+  
 
   return (
     <>
@@ -64,6 +67,7 @@ function App() {
             <Link setUser={setUser} user={user} />
           </ProtectedRoute>
         </Switch>
+        <Footer />
       </BrowserRouter>
       <MetaTags>
         <meta name="viewport" content={`width=${window.screen.width * 1.25}`} />
