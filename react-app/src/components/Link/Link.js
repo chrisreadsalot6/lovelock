@@ -1,5 +1,4 @@
 import { Divider, Grid, Segment } from "semantic-ui-react";
-import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 
 import "./link.css";

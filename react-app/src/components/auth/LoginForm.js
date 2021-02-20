@@ -31,11 +31,20 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
     return <Redirect to="/" />;
   }
 
+  // height of screen
+  // height of navbar + height of footer
+  // height of middle grid = screen - (navbar + footer)
+  // const pxHeightFooter = window.document.getElementById("footer").offsetHeight;
+  // const pxHeightNavbar = window.document.getElementById("navbar").offsetHeight;
+  // const pxHeight = pxHeightFooter + pxHeightNavbar;
+  // console.log(pxHeight);
+
   return (
     <>
       <Grid
         style={{ height: "70vh", padding: "0px", margin: "0px" }}
         verticalAlign="middle"
+        id="login"
       >
         <Grid.Column textAlign="center">
           <Image

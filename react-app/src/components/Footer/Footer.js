@@ -16,7 +16,7 @@ export default function Footer() {
 
   return (
     <div>
-      <Segment color="purple" textAlign="center">
+      <Segment color="purple" id="footer" textAlign="center">
         Developed by Chris Read{" "}
         <Icon link name="angellist" onClick={angellist} />
         <Icon link name="github" onClick={github} />{" "}

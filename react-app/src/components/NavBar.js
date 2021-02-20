@@ -1,7 +1,6 @@
-import { Grid, Image, Menu, Segment } from "semantic-ui-react";
+import { Image, Menu, Segment } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import React from "react";
-import MetaTags from "react-meta-tags";
 
 import { logout } from "../services/auth";
 
@@ -14,7 +13,11 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
 
   return (
     <>
-      <Segment color="purple" style={{ borderBottom: "0", margin: "0" }}>
+      <Segment
+        color="purple"
+        id="navbar"
+        style={{ borderBottom: "0", margin: "0" }}
+      >
         <Menu secondary size="massive">
           {!authenticated ? null : (
             <Menu.Item as={NavLink} to="/" exact={true}>
@@ -65,9 +68,6 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
           </Menu.Menu>
         </Menu>
       </Segment>
-      <MetaTags>
-        {/* <meta name="viewport" content={`width=700px`} /> */}
-      </MetaTags>
     </>
   );
 };
