@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export default function JoinLock({ getLocation, readings, setUser, user }) {
-  const [talkId, setTalkId] = useState(null);
+  const [lockId, setLockId] = useState(null);
   const history = useHistory();
   const [join, setJoin] = useState(null);
 
@@ -20,8 +20,8 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
     getLocation();
   };
 
-  const getTalkId = (e) => {
-    setTalkId(e.target.value);
+  const getLockId = (e) => {
+    setLockId(e.target.value);
   };
 
   const joinALock = () => {
@@ -32,17 +32,17 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
       joinerGPSLongitude: readings.GPSLongitude,
       joinerUserId: readings.userId,
       startedWhen: new Date(),
-      uniqueIdentifier: talkId,
+      uniqueIdentifier: lockId,
     };
 
-    fetch("/api/talk/join", {
+    fetch("/api/lock/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
     });
-    history.push(`/talk/${talkId}`);
+    history.push(`/lock/${lockId}`);
 
     // reset zoom
   };
@@ -51,7 +51,7 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
     <div>
       <div className="ui action input">
         <Input
-          onChange={(e) => getTalkId(e)}
+          onChange={(e) => getLockId(e)}
           placeholder="Enter a Unique Lock Id"
           action={{
             color: "purple",

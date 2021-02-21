@@ -1,7 +1,6 @@
 import { Divider, Grid, Segment } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
-import "./link.css";
 import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 

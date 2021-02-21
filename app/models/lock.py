@@ -4,7 +4,7 @@ from .db import db
 from .user import User
 
 
-class Talk(db.Model):
+class Lock(db.Model):
     __tablename__ = "talks"
 
     id = db.Column(db.Integer, primary_key=True)

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import Arrow from "../Arrow/Arrow";
 
-export default function Talk({ user }) {
+export default function Lock({ user }) {
   const [bearing, setBearing] = useState(null);
   const [KMDistance, setKMDistance] = useState(null);
   const [geolocation, setGeolocation] = useState(null);
@@ -22,7 +22,7 @@ export default function Talk({ user }) {
   const [myCompassDirection, setMyCompassDirection] = useState(null);
   const [compassReadingCount, setCompassReadingCount] = useState(0);
 
-  const { talkId } = useParams();
+  const { lockId } = useParams();
 
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
@@ -143,7 +143,7 @@ export default function Talk({ user }) {
     });
   };
 
-  const endTalk = () => {
+  const endLock = () => {
     console.log("here I am");
     setToggleButton(true);
     setBearing(null);
@@ -154,7 +154,7 @@ export default function Talk({ user }) {
   };
 
   const getGeolocationData = () => {
-    fetch(`/api/talk/${talkId}/get-geolocation`, {
+    fetch(`/api/lock/${lockId}/get-geolocation`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -167,7 +167,7 @@ export default function Talk({ user }) {
   };
 
   const pullCompassData = () => {
-    fetch(`/api/talk/${talkId}/pull-compass`, {
+    fetch(`/api/lock/${lockId}/pull-compass`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -187,13 +187,13 @@ export default function Talk({ user }) {
     const postData = {
       compassDirection: myCompassDirection,
       initiatorOrJoiner: user.initiatorOrJoiner,
-      talkId: talkId,
+      lockId: lockId,
       userId: user.id,
     };
 
     // if (Date.now() % (1000 * 10) === 0) {
     //   console.log(Date.now());
-    fetch(`/api/talk/${talkId}/push-compass`, {
+    fetch(`/api/lock/${lockId}/push-compass`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -217,11 +217,11 @@ export default function Talk({ user }) {
         // this breaks on a page refresh
         // it'd be better to add it to the original user object
         initiatorOrJoiner: user["initiatorOrJoiner"],
-        talkId: talkId,
+        lockId: lockId,
         userId: user.id,
       };
 
-      fetch(`/api/talk/${talkId}/push-compass`, {
+      fetch(`/api/lock/${lockId}/push-compass`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -257,11 +257,11 @@ export default function Talk({ user }) {
                   color="purple"
                   size="massive"
                 >
-                  Start Talk
+                  Start Lock
                 </Button>
               ) : (
-                <Button onClick={endTalk} basic color="purple" size="massive">
-                  End Talk
+                <Button onClick={endLock} basic color="purple" size="massive">
+                  End Lock
                 </Button>
               )}
             </Grid.Column>
@@ -320,7 +320,7 @@ export default function Talk({ user }) {
             <Grid.Column verticalAlign="middle">
               <Message color={lockIdColor} size="large" compact>
                 <Message.Header>Your unique lock id</Message.Header>
-                {talkId}
+                {lockId}
               </Message>
             </Grid.Column>
           </Grid.Row>

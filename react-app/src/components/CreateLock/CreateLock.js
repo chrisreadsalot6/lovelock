@@ -20,7 +20,7 @@ export default function CreateLock({ getLocation, readings, setUser, user }) {
       initiatorUserId: readings.userId,
     };
 
-    fetch("/api/talk/create", {
+    fetch("/api/lock/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export default function CreateLock({ getLocation, readings, setUser, user }) {
       body: JSON.stringify(postData),
     }).then((result) => {
       result.json().then((data) => {
-        history.push(`/talk/${data}`);
+        history.push(`/lock/${data}`);
       });
     });
   };

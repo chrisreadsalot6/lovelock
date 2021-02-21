@@ -10,7 +10,7 @@ import LoginForm from "./components/auth/LoginForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
-import Talk from "./components/Talk/Talk";
+import Lock from "./components/Lock/Lock";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -57,11 +57,11 @@ function App() {
               setUser={setUser}
             />
           </Route>
-          <Route path="/talk/join">
+          <Route path="/lock/join">
             <JoinLock />
           </Route>
-          <Route path="/talk/:talkId">
-            <Talk user={user} />
+          <Route path="/lock/:lockId">
+            <Lock user={user} />
           </Route>
           <ProtectedRoute path="/" authenticated={authenticated}>
             <Link setUser={setUser} user={user} />
