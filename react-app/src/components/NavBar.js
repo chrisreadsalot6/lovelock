@@ -27,7 +27,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
             ? {
                 borderBottom: "0px",
                 margin: "0px",
-                padding: "1vh",
+                padding: ".85vh",
                 height: "8.5vh",
               }
             : {
