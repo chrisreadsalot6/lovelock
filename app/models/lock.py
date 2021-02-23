@@ -5,7 +5,7 @@ from .user import User
 
 
 class Lock(db.Model):
-    __tablename__ = "talks"
+    __tablename__ = "locks"
 
     id = db.Column(db.Integer, primary_key=True)
     createdWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

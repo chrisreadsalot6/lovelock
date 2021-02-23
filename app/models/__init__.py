@@ -1,4 +1,4 @@
 from .db import db
 from .user import User
-from .session import Session
+from .locale import Locale
 from .lock import Lock

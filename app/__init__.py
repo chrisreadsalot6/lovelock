@@ -8,7 +8,7 @@ from flask_login import LoginManager
 from .models import db, User
 from .api.auth_routes import auth_routes
 from .api.lock_routes import lock_routes
-from .api.session_routes import session_routes
+from .api.locale_routes import locale_routes
 
 from .seeds import seed_commands
 
@@ -32,7 +32,7 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(auth_routes, url_prefix="/api/auth")
 app.register_blueprint(lock_routes, url_prefix="/api/lock")
-app.register_blueprint(session_routes, url_prefix="/api/session")
+app.register_blueprint(locale_routes, url_prefix="/api/locale")
 db.init_app(app)
 Migrate(app, db)
 
