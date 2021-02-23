@@ -1,11 +1,10 @@
 from datetime import datetime
 
-from app.models import db, Locale
+from app.models import db, Lock
 
+def seed_locks():
 
-def seed_locales():
-
-    harvard_yard = Locale(
+      harvard_yard = Locale(
         createdWhen=datetime.utcnow(),
         GPSLatitude="42.374394",
         GPSLongitude="-71.116257",
@@ -37,8 +36,8 @@ def seed_locales():
 
     sphinx = Locale(
         createdWhen=datetime.utcnow(),
-        GPSLatitude="29.971829446",
-        GPSLongitude="31.13583279",
+        GPSLatitude="29.974999999999998",
+        GPSLongitude="31.1375",
         localTimezoneOffset=5,
         name="Sphinx",
         updatedWhen=datetime.utcnow(),
@@ -74,7 +73,6 @@ def seed_locales():
 
     db.session.commit()
 
-
-def undo_locales():
-    db.session.execute("TRUNCATE locales CASCADE;")
-    db.session.commit()
+def undo_locks():
+  db.session.exeucte("TRUNCATE locks CASCADE;")
+  db.session.commit()
