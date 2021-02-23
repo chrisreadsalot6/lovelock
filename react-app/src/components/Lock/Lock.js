@@ -7,8 +7,13 @@ import Arrow from "../Arrow/Arrow";
 
 export default function Lock({ user }) {
   const [bearing, setBearing] = useState(null);
-  const [KMDistance, setKMDistance] = useState(null);
   const [geolocation, setGeolocation] = useState(null);
+  const [KMDistance, setKMDistance] = useState(null);
+  const [midwayGPS, setMidwayGPS] = useState({
+    midwayGPSLatitude: null,
+    midwayGPSLongitude: null,
+    midwayPointCity: null,
+  });
   const [toggleButton, setToggleButton] = useState(true);
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
@@ -137,6 +142,39 @@ export default function Lock({ user }) {
 
     setBearing(bearing);
 
+    // midpoint calculation
+    const Bx = Math.cos(φ2) + Math.cos(theirLong - myLong);
+    const By = Math.cos(φ2) * Math.sin(theirLong - myLong);
+    const φ3 = Math.atan2(
+      Math.sin(φ1) + Math.sin(φ2),
+      Math.sqrt((Math.cos(φ1) + Bx) * (Math.cos(φ1) + Bx) + By * By)
+    );
+    const λ3 = myLong + Math.atan2(By, Math.cos(φ1) + Bx);
+
+    const midwayLatitude = φ3 * (180 / Math.PI);
+    const midwayLongitude = λ3 * (180 / Math.PI);
+    console.log(midwayLatitude, midwayLongitude);
+    let midwayPointCity = "";
+
+    const radius = 500;
+    fetch(
+      `http://geodb-free-service.wirefreethought.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`
+    ).then((result) => {
+      const data = result["data"];
+      if (data.length > 0) {
+        midwayPointCity = data[0]["city"];
+      } else {
+        midwayPointCity = `No major city within ${radius} miles.`;
+      }
+      console.log(midwayPointCity);
+
+      setMidwayGPS({
+        midwayGPSLatitude: midwayLatitude,
+        midwayGPSLongitude: midwayLongitude,
+        midwayPointCity: midwayPointCity,
+      });
+    });
+
     return bearing;
   };
 
@@ -185,6 +223,9 @@ export default function Lock({ user }) {
       compassDirection: myCompassDirection,
       initiatorOrJoiner: user.initiatorOrJoiner,
       lockId: lockId,
+      midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
+      midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
+      midwayPointCity: midwayGPS["midwayPointCity"],
       userId: user.id,
     };
 
@@ -215,6 +256,9 @@ export default function Lock({ user }) {
         // it'd be better to add it to the original user object
         initiatorOrJoiner: user["initiatorOrJoiner"],
         lockId: lockId,
+        midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
+        midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
+        midwayPointCity: midwayGPS["midwayPointCity"],
         userId: user.id,
       };
 
