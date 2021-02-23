@@ -6,18 +6,18 @@ import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link({ setUser, user }) {
   const [compass, setCompass] = useState(null);
-  const [viewHeight, setViewHeight] = useState("82vh");
-  const [viewHeightThird, setViewHeightThird] = useState("22vh");
+  const [viewHeightThird, setViewHeightThird] = useState("20vh");
   const [mobile, setMobile] = useState(null);
   const [readings, setReadings] = useState(null);
 
+  const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
     setMobile(isMobile);
 
     if (isMobile === false) {
-      setViewHeight("91vh");
-      setViewHeightThird("25vh");
+      setViewHeight("86.5vh");
+      setViewHeightThird("20vh");
     }
   }, []);
 
@@ -107,15 +107,23 @@ export default function Link({ setUser, user }) {
     <>
       <Segment
         basic
-        style={{ height: "86.5vh", margin: "0px" }}
+        style={{ height: viewHeight, margin: "0px" }}
         verticalAlign="middle"
       >
-        <Grid textAlign="center" verticalAlign="middle" basic>
-          <Grid.Column style={{ height: viewHeight }} verticalAlign="middle">
+        <Grid
+          textAlign="center"
+          verticalAlign="middle"
+          basic
+          style={{ margin: "0", height: viewHeight }}
+        >
+          <Grid.Column
+            style={{ margin: "0", height: viewHeight }}
+            verticalAlign="middle"
+          >
             <Grid.Row
               style={{ margin: "0", height: viewHeightThird }}
             ></Grid.Row>
-            <Grid.Row verticalAlign="middle">
+            <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <CreateLock
                 getLocation={getDirection}
                 readings={readings}
@@ -126,7 +134,7 @@ export default function Link({ setUser, user }) {
             <Grid.Row
               style={{ margin: "0", height: viewHeightThird }}
             ></Grid.Row>
-            <Grid.Row verticalAlign="middle">
+            <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <JoinLock
                 getLocation={getDirection}
                 readings={readings}

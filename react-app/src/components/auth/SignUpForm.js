@@ -1,5 +1,5 @@
 import { Button, Image, Input, Label, Form, Grid } from "semantic-ui-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../services/auth";
 
@@ -9,6 +9,31 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [errors, setErrors] = useState([]);
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+
+  const [viewHeight, setViewHeight] = useState("74.5vh");
+  useEffect(() => {
+    const isMobile = detectIfMobileBrowser();
+
+    if (isMobile === false) {
+      setViewHeight("86.5vh");
+    }
+  }, []);
+
+  const detectIfMobileBrowser = () => {
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i,
+    ];
+
+    return toMatch.some((element) => {
+      return navigator.userAgent.match(element);
+    });
+  };
 
   const onSignUp = async (e) => {
     e.preventDefault();
@@ -47,7 +72,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   }
 
   return (
-    <Grid style={{ height: "86.5vh", margin: "0px" }} verticalAlign="middle">
+    <Grid style={{ height: viewHeight, margin: "0px" }} verticalAlign="middle">
       <Grid.Column textAlign="center">
         <Image
           src="/lovelock.png"

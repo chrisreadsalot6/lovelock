@@ -19,7 +19,7 @@ export default function Footer() {
       color="purple"
       id="footer"
       textAlign="center"
-      style={{ height: "5vh", margin: "0px" }}
+      style={{ height: "5vh", margin: "0px", padding: "1vh 0vh 1vh 0vh" }}
     >
       Developed by Chris Read <Icon link name="angellist" onClick={angellist} />
       <Icon link name="github" onClick={github} />{" "}

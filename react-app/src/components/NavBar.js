@@ -5,7 +5,32 @@ import React, { useEffect, useState } from "react";
 import { logout } from "../services/auth";
 
 const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
-  const [loggedInNavBar, setLoggedInNavBar] = useState(authenticated);
+  const [viewHeight, setViewHeight] = useState("74.5vh");
+  useEffect(() => {
+    const isMobile = detectIfMobileBrowser();
+    setMobile(isMobile);
+
+    if (isMobile === false) {
+      setViewHeight("86.5vh");
+      setViewHeightThird("20vh");
+    }
+  }, []);
+
+  const detectIfMobileBrowser = () => {
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i,
+    ];
+
+    return toMatch.some((element) => {
+      return navigator.userAgent.match(element);
+    });
+  };
 
   const logoutPlus = async () => {
     await logout();
@@ -14,6 +39,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
     setLoggedInNavBar(false);
   };
 
+  const [loggedInNavBar, setLoggedInNavBar] = useState(authenticated);
   useEffect(() => {
     setLoggedInNavBar(authenticated);
   }, [authenticated]);

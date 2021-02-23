@@ -11,8 +11,30 @@ export default function Lock({ user }) {
   const [geolocation, setGeolocation] = useState(null);
   const [toggleButton, setToggleButton] = useState(true);
 
-  const [viewHeight, setViewHeight] = useState("82vh");
-  const [mobile, setMobile] = useState(null);
+  const [viewHeight, setViewHeight] = useState("74.5vh");
+  useEffect(() => {
+    const isMobile = detectIfMobileBrowser();
+
+    if (isMobile === false) {
+      setViewHeight("86.5vh");
+    }
+  }, []);
+
+  const detectIfMobileBrowser = () => {
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i,
+    ];
+
+    return toMatch.some((element) => {
+      return navigator.userAgent.match(element);
+    });
+  };
 
   const [lockIdColor, setLockIdColor] = useState("purple");
 
@@ -23,15 +45,6 @@ export default function Lock({ user }) {
   const [compassReadingCount, setCompassReadingCount] = useState(0);
 
   const { lockId } = useParams();
-
-  useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
-    setMobile(isMobile);
-
-    if (isMobile === false) {
-      setViewHeight("91vh");
-    }
-  }, []);
 
   useEffect(() => {
     if (geolocation !== null) {
@@ -125,22 +138,6 @@ export default function Lock({ user }) {
     setBearing(bearing);
 
     return bearing;
-  };
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
   };
 
   const endLock = () => {
@@ -244,7 +241,7 @@ export default function Lock({ user }) {
   return (
     <>
       <Container>
-        <Grid textAlign="center" style={{ height: "86.5vh", margin: "0px" }}>
+        <Grid textAlign="center" style={{ height: viewHeight, margin: "0px" }}>
           <Grid.Row style={{ paddingTop: "10vh" }}>
             <Grid.Column>
               {toggleButton ? (
