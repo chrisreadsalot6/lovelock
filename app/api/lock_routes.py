@@ -49,6 +49,10 @@ def push_compass_data(lockId):
     else:
         lock.joinerCompassDirection = json["compassDirection"]
 
+    if json["midwayGPSLatitude"]:
+        lock.midwayGPSLatitude = json["midwayGPSLatitude"]
+        lock.midwayGPSLongitude = json["midwayGPSLongitude"]
+
     db.session.commit()
 
     return jsonify(str(lock))
