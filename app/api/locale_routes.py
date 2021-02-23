@@ -18,8 +18,10 @@ def make_locale():
     sun_response = requests.get(
         f'https://api.sunrise-sunset.org/json?lat={json["GPSLatitude"]}&lng={json["GPSLongitude"]}'
     )
-    sunrise = sun_response["sunrise"]
-    sunset = sun_response["sunset"]
+    sun = sun_response.json()
+
+    sunrise = sun["results"]["sunrise"]
+    sunset = sun["results"]["sunset"]
 
     weather_response = requests.get(
         f'https://api.openweathermap.org/data/2.5/weather?lat={json["GPSLatitude"]}&lon={json["GPSLongitude"]}&units=imperial&appid=f0f94586ed73f88a8afda092075a65a0'

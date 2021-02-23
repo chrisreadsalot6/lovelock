@@ -67,7 +67,7 @@ def join_lock():
         seedObject = {
             "570": {
                 "initiatorGPSLatitude": "21.422487",
-                "initiatorGPSLongitude": "39.826206"",
+                "initiatorGPSLongitude": "39.826206",
             },
             "1636": {
                 "initiatorGPSLatitude": "42.374394",
@@ -103,6 +103,7 @@ def join_lock():
     else:
         lock = Lock.query.filter_by(uniqueIdentifier=code).first()
 
+    print(json)
     lock.active = True
     lock.joinerCompassDirection = json["joinerCompassDirection"]
     lock.joinerGPSLatitude = json["joinerGPSLatitude"]

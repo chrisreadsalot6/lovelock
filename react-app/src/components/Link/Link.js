@@ -42,7 +42,7 @@ export default function Link({ setUser, user }) {
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );
-      const fakeDirection = 1;
+      const fakeDirection = 10;
       setCompass(fakeDirection);
     } else {
       DeviceOrientationEvent.requestPermission().then((permission) => {
@@ -75,6 +75,7 @@ export default function Link({ setUser, user }) {
       alert("Please kindly login or signup to get your location.");
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log(compass);
         const readingsDict = {
           compassDirection: compass,
           GPSLatitude: position.coords.latitude,
@@ -92,7 +93,7 @@ export default function Link({ setUser, user }) {
           userId: user.id,
         };
 
-        fetch("/api/session/", {
+        fetch("/api/locale/", {
           method: "post",
           headers: {
             "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 from flask.cli import AppGroup
 from .locales import seed_locales, undo_locales
+
 # from .locks import seed_locks, undo_locks
 from .users import seed_users, undo_users
 
@@ -10,6 +11,7 @@ seed_commands = AppGroup("seed")
 # Creates the `flask seed all` command
 @seed_commands.command("all")
 def seed():
+    pass
     # seed_locales()
     # seed_locks()
     # seed_users()
