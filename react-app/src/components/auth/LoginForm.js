@@ -1,5 +1,5 @@
 import { Button, Form, Grid, Image, Input, Label } from "semantic-ui-react";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { login } from "../../services/auth";
 
@@ -7,6 +7,26 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // height of screen
+  // height of navbar + height of footer
+  // height of middle grid = screen - (navbar + footer)
+  // const pxHeightFooter = window.document.getElementById("footer").offsetHeight;
+  // const pxHeightNavbar = window.document.getElementById("navbar").offsetHeight;
+  // const pxHeight = pxHeightFooter + pxHeightNavbar;
+  // console.log(pxHeight);
+
+  const targetRef = useRef();
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  useLayoutEffect(() => {
+    if (targetRef.current) {
+      setDimensions({
+        width: targetRef.current.offsetWidth,
+        height: targetRef.current.offsetHeight,
+      });
+    }
+  }, []);
 
   const onLogin = async (e) => {
     e.preventDefault();
@@ -31,18 +51,10 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
     return <Redirect to="/" />;
   }
 
-  // height of screen
-  // height of navbar + height of footer
-  // height of middle grid = screen - (navbar + footer)
-  // const pxHeightFooter = window.document.getElementById("footer").offsetHeight;
-  // const pxHeightNavbar = window.document.getElementById("navbar").offsetHeight;
-  // const pxHeight = pxHeightFooter + pxHeightNavbar;
-  // console.log(pxHeight);
-
   return (
     <>
       <Grid
-        style={{ height: "70vh", padding: "0px", margin: "0px" }}
+        style={{ height: "86.5vh", margin: "0px" }}
         verticalAlign="middle"
         id="login"
       >

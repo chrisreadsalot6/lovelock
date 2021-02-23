@@ -15,14 +15,16 @@ export default function Footer() {
   };
 
   return (
-    <div>
-      <Segment color="purple" id="footer" textAlign="center">
-        Developed by Chris Read{" "}
-        <Icon link name="angellist" onClick={angellist} />
-        <Icon link name="github" onClick={github} />{" "}
-        <Icon link name="linkedin" onClick={linkedin} />
-        <Icon name="code" />
-      </Segment>
-    </div>
+    <Segment
+      color="purple"
+      id="footer"
+      textAlign="center"
+      style={{ height: "5vh", margin: "0px" }}
+    >
+      Developed by Chris Read <Icon link name="angellist" onClick={angellist} />
+      <Icon link name="github" onClick={github} />{" "}
+      <Icon link name="linkedin" onClick={linkedin} />
+      <Icon name="code" />
+    </Segment>
   );
 }

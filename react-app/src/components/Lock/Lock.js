@@ -244,10 +244,7 @@ export default function Lock({ user }) {
   return (
     <>
       <Container>
-        <Grid
-          textAlign="center"
-          style={{ height: viewHeight, padding: "0", margin: "0" }}
-        >
+        <Grid textAlign="center" style={{ height: "86.5vh", margin: "0px" }}>
           <Grid.Row style={{ paddingTop: "10vh" }}>
             <Grid.Column>
               {toggleButton ? (

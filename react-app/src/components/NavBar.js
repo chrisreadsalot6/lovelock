@@ -1,22 +1,41 @@
 import { Image, Menu, Segment } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { logout } from "../services/auth";
 
 const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
+  const [loggedInNavBar, setLoggedInNavBar] = useState(authenticated);
+
   const logoutPlus = async () => {
     await logout();
     setAuthenticated(false);
     setUser(null);
+    setLoggedInNavBar(false);
   };
+
+  useEffect(() => {
+    setLoggedInNavBar(authenticated);
+  }, [authenticated]);
 
   return (
     <>
       <Segment
         color="purple"
-        id="navbar"
-        style={{ borderBottom: "0", margin: "0" }}
+        style={
+          loggedInNavBar
+            ? {
+                borderBottom: "0px",
+                margin: "0px",
+                padding: "1vh",
+                height: "8.5vh",
+              }
+            : {
+                borderBottom: "0px",
+                margin: "0px",
+                height: "8.5vh",
+              }
+        }
       >
         <Menu secondary size="massive">
           {!authenticated ? null : (

@@ -47,10 +47,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   }
 
   return (
-    <Grid
-      style={{ height: "70vh", padding: "0px", margin: "0px" }}
-      verticalAlign="middle"
-    >
+    <Grid style={{ height: "86.5vh", margin: "0px" }} verticalAlign="middle">
       <Grid.Column textAlign="center">
         <Image
           src="/lovelock.png"
@@ -61,7 +58,6 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
         />
         <Form onSubmit={onSignUp}>
           <Form.Field inline>
-            {/* <label>User Name</label> */}
             <Input
               type="text"
               name="username"
@@ -85,7 +81,6 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
             />
           </Form.Field>
           <Form.Field inline>
-            {/* <label>Password</label> */}
             <Input
               type="password"
               name="password"
@@ -97,7 +92,6 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
             />
           </Form.Field>
           <Form.Field inline>
-            {/* <label>Repeat Password</label> */}
             <Input
               type="password"
               name="repeat_password"

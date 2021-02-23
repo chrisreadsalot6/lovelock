@@ -4,10 +4,6 @@ import React, { useEffect, useState } from "react";
 import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 
-// Boston
-// Latitude 42.3601
-// Longitude -71.0589
-
 export default function Link({ setUser, user }) {
   const [compass, setCompass] = useState(null);
   const [viewHeight, setViewHeight] = useState("82vh");
@@ -111,18 +107,13 @@ export default function Link({ setUser, user }) {
     <>
       <Segment
         basic
-        style={{ padding: "0", margin: "0", height: viewHeight }}
+        style={{ height: "86.5vh", margin: "0px" }}
         verticalAlign="middle"
       >
-        <Grid
-          textAlign="center"
-          verticalAlign="middle"
-          basic
-          style={{ padding: "0", margin: "0", height: viewHeight }}
-        >
+        <Grid textAlign="center" verticalAlign="middle" basic>
           <Grid.Column style={{ height: viewHeight }} verticalAlign="middle">
             <Grid.Row
-              style={{ padding: "0", margin: "0", height: viewHeightThird }}
+              style={{ margin: "0", height: viewHeightThird }}
             ></Grid.Row>
             <Grid.Row verticalAlign="middle">
               <CreateLock
@@ -133,7 +124,7 @@ export default function Link({ setUser, user }) {
               />
             </Grid.Row>
             <Grid.Row
-              style={{ padding: "0", margin: "0", height: viewHeightThird }}
+              style={{ margin: "0", height: viewHeightThird }}
             ></Grid.Row>
             <Grid.Row verticalAlign="middle">
               <JoinLock
@@ -144,7 +135,7 @@ export default function Link({ setUser, user }) {
               />
             </Grid.Row>
             <Grid.Row
-              style={{ padding: "0", margin: "0", height: viewHeightThird }}
+              style={{ margin: "0", height: viewHeightThird }}
             ></Grid.Row>
           </Grid.Column>
         </Grid>
