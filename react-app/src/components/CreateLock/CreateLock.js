@@ -2,7 +2,7 @@ import { Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function CreateLock({ getLocation, readings, setUser, user }) {
+export default function CreateLock({ getDirection, readings, setUser, user }) {
   const [create, setCreate] = useState(null);
   const history = useHistory();
 
@@ -33,18 +33,16 @@ export default function CreateLock({ getLocation, readings, setUser, user }) {
     });
   };
 
-  const getLocationCreate = () => {
+  const getDirectionCreate = () => {
     setCreate(true);
     const userCopy = { ...user, initiatorOrJoiner: "initiator" };
     setUser(userCopy);
-    getLocation();
+    getDirection();
   };
 
   return (
-    <div>
-      <Button onClick={getLocationCreate} basic color="purple" size="massive">
-        Create a Lock
-      </Button>
-    </div>
+    <Button onClick={getDirectionCreate} basic color="purple" size="massive">
+      Create a Lock
+    </Button>
   );
 }

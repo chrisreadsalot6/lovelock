@@ -219,9 +219,10 @@ export default function Lock({ user }) {
   };
 
   const pushAndPullData = () => {
+    console.log(user["initiatorOrJoiner"]);
     const postData = {
       compassDirection: myCompassDirection,
-      initiatorOrJoiner: user.initiatorOrJoiner,
+      initiatorOrJoiner: user["initiatorOrJoiner"],
       lockId: lockId,
       midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
       midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],

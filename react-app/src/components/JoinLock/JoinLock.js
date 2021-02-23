@@ -2,7 +2,7 @@ import { Input } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function JoinLock({ getLocation, readings, setUser, user }) {
+export default function JoinLock({ getDirection, readings, setUser, user }) {
   const [lockId, setLockId] = useState(null);
   const history = useHistory();
   const [join, setJoin] = useState(null);
@@ -13,11 +13,11 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
     }
   }, [readings]);
 
-  const getLocationJoin = () => {
+  const getDirectionJoin = () => {
     setJoin(true);
     const userCopy = { ...user, initiatorOrJoiner: "joiner" };
     setUser(userCopy);
-    getLocation();
+    getDirection();
   };
 
   const getLockId = (e) => {
@@ -41,10 +41,16 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
+    }).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+        // JSON.parse(data).then((rawJSON) => console.log(rawJSON));
+        // console.log(typeof data);
+        // console.log(Object.keys(data));
+        const updatedLockId = data["uniqueIdentifier"];
+        history.push(`/lock/${updatedLockId}`);
+      });
     });
-    history.push(`/lock/${lockId}`);
-
-    // reset zoom
   };
 
   return (
@@ -57,7 +63,7 @@ export default function JoinLock({ getLocation, readings, setUser, user }) {
             color: "purple",
             basic: true,
             size: "massive",
-            onClick: getLocationJoin,
+            onClick: getDirectionJoin,
             content: "Join a Lock",
           }}
         />

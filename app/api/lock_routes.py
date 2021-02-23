@@ -25,7 +25,9 @@ def get_geolocation_data(lockId):
 @lock_routes.route("/<int:lockId>/pull-compass", methods=["GET"])
 def pull_compass_data(lockId):
     lock = Lock.query.filter_by(uniqueIdentifier=lockId).first()
+    print("pull lockid", lockId)
 
+    print("pull lock", lock)
     responseData = {
         "initiatorCompassDirection": str(lock.initiatorCompassDirection),
         "joinerCompassDirection": str(lock.joinerCompassDirection),
@@ -39,7 +41,7 @@ def pull_compass_data(lockId):
 @lock_routes.route("/<int:lockId>/push-compass", methods=["POST"])
 def push_compass_data(lockId):
     json = request.json
-
+    print("push lockid", type(lockId))
     lock = Lock.query.filter_by(uniqueIdentifier=lockId).first()
 
     print("push-compass", json)
@@ -55,64 +57,7 @@ def push_compass_data(lockId):
 
     db.session.commit()
 
-    return jsonify(str(lock))
-
-
-@lock_routes.route("/join", methods=["POST"])
-def join_lock():
-    json = request.json
-    code = json["uniqueIdentifier"]
-
-    if code in seedObject.keys():
-        seedObject = {
-            "570": {
-                "initiatorGPSLatitude": "21.422487",
-                "initiatorGPSLongitude": "39.826206",
-            },
-            "1636": {
-                "initiatorGPSLatitude": "42.374394",
-                "initiatorGPSLongitude": "-71.116257",
-            },
-            "1776": {
-                "initiatorGPSLatitude": "38.897957",
-                "initiatorGPSLongitude": "-77.036560",
-            },
-            "1997": {
-                "initiatorGPSLatitude": "40.763771",
-                "initiatorGPSLongitude": "-73.983040",
-            },
-            "12000": {
-                "initiatorGPSLatitude": "29.971829446",
-                "initiatorGPSLongitude": "31.13583279",
-            },
-        }
-
-        initiatorCompassDirection = 100
-        initiatorGPSLatitude = seedObject["code"]["initiatorGPSLatitude"]
-        initiatorGPSLongitude = seedObject["code"]["initiatorGPSLongitude"]
-        initiatorUserId = 1
-        uniqueIdentifier = uuid.uuid4().int
-
-        lock = Lock(
-            initiatorCompassDirection=initiatorCompassDirection,
-            initiatorGPSLatitude=initiatorGPSLatitude,
-            initiatorGPSLongitude=initiatorGPSLongitude,
-            initiatorUserId=initiatorUserId,
-            uniqueIdentifier=uniqueIdentifier,
-        )
-    else:
-        lock = Lock.query.filter_by(uniqueIdentifier=code).first()
-
-    print(json)
-    lock.active = True
-    lock.joinerCompassDirection = json["joinerCompassDirection"]
-    lock.joinerGPSLatitude = json["joinerGPSLatitude"]
-    lock.joinerGPSLongitude = json["joinerGPSLongitude"]
-    lock.joinerUserId = json["joinerUserId"]
-
-    db.session.commit()
-
-    return jsonify(str(lock))
+    return jsonify(lock.to_dict())
 
 
 @lock_routes.route("/create", methods=["POST"])
@@ -133,3 +78,61 @@ def create_lock():
     db.session.commit()
 
     return jsonify(str(uniqueIdentifier))
+
+
+@lock_routes.route("/join", methods=["POST"])
+def join_lock():
+    json = request.json
+    code = json["uniqueIdentifier"]
+
+    seedObject = {
+        "570": {
+            "initiatorGPSLatitude": "21.422487",
+            "initiatorGPSLongitude": "39.826206",
+        },
+        "1636": {
+            "initiatorGPSLatitude": "42.374394",
+            "initiatorGPSLongitude": "-71.116257",
+        },
+        "1776": {
+            "initiatorGPSLatitude": "38.897957",
+            "initiatorGPSLongitude": "-77.036560",
+        },
+        "1997": {
+            "initiatorGPSLatitude": "40.763771",
+            "initiatorGPSLongitude": "-73.983040",
+        },
+        "12000": {
+            "initiatorGPSLatitude": "29.971829446",
+            "initiatorGPSLongitude": "31.13583279",
+        },
+    }
+    print(code)
+    if code in seedObject.keys():
+        initiatorCompassDirection = 100
+        initiatorGPSLatitude = seedObject[code]["initiatorGPSLatitude"]
+        initiatorGPSLongitude = seedObject[code]["initiatorGPSLongitude"]
+        initiatorUserId = 1
+        uniqueIdentifier = uuid.uuid4().int
+
+        lock = Lock(
+            initiatorCompassDirection=initiatorCompassDirection,
+            initiatorGPSLatitude=initiatorGPSLatitude,
+            initiatorGPSLongitude=initiatorGPSLongitude,
+            initiatorUserId=initiatorUserId,
+            uniqueIdentifier=uniqueIdentifier,
+        )
+    else:
+        lock = Lock.query.filter_by(uniqueIdentifier=code).first()
+
+    print(lock)
+    lock.active = True
+    lock.joinerCompassDirection = json["joinerCompassDirection"]
+    lock.joinerGPSLatitude = json["joinerGPSLatitude"]
+    lock.joinerGPSLongitude = json["joinerGPSLongitude"]
+    lock.joinerUserId = json["joinerUserId"]
+
+    db.session.add(lock)  # ?? will this mess up create??
+    db.session.commit()
+
+    return jsonify(lock.to_dict())

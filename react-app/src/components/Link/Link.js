@@ -1,4 +1,4 @@
-import { Divider, Grid, Segment } from "semantic-ui-react";
+import { Grid, Segment } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
@@ -55,7 +55,6 @@ export default function Link({ setUser, user }) {
             { once: true }
           );
         } else {
-          console.log("here");
           alert(
             "User permission denied. In order to use the app, please restart safari and allow permission."
           );
@@ -74,12 +73,21 @@ export default function Link({ setUser, user }) {
     if (user.id === null) {
       alert("Please kindly login or signup to get your location.");
     } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(compass);
+      if (
+        navigator.geolocation.getCurrentPosition((placeholder) =>
+          console.log("no print")
+        ) === undefined
+      ) {
+        alert(
+          "No device geolocation data accessible. Using the location of Penn Station, in New York as a substitute. For your location, please try another browser or another device."
+        );
+        const latitude = "40.750638";
+        const longitude = "-73.993899";
+
         const readingsDict = {
           compassDirection: compass,
-          GPSLatitude: position.coords.latitude,
-          GPSLongitude: position.coords.longitude,
+          GPSLatitude: latitude,
+          GPSLongitude: longitude,
           userId: user.id,
         };
         setReadings(readingsDict);
@@ -88,8 +96,8 @@ export default function Link({ setUser, user }) {
 
         const postData = {
           localTimezoneOffset: localTimezoneOffset,
-          GPSLatitude: position.coords.latitude,
-          GPSLongitude: position.coords.longitude,
+          GPSLatitude: latitude,
+          GPSLongitude: longitude,
           userId: user.id,
         };
 
@@ -99,6 +107,40 @@ export default function Link({ setUser, user }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(postData),
+        }).then((response) => {
+          response.json().then((data) => console.log(data));
+        });
+      } else {
+      }
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        const readingsDict = {
+          compassDirection: compass,
+          GPSLatitude: latitude,
+          GPSLongitude: longitude,
+          userId: user.id,
+        };
+        setReadings(readingsDict);
+
+        const localTimezoneOffset = new Date().getTimezoneOffset();
+
+        const postData = {
+          localTimezoneOffset: localTimezoneOffset,
+          GPSLatitude: latitude,
+          GPSLongitude: longitude,
+          userId: user.id,
+        };
+
+        fetch("/api/locale/", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        }).then((response) => {
+          response.json().then((data) => console.log(data));
         });
       });
     }
@@ -106,15 +148,10 @@ export default function Link({ setUser, user }) {
 
   return (
     <>
-      <Segment
-        basic
-        style={{ height: viewHeight, margin: "0px" }}
-        verticalAlign="middle"
-      >
+      <Segment style={{ height: viewHeight, margin: "0px" }}>
         <Grid
           textAlign="center"
           verticalAlign="middle"
-          basic
           style={{ margin: "0", height: viewHeight }}
         >
           <Grid.Column
@@ -126,7 +163,7 @@ export default function Link({ setUser, user }) {
             ></Grid.Row>
             <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <CreateLock
-                getLocation={getDirection}
+                getDirection={getDirection}
                 readings={readings}
                 setUser={setUser}
                 user={user}
@@ -137,7 +174,7 @@ export default function Link({ setUser, user }) {
             ></Grid.Row>
             <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <JoinLock
-                getLocation={getDirection}
+                getDirection={getDirection}
                 readings={readings}
                 setUser={setUser}
                 user={user}
