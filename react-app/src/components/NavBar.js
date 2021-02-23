@@ -5,14 +5,15 @@ import React, { useEffect, useState } from "react";
 import { logout } from "../services/auth";
 
 const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
-  const [viewHeight, setViewHeight] = useState("74.5vh");
+  const [dynamicPadding, setDynamicPadding] = useState({
+    loggedIn: "0vh 0vh 1vh 0vh",
+    loggedOut: "1vh",
+  });
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
-    setMobile(isMobile);
 
     if (isMobile === false) {
-      setViewHeight("86.5vh");
-      setViewHeightThird("20vh");
+      setDynamicPadding({ loggedIn: ".85vh", loggedOut: null });
     }
   }, []);
 
@@ -53,12 +54,13 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
             ? {
                 borderBottom: "0px",
                 margin: "0px",
-                padding: ".85vh",
+                padding: dynamicPadding["loggedIn"],
                 height: "8.5vh",
               }
             : {
                 borderBottom: "0px",
                 margin: "0px",
+                padding: dynamicPadding["loggedOut"],
                 height: "8.5vh",
               }
         }
