@@ -13,11 +13,14 @@ class Locale(db.Model):
     GPSLongitude = db.Column(db.String(100))
     localTimezoneOffset = db.Column(db.Integer)
     name = db.Column(db.String(100))
+    sunrise = db.Column(db.String(100))
+    sunset = db.Column(db.String(100))
     temperatureFahrenheit = db.Column(db.Integer)
     temperatureFeelsLikeFahrenheit = db.Column(db.Integer)
     updatedWhen = db.Column(db.DateTime, default=datetime.utcnow)
     userId = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     weatherDescription = db.Column(db.String(50))
+    weatherDescriptionDetailed = db.Column(db.String(50))
 
     user = db.relationship("User", backref=db.backref("locales"))
 
