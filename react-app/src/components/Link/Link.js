@@ -1,10 +1,10 @@
-import { Grid, Segment } from "semantic-ui-react";
+import { Grid, Message, Segment } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
 import JoinLock from "../JoinLock/JoinLock";
 
-export default function Link({ setUser, user }) {
+export default function Link({ noLock, setUser, user }) {
   const [compass, setCompass] = useState(null);
   const [viewHeightThird, setViewHeightThird] = useState("20vh");
   const [mobile, setMobile] = useState(null);
@@ -49,21 +49,21 @@ export default function Link({ setUser, user }) {
       //   console.log(compass);
       //   setCompass(compass + 1);
       // } else {
-        DeviceOrientationEvent.requestPermission().then((permission) => {
-          if (permission === "granted") {
-            window.addEventListener(
-              "deviceorientation",
-              (event) => {
-                setCompass(event.webkitCompassHeading);
-              },
-              { once: true }
-            );
-          } else {
-            alert(
-              "User permission denied. In order to use the app, please restart safari and allow permission."
-            );
-          }
-        });
+      DeviceOrientationEvent.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          window.addEventListener(
+            "deviceorientation",
+            (event) => {
+              setCompass(event.webkitCompassHeading);
+            },
+            { once: true }
+          );
+        } else {
+          alert(
+            "User permission denied. In order to use the app, please restart safari and allow permission."
+          );
+        }
+      });
       // }
     }
   };
@@ -163,9 +163,15 @@ export default function Link({ setUser, user }) {
             style={{ margin: "0", height: viewHeight }}
             verticalAlign="middle"
           >
-            <Grid.Row
-              style={{ margin: "0", height: viewHeightThird }}
-            ></Grid.Row>
+            <Grid.Row style={{ margin: "0", height: viewHeightThird }}>
+              {noLock === true ? (
+                <Message color="purple" compact="true">
+                  The Lock Id you have entered does not exist.
+                  <br />
+                  Please try again.
+                </Message>
+              ) : null}
+            </Grid.Row>
             <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <CreateLock
                 getDirection={getDirection}

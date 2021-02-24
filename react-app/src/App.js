@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 
 import DemoLogin from "./components/auth/DemoLogin";
 import Footer from "./components/Footer/Footer";
-import JoinLock from "./components/JoinLock/JoinLock";
 import Link from "./components/Link/Link";
 import Lock from "./components/Lock/Lock";
 import LoginForm from "./components/auth/LoginForm";
@@ -63,8 +62,11 @@ function App() {
               setUser={setUser}
             />
           </Route>
-          <Route path="/lock/join">
-            <JoinLock />
+          <Route path="/link/no-lock">
+            <Link noLock={true} setUser={setUser} user={user} />
+          </Route>
+          <Route path="/link/">
+            <Link setUser={setUser} user={user} />
           </Route>
           <Route path="/lock/:lockId">
             <Lock user={user} />

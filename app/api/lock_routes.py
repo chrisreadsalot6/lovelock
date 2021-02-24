@@ -89,6 +89,14 @@ def join_lock():
     code = json["uniqueIdentifier"]
 
     seedObject = {
+        "04106": {
+            "initiatorGPSLatitude": "43.642398",
+            "initiatorGPSLongitude": "-70.227022",
+        },
+        "09": {
+            "initiatorGPSLatitude": "40.705899",
+            "initiatorGPSLongitude": "-74.043770",
+        },
         "570": {
             "initiatorGPSLatitude": "21.422487",
             "initiatorGPSLongitude": "39.826206",
