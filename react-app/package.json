@@ -12,6 +12,8 @@
     "react-meta-tags": "^1.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-spring": "^8.0.27",
+    "react-use-gesture": "^9.0.4",
     "semantic-ui-react": "^2.0.3"
   },
   "scripts": {

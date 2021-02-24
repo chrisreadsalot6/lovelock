@@ -111,6 +111,8 @@ def join_lock():
         },
     }
     print("code here", code)
+
+    lock = None
     if code in seedObject.keys():
         initiatorCompassDirection = 100
         initiatorGPSLatitude = seedObject[code]["initiatorGPSLatitude"]

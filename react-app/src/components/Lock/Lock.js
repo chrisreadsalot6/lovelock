@@ -84,6 +84,25 @@ export default function Lock({ user }) {
     }
   };
 
+  const localeData = () => {
+    let myLat;
+    let myLong;
+
+    if (user["initiatorOrJoiner"] === "initiator") {
+      myLat = geolocation.initiatorGPSLatitude;
+      myLong = geolocation.initiatorGPSLongitude;
+    } else {
+      myLat = geolocation.joinerGPSLatitude;
+      myLong = geolocation.joinerGPSLongitude;
+    }
+
+    fetch(`/api/locale/${user.id}/${myLat}/${myLong}`, {
+      method: "GET",
+    }).then((result) => {
+      result.json().then((data) => console.log("over here", data));
+    });
+  };
+
   const calculateBearing = () => {
     let myLat;
     let myLong;
@@ -273,6 +292,7 @@ export default function Lock({ user }) {
         // this breaks on a page refresh
         // it'd be better to add it to the original user object
         initiatorOrJoiner: user["initiatorOrJoiner"],
+        locked: locked,
         lockId: lockId,
         midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
         midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],

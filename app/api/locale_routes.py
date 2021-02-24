@@ -6,9 +6,22 @@ from app.models import db, Locale
 locale_routes = Blueprint("locale", __name__)
 
 
-@locale_routes.route("/", methods=["GET"])
-def get_locale():
-    return "hi"
+@locale_routes.route("/<int:userId>/<latitude>/<longitude>", methods=["GET"])
+def get_locale(userId, latitude, longitude):
+    locale = (
+        Locale.query.filter_by(userId=userId)
+        .filter_by(GPSLatitude=latitude)
+        .filter_by(GPSLongitude=longitude)
+        .first()
+    )
+
+    responseData = {
+        "temperatureFeelsLikeFahrenheit": locale.temperatureFeelsLikeFahrenheit,
+        "weatherDescription": locale.weatherDescription,
+        "weatherDescriptionDetailed": locale.weatherDescriptionDetailed,
+    }
+
+    return jsonify(responseData)
 
 
 @locale_routes.route("/", methods=["POST"])

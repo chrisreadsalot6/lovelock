@@ -17,8 +17,8 @@ def seed_locales():
 
     joe = Locale(
         createdWhen=datetime.utcnow(),
-        GPSLatitude="40.9206",
-        GPSLongitude="-74.0722",
+        GPSLatitude="40.705899",
+        GPSLongitude="-74.043770",
         localTimezoneOffset=5,
         name="Joe",
         updatedWhen=datetime.utcnow(),
@@ -65,12 +65,23 @@ def seed_locales():
         userId=1,
     )
 
+    willard_beach = Locale(
+        createdWhen=datetime.utcnow(),
+        GPSLatitude="43.642398",
+        GPSLongitude="-70.227022",
+        localTimezoneOffset=5,
+        name="Willard Beach",
+        updatedWhen=datetime.utcnow(),
+        userId=1,
+    )
+
     db.session.add(harvard_yard)
     db.session.add(joe)
     db.session.add(mecca)
     db.session.add(sphinx)
     db.session.add(stephen_colbert)
     db.session.add(the_white_house)
+    db.session.add(willard_beach)
 
     db.session.commit()
 

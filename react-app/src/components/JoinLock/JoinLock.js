@@ -25,6 +25,7 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
   };
 
   const joinALock = () => {
+    console.log("lockId here", lockId);
     const postData = {
       active: true,
       joinerCompassDirection: readings.compassDirection,
@@ -43,12 +44,15 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
       body: JSON.stringify(postData),
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data);
-        // JSON.parse(data).then((rawJSON) => console.log(rawJSON));
-        // console.log(typeof data);
-        // console.log(Object.keys(data));
-        const updatedLockId = data["uniqueIdentifier"];
-        history.push(`/lock/${updatedLockId}`);
+        if (data === false) {
+          console.log("No join lock with this id");
+          history.push("/link/no-lock");
+          setJoin(false);
+        } else {
+          console.log("data here", data);
+          const updatedLockId = data["uniqueIdentifier"];
+          history.push(`/lock/${updatedLockId}`);
+        }
       });
     });
   };

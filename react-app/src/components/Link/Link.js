@@ -45,21 +45,26 @@ export default function Link({ setUser, user }) {
       const fakeDirection = 10;
       setCompass(fakeDirection);
     } else {
-      DeviceOrientationEvent.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          window.addEventListener(
-            "deviceorientation",
-            (event) => {
-              setCompass(event.webkitCompassHeading);
-            },
-            { once: true }
-          );
-        } else {
-          alert(
-            "User permission denied. In order to use the app, please restart safari and allow permission."
-          );
-        }
-      });
+      // if (compass !== null) {
+      //   console.log(compass);
+      //   setCompass(compass + 1);
+      // } else {
+        DeviceOrientationEvent.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            window.addEventListener(
+              "deviceorientation",
+              (event) => {
+                setCompass(event.webkitCompassHeading);
+              },
+              { once: true }
+            );
+          } else {
+            alert(
+              "User permission denied. In order to use the app, please restart safari and allow permission."
+            );
+          }
+        });
+      // }
     }
   };
 
