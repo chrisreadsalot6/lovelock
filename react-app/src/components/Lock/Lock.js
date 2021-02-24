@@ -143,13 +143,13 @@ export default function Lock({ user }) {
     setBearing(bearing);
 
     // midpoint calculation
-    const Bx = Math.cos(φ2) + Math.cos(theirLong - myLong);
-    const By = Math.cos(φ2) * Math.sin(theirLong - myLong);
+    const Bx = Math.cos(φ2) + Math.cos(theirLongRad - myLongRad);
+    const By = Math.cos(φ2) * Math.sin(theirLongRad - myLongRad);
     const φ3 = Math.atan2(
       Math.sin(φ1) + Math.sin(φ2),
       Math.sqrt((Math.cos(φ1) + Bx) * (Math.cos(φ1) + Bx) + By * By)
     );
-    const λ3 = myLong + Math.atan2(By, Math.cos(φ1) + Bx);
+    const λ3 = myLongRad + Math.atan2(By, Math.cos(φ1) + Bx);
 
     const midwayLatitude = φ3 * (180 / Math.PI);
     const midwayLongitude = λ3 * (180 / Math.PI);
@@ -158,38 +158,34 @@ export default function Lock({ user }) {
 
     const radius = 100;
 
-    fetch("https://wft-geo-db.p.rapidapi.com/v1/geo/cities", {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
-        "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
-      },
-    }).then((result) => {
+    fetch(
+      `https://wft-geo-db.p.rapidapi.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+        },
+      }
+    ).then((result) => {
       result.json().then((data) => {
         const cities = result["data"];
-        if (cities.length > 0) {
-          midwayPointCity
+        console.log("cities", cities);
+        if (cities !== undefined) {
+          midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
+        } else {
+          midwayPointCity = `No major city within ${radius} miles!`;
         }
+        console.log("midway city", midwayPointCity);
+
+        setMidwayGPS({
+          midwayGPSLatitude: midwayLatitude,
+          midwayGPSLongitude: midwayLongitude,
+          midwayPointCity: midwayPointCity,
+        });
       });
     });
-
-    // fetch(
-    //   `http://geodb-free-service.wirefreethought.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`
-    // ).then((result) => {
-    //   const data = result["data"];
-    //   if (data.length > 0) {
-    //     midwayPointCity = data[0]["city"];
-    //   } else {
-    //     midwayPointCity = `No major city within ${radius} miles.`;
-    //   }
-    //   console.log(midwayPointCity);
-
-    //   setMidwayGPS({
-    //     midwayGPSLatitude: midwayLatitude,
-    //     midwayGPSLongitude: midwayLongitude,
-    //     midwayPointCity: midwayPointCity,
-    //   });
-    // });
 
     return bearing;
   };
