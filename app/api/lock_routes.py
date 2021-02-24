@@ -46,6 +46,7 @@ def push_compass_data(lockId):
 
     print("push-compass", json)
 
+    # breaks on page refresh, without going back to the link page
     if json["initiatorOrJoiner"] == "initiator":
         lock.initiatorCompassDirection = json["compassDirection"]
     else:
