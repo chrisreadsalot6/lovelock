@@ -71,7 +71,6 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
               as={NavLink}
               to="/demo"
               exact={true}
-              basic
               color="purple"
               size="normal"
             >

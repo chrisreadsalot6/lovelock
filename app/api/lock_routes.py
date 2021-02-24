@@ -107,7 +107,7 @@ def join_lock():
             "initiatorGPSLongitude": "31.13583279",
         },
     }
-    print(code)
+    print("code here", code)
     if code in seedObject.keys():
         initiatorCompassDirection = 100
         initiatorGPSLatitude = seedObject[code]["initiatorGPSLatitude"]
@@ -122,17 +122,22 @@ def join_lock():
             initiatorUserId=initiatorUserId,
             uniqueIdentifier=uniqueIdentifier,
         )
+
+        print("lock dict here", lock.to_dict())
     else:
         lock = Lock.query.filter_by(uniqueIdentifier=code).first()
 
-    print(lock)
-    lock.active = True
-    lock.joinerCompassDirection = json["joinerCompassDirection"]
-    lock.joinerGPSLatitude = json["joinerGPSLatitude"]
-    lock.joinerGPSLongitude = json["joinerGPSLongitude"]
-    lock.joinerUserId = json["joinerUserId"]
+    if not lock:
+        return jsonify(False)
+    else:
+        print("lock here", lock)
+        lock.active = True
+        lock.joinerCompassDirection = json["joinerCompassDirection"]
+        lock.joinerGPSLatitude = json["joinerGPSLatitude"]
+        lock.joinerGPSLongitude = json["joinerGPSLongitude"]
+        lock.joinerUserId = json["joinerUserId"]
 
-    db.session.add(lock)  # ?? will this mess up create??
-    db.session.commit()
+        db.session.add(lock)  # ?? will this mess up create??
+        db.session.commit()
 
-    return jsonify(lock.to_dict())
+        return jsonify(lock.to_dict())

@@ -54,20 +54,16 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
   };
 
   return (
-    <div>
-      <div className="ui action input">
-        <Input
-          onChange={(e) => getLockId(e)}
-          placeholder="Enter a Unique Lock Id"
-          action={{
-            color: "purple",
-            basic: true,
-            size: "massive",
-            onClick: getDirectionJoin,
-            content: "Join a Lock",
-          }}
-        />
-      </div>
-    </div>
+    <Input
+      onChange={(e) => getLockId(e)}
+      placeholder="Enter a Lock Id..."
+      action={{
+        color: "purple",
+        basic: true,
+        size: "massive",
+        onClick: getDirectionJoin,
+        content: "Join a Lock",
+      }}
+    />
   );
 }
