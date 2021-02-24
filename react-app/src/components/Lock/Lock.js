@@ -70,7 +70,7 @@ export default function Lock({ user }) {
     if (bearing === null) {
       setLockIdColor("purple");
     } else {
-      setLockIdColor("");
+      setLockIdColor("grey");
     }
   }, [bearing]);
 
@@ -355,7 +355,7 @@ export default function Lock({ user }) {
             </Grid.Row>
           )}
 
-          <Grid.Row verticalAlign="Bottom">
+          <Grid.Row>
             <Grid.Column verticalAlign="middle">
               <Message color={lockIdColor} size="large" compact>
                 <Message.Header>Your unique lock id</Message.Header>

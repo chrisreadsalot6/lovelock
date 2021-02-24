@@ -66,7 +66,18 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
         }
       >
         <Menu secondary size="massive">
-          {!authenticated ? null : (
+          {!authenticated ? (
+            <Menu.Item
+              as={NavLink}
+              to="/demo"
+              exact={true}
+              basic
+              color="purple"
+              size="normal"
+            >
+              Demo
+            </Menu.Item>
+          ) : (
             <Menu.Item as={NavLink} to="/" exact={true}>
               <Image
                 src={process.env.PUBLIC_URL + "/favicon.ico"}

@@ -1,16 +1,17 @@
 import { authenticate } from "./services/auth";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import React, { useEffect, useState } from "react";
 import MetaTags from "react-meta-tags";
+import React, { useEffect, useState } from "react";
 
+import DemoLogin from "./components/auth/DemoLogin";
 import Footer from "./components/Footer/Footer";
 import JoinLock from "./components/JoinLock/JoinLock";
 import Link from "./components/Link/Link";
+import Lock from "./components/Lock/Lock";
 import LoginForm from "./components/auth/LoginForm";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
-import Lock from "./components/Lock/Lock";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -41,6 +42,13 @@ function App() {
           setUser={setUser}
         />
         <Switch>
+          <Route path="/demo" exact={true}>
+            <DemoLogin
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+              setUser={setUser}
+            />
+          </Route>
           <Route path="/login" exact={true}>
             <LoginForm
               authenticated={authenticated}
