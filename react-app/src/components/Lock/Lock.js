@@ -16,6 +16,8 @@ export default function Lock({ user }) {
   });
   const [toggleButton, setToggleButton] = useState(true);
 
+  const [partnerIsLocked, setPartnerIsLocked] = useState(false);
+
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
@@ -58,7 +60,7 @@ export default function Lock({ user }) {
   }, [geolocation]);
 
   useEffect(() => {
-    console.log("compasscount", compassReadingCount);
+    // console.log("compasscount", compassReadingCount);
     // if (compassReadingCount > 0 && compassReadingCount % 10 === 0) {
     //   console.log("HERE");
     checkIfLocked();
@@ -154,8 +156,8 @@ export default function Lock({ user }) {
     const midwayLatitude = φ3 * (180 / Math.PI);
     const midwayLongitude = λ3 * (180 / Math.PI);
     console.log(midwayLatitude, midwayLongitude);
-    let midwayPointCity = "";
 
+    let midwayPointCity = "";
     const radius = 100;
 
     fetch(
@@ -223,8 +225,10 @@ export default function Lock({ user }) {
       response.json().then((data) => {
         if (user["initiatorOrJoiner"] === "initiator") {
           setLinkedCompassDirection(data.joinerCompassDirection);
+          setPartnerIsLocked(data.joinerLocked);
         } else {
           setLinkedCompassDirection(data.initiatorCompassDirection);
+          setPartnerIsLocked(data.initiatorLocked);
         }
       });
     });
@@ -235,6 +239,7 @@ export default function Lock({ user }) {
     const postData = {
       compassDirection: myCompassDirection,
       initiatorOrJoiner: user["initiatorOrJoiner"],
+      locked: locked,
       lockId: lockId,
       midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
       midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
@@ -351,8 +356,6 @@ export default function Lock({ user }) {
                       <i className="ui icon lock massive purple inverted"></i>
                     </div>
                     <Message size="massive" color="purple" compact>
-                      {/* Your partner's compass direction:{" "}
-                    {parseInt(linkedCompassDirection)} */}
                       Straight That-A-Way!
                       <br />
                       Over the Horizon
@@ -360,7 +363,9 @@ export default function Lock({ user }) {
                       You are{" "}
                       {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
                       miles away
+                      {partnerIsLocked ? "You're partner is locked on!" : null}
                     </Message>
+                    <div>{midwayGPS["midwayPointCity"]}</div>
                   </>
                 )}
               </Grid.Column>

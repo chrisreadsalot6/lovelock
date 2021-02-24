@@ -49,8 +49,10 @@ def push_compass_data(lockId):
     # breaks on page refresh, without going back to the link page
     if json["initiatorOrJoiner"] == "initiator":
         lock.initiatorCompassDirection = json["compassDirection"]
+        lock.initiatorLocked = json["locked"]
     else:
         lock.joinerCompassDirection = json["compassDirection"]
+        lock.joinerLocked = json["locked"]
 
     if json["midwayGPSLatitude"]:
         lock.midwayGPSLatitude = json["midwayGPSLatitude"]

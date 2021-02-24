@@ -15,10 +15,12 @@ class Lock(db.Model):
     initiatorCompassDirection = db.Column(db.Numeric, nullable=False)
     initiatorGPSLatitude = db.Column(db.Numeric, nullable=False)
     initiatorGPSLongitude = db.Column(db.Numeric, nullable=False)
+    initiatorLocked = db.Column(db.Boolean, default=False)
     initiatorUserId = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     joinerCompassDirection = db.Column(db.Numeric)
     joinerGPSLatitude = db.Column(db.Numeric)
     joinerGPSLongitude = db.Column(db.Numeric)
+    joinerLocked = db.Column(db.Boolean, default=False)
     joinerUserId = db.Column(db.Integer, db.ForeignKey(User.id))
     midwayGPSLatitude = db.Column(db.Numeric)
     midwayGPSLongitude = db.Column(db.Numeric)
@@ -43,10 +45,12 @@ class Lock(db.Model):
             "initiatorCompassDirection": str(self.initiatorCompassDirection),
             "initiatorGPSLatitude": str(self.initiatorGPSLatitude),
             "initiatorGPSLongitude": str(self.initiatorGPSLongitude),
+            "initiatorLocked": self.initiatorLocked,
             "initiatorUserId": self.initiatorUserId,
             "joinerCompassDirection": str(self.joinerCompassDirection),
             "joinerGPSLatitude": str(self.joinerGPSLatitude),
             "joinerGPSLongitude": str(self.joinerGPSLongitude),
+            "joinerLocked": self.joinerLocked,
             "joinerUserId": self.joinerUserId,
             "midwayGPSLatitude": str(self.midwayGPSLatitude),
             "midwayGPSLongitude": str(self.midwayGPSLongitude),
