@@ -391,7 +391,6 @@ export default function Lock({ user }) {
               </Grid.Column>
             </Grid.Row>
           )}
-
           <Grid.Row>
             <Grid.Column verticalAlign="middle">
               <Message color={lockIdColor} size="large" compact>
