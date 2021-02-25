@@ -1,5 +1,4 @@
 import { Button, Container, Grid, Image, Message } from "semantic-ui-react";
-import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -409,12 +408,6 @@ export default function JoeLock({ user }) {
           </Grid.Row>
         </Grid>
       </Container>
-      <MetaTags>
-        <meta
-          name="viewport"
-          content={`width=${document.documentElement.clientWidth}, height=${document.documentElement.clientHeight}`}
-        />
-      </MetaTags>
     </>
   );
 }

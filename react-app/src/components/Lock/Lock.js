@@ -1,5 +1,4 @@
 import { Button, Container, Grid, Message } from "semantic-ui-react";
-import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -108,7 +107,6 @@ export default function Lock({ user }) {
       method: "GET",
     }).then((result) => {
       result.json().then((data) => {
-        console.log("my over here", data);
         setMyWeather({
           temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
           weatherDescription: data.weatherDescription,
@@ -120,7 +118,6 @@ export default function Lock({ user }) {
       method: "GET",
     }).then((result) => {
       result.json().then((data) => {
-        console.log("your over here", data);
         setYourWeather({
           temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
           weatherDescription: data.weatherDescription,
@@ -141,17 +138,14 @@ export default function Lock({ user }) {
         },
       }
     ).then((result) => {
-      console.log("result", result);
       result.json().then((data) => {
         const cities = data["data"];
-        console.log("cities", cities);
         let midwayPointCity = "";
         if (cities !== undefined && cities.length > 0) {
           midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
         } else {
           midwayPointCity = `No major city within ${radius} miles!`;
         }
-        console.log("midway city", midwayPointCity);
 
         setMidwayGPS({
           midwayGPSLatitude: midwayLatitude,
@@ -193,10 +187,6 @@ export default function Lock({ user }) {
     const theirLatRad = theirLat * (Math.PI / 180);
     const theirLongRad = theirLong * (Math.PI / 180);
 
-    console.log(myLat, myLong, theirLat, theirLong);
-    console.log(myLatRad, myLongRad, theirLatRad, theirLongRad); // correct
-    // Lock.js:136 40.750638 -73.993899 40.763771 -73.98304
-
     const R = 6371e3;
     const φ1 = (myLat * Math.PI) / 180;
     const φ2 = (theirLat * Math.PI) / 180;
@@ -209,8 +199,6 @@ export default function Lock({ user }) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distanceInMeters = R * c;
 
-    console.log("km", distanceInMeters / 1000); // correct
-
     setKMDistance(distanceInMeters / 1000);
 
     const y = Math.sin(theirLongRad - myLongRad) * Math.cos(theirLatRad);
@@ -222,8 +210,7 @@ export default function Lock({ user }) {
     const theta = Math.atan2(y, x);
     const bearing = ((theta * 180) / Math.PI + 360) % 360;
 
-    console.log("bearing", bearing); // a little off, but close
-    setBearing(bearing);
+    setBearing(bearing); // a little off, but close
 
     // midpoint calculation
     const Bx = Math.cos(theirLatRad) * Math.cos(theirLongRad - myLongRad);
@@ -234,14 +221,10 @@ export default function Lock({ user }) {
     );
     const midwayLongRad = myLongRad + Math.atan2(By, Math.cos(myLatRad) + Bx);
 
-    console.log("midway GPS rads", midwayLatRad, midwayLongRad);
-
     let midwayLatitude = midwayLatRad * (180 / Math.PI);
     midwayLatitude = ((midwayLatitude + 270) % 180) - 90;
     let midwayLongitude = midwayLongRad * (180 / Math.PI);
     midwayLongitude = ((midwayLongitude + 540) % 360) - 180;
-
-    console.log("midway GPS", midwayLatitude, midwayLongitude);
 
     const radius = 100;
 
@@ -253,14 +236,9 @@ export default function Lock({ user }) {
   };
 
   const endLock = () => {
-    console.log("here I am");
     setToggleButton(true);
     setBearing(null);
     setRunningCompass(false);
-    if (detectIfMobileBrowser() === true) {
-      console.log("now, here");
-      window.removeEventListener("deviceorientation", inner);
-    }
   };
 
   const getGeolocationData = () => {
@@ -296,7 +274,6 @@ export default function Lock({ user }) {
   };
 
   const pushAndPullData = () => {
-    console.log(user["initiatorOrJoiner"]);
     const postData = {
       compassDirection: myCompassDirection,
       initiatorOrJoiner: user["initiatorOrJoiner"],
@@ -364,8 +341,6 @@ export default function Lock({ user }) {
   }, [runningCompass]);
 
   const inner = (event) => {
-    // setCompassReadingCount(newCount);
-    console.log("hi");
     if (event.webkitCompassHeading) {
       setMyCompassDirection(event.webkitCompassHeading);
     } else {
@@ -495,12 +470,6 @@ export default function Lock({ user }) {
           ) : null}
         </Grid>
       </Container>
-      <MetaTags>
-        <meta
-          name="viewport"
-          content={`width=${document.documentElement.clientWidth}, height=${document.documentElement.clientHeight}`}
-        />
-      </MetaTags>
     </>
   );
 }
