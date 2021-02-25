@@ -27,6 +27,7 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
 
   const joinALock = () => {
     console.log("lockId here", lockId);
+    const localTimezoneOffset = new Date().getTimezoneOffset();
     const postData = {
       active: true,
       joinerCompassDirection: readings.compassDirection,
@@ -34,6 +35,7 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
       joinerGPSLongitude: readings.GPSLongitude,
       joinerUserId: readings.userId,
       startedWhen: new Date(),
+      localTimezoneOffset: localTimezoneOffset,
       uniqueIdentifier: lockId,
     };
 
@@ -64,18 +66,18 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
         <Grid.Column>
           <Form>
             <Form.Field> */}
-              <Input
-                onChange={(e) => getLockId(e)}
-                placeholder="Enter a Lock Id..."
-                action={{
-                  color: "purple",
-                  basic: true,
-                  size: "massive",
-                  onClick: getDirectionJoin,
-                  content: "Join a Lock",
-                }}
-              />
-            {/* </Form.Field>
+      <Input
+        onChange={(e) => getLockId(e)}
+        placeholder="Enter a Lock Id..."
+        action={{
+          color: "purple",
+          basic: true,
+          size: "massive",
+          onClick: getDirectionJoin,
+          content: "Join a Lock",
+        }}
+      />
+      {/* </Form.Field>
           </Form>
         </Grid.Column>
       </Grid> */}

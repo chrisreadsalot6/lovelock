@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify, request
+import requests
 import uuid
 
 from app.models import db, Lock
+from app.api.locale_routes import make_locale
 
 lock_routes = Blueprint("lock", __name__)
 
@@ -89,30 +91,37 @@ def join_lock():
     code = json["uniqueIdentifier"]
 
     seedObject = {
+        # Willard Beach
         "04106": {
             "initiatorGPSLatitude": "43.642398",
             "initiatorGPSLongitude": "-70.227022",
         },
+        # Joe
         "09": {
             "initiatorGPSLatitude": "40.705899",
             "initiatorGPSLongitude": "-74.043770",
         },
+        # Mecca
         "570": {
             "initiatorGPSLatitude": "21.422487",
             "initiatorGPSLongitude": "39.826206",
         },
+        # Harvard Yard
         "1636": {
             "initiatorGPSLatitude": "42.374394",
             "initiatorGPSLongitude": "-71.116257",
         },
+        # The White House
         "1776": {
             "initiatorGPSLatitude": "38.897957",
             "initiatorGPSLongitude": "-77.036560",
         },
+        # Stephen Colbert
         "1997": {
             "initiatorGPSLatitude": "40.763771",
             "initiatorGPSLongitude": "-73.983040",
         },
+        # Sphinx
         "12000": {
             "initiatorGPSLatitude": "29.971829446",
             "initiatorGPSLongitude": "31.13583279",
@@ -137,6 +146,19 @@ def join_lock():
         )
 
         print("lock dict here", lock.to_dict())
+
+        postData = {
+            "localTimezoneOffset": None,
+            "GPSLatitude": initiatorGPSLatitude,
+            "GPSLongitude": initiatorGPSLongitude,
+            "name": "saved_place",
+            "userId": json["joinerUserId"],
+        }
+
+        make_locale(postData)
+
+        print("Did we make it past locale?")
+
     else:
         lock = Lock.query.filter_by(uniqueIdentifier=code).first()
 

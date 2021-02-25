@@ -88,19 +88,64 @@ export default function Lock({ user }) {
     // get weather data, I'll have to run one on each GPS
     let myLat;
     let myLong;
+    let yourLat;
+    let yourLong;
 
     if (user["initiatorOrJoiner"] === "initiator") {
       myLat = geolocation.initiatorGPSLatitude;
       myLong = geolocation.initiatorGPSLongitude;
+      yourLat = geolocation.joinerGPSLatitude;
+      yourLong = geolocation.joinerGPSLongitude;
     } else {
       myLat = geolocation.joinerGPSLatitude;
       myLong = geolocation.joinerGPSLongitude;
+      yourLat = geolocation.initiatorGPSLatitude;
+      yourLong = geolocation.initiatorGPSLongitude;
     }
 
     fetch(`/api/locale/${user.id}/${myLat}/${myLong}`, {
       method: "GET",
     }).then((result) => {
-      result.json().then((data) => console.log("over here", data));
+      result.json().then((data) => console.log("my over here", data));
+    });
+
+    fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
+      method: "GET",
+    }).then((result) => {
+      result.json().then((data) => console.log("your over here", data));
+    });
+  };
+
+  const midwayData = (midwayLatitude, midwayLongitude, radius) => {
+    fetch(
+      `https://wft-geo-db.p.rapidapi.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com", // not needed to work so far, but they have it in the api docs on rapid api
+        },
+      }
+    ).then((result) => {
+      console.log("result", result);
+      result.json().then((data) => {
+        const cities = data["data"];
+        console.log("cities", cities);
+        let midwayPointCity = "";
+        if (cities !== undefined && cities.length > 0) {
+          midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
+        } else {
+          midwayPointCity = `No major city within ${radius} miles!`;
+        }
+        console.log("midway city", midwayPointCity);
+
+        setMidwayGPS({
+          midwayGPSLatitude: midwayLatitude,
+          midwayGPSLongitude: midwayLongitude,
+          midwayPointCity: midwayPointCity,
+        });
+      });
     });
   };
 
@@ -184,38 +229,11 @@ export default function Lock({ user }) {
 
     console.log("midway GPS", midwayLatitude, midwayLongitude);
 
-    let midwayPointCity = "";
     const radius = 100;
 
-    fetch(
-      `https://wft-geo-db.p.rapidapi.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`,
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-key":
-            "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
-          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com", // not needed to work so far, but they have it in the api docs on rapid api
-        },
-      }
-    ).then((result) => {
-      console.log("result", result);
-      result.json().then((data) => {
-        const cities = data["data"];
-        console.log("cities", cities);
-        if (cities !== undefined) {
-          midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
-        } else {
-          midwayPointCity = `No major city within ${radius} miles!`;
-        }
-        console.log("midway city", midwayPointCity);
+    midwayData(midwayLatitude, midwayLongitude, radius);
 
-        setMidwayGPS({
-          midwayGPSLatitude: midwayLatitude,
-          midwayGPSLongitude: midwayLongitude,
-          midwayPointCity: midwayPointCity,
-        });
-      });
-    });
+    localeData();
 
     return bearing;
   };

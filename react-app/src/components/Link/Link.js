@@ -107,7 +107,7 @@ export default function Link({ noLock, setUser, user }) {
           userId: user.id,
         };
 
-        fetch("/api/locale/", {
+        fetch("/api/locale/optional", {
           method: "post",
           headers: {
             "Content-Type": "application/json",
@@ -139,7 +139,7 @@ export default function Link({ noLock, setUser, user }) {
           userId: user.id,
         };
 
-        fetch("/api/locale/", {
+        fetch("/api/locale/optional", {
           method: "post",
           headers: {
             "Content-Type": "application/json",

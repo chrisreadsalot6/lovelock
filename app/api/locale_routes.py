@@ -12,21 +12,32 @@ def get_locale(userId, latitude, longitude):
         Locale.query.filter_by(userId=userId)
         .filter_by(GPSLatitude=latitude)
         .filter_by(GPSLongitude=longitude)
+        .order_by(Locale.id.desc())
         .first()
     )
 
+    print(locale)
+    if locale:
+        print("locale flask", locale.to_dict())
+
     responseData = {
+        "name": locale.name,
         "temperatureFeelsLikeFahrenheit": locale.temperatureFeelsLikeFahrenheit,
         "weatherDescription": locale.weatherDescription,
         "weatherDescriptionDetailed": locale.weatherDescriptionDetailed,
     }
 
+    print(responseData)
+
     return jsonify(responseData)
 
 
-@locale_routes.route("/", methods=["POST"])
-def make_locale():
-    json = request.json
+@locale_routes.route("/<optional_data>", methods=["POST"])
+def make_locale(optional_data):
+    if optional_data == "optional":
+        json = request.json
+    else:
+        json = optional_data
 
     sun_response = requests.get(
         f'https://api.sunrise-sunset.org/json?lat={json["GPSLatitude"]}&lng={json["GPSLongitude"]}'
@@ -45,13 +56,19 @@ def make_locale():
     temp = weather["main"]["temp"]
     weatherDescription = weather["weather"][0]["main"]
     weatherDescriptionDetailed = weather["weather"][0]["description"]
+
+    print("weather data", weather["name"], weather)
     # wind_deg = weather["wind"]["deg"]
     # wind_speed = weather["wind"]["speed"]
+
+    if "name" not in json.keys():
+        json["name"] = None
 
     locale = Locale(
         GPSLatitude=json["GPSLatitude"],
         GPSLongitude=json["GPSLongitude"],
         localTimezoneOffset=json["localTimezoneOffset"],
+        name=json["name"],
         sunrise=sunrise,
         sunset=sunset,
         temperatureFahrenheit=temp,
