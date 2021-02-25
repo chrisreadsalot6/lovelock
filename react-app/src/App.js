@@ -8,6 +8,7 @@ import Footer from "./components/Footer/Footer";
 import Link from "./components/Link/Link";
 import Lock from "./components/Lock/Lock";
 import LoginForm from "./components/auth/LoginForm";
+import JoeLock from "./components/JoeLock/JoeLock";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
@@ -67,6 +68,9 @@ function App() {
           </Route>
           <Route path="/link/">
             <Link setUser={setUser} user={user} />
+          </Route>
+          <Route path="/joelock/:lockId">
+            <JoeLock user={user} />
           </Route>
           <Route path="/lock/:lockId">
             <Lock user={user} />

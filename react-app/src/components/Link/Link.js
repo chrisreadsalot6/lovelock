@@ -1,10 +1,13 @@
-import { Grid, Message, Segment } from "semantic-ui-react";
+import { Button, Grid, Message, Segment } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
+import EnterJoeLock from "../EnterJoeLock/EnterJoeLock";
 import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link({ noLock, setUser, user }) {
+  const [joelock, setJoelock] = useState(null);
+
   const [compass, setCompass] = useState(null);
   const [viewHeightThird, setViewHeightThird] = useState("20vh");
   const [mobile, setMobile] = useState(null);
@@ -180,12 +183,19 @@ export default function Link({ noLock, setUser, user }) {
                 user={user}
               />
             </Grid.Row>
-            <Grid.Row
-              style={{ margin: "0", height: viewHeightThird }}
-            ></Grid.Row>
+            <Grid.Row style={{ margin: "0", height: viewHeightThird }}>
+              <EnterJoeLock
+                getDirection={getDirection}
+                joelock={joelock}
+                readings={readings}
+                setUser={setUser}
+                user={user}
+              />
+            </Grid.Row>
             <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <JoinLock
                 getDirection={getDirection}
+                joelock={joelock}
                 readings={readings}
                 setUser={setUser}
                 user={user}

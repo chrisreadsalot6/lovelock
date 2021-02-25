@@ -1,17 +1,17 @@
-import { Button, Input } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function JoinLock({
+export default function EnterJoeLock({
   getDirection,
   joelock,
   readings,
   setUser,
   user,
 }) {
-  const [lockId, setLockId] = useState(null);
+  const [lockId, setLockId] = useState("09");
 
-  const thisJoelock = joelock;
+  // const thisJoelock = joelock;
 
   // if (joelock !== null) {
   //   setLockId("09");
@@ -70,25 +70,22 @@ export default function JoinLock({
         } else {
           console.log("data here", data);
           const updatedLockId = data["uniqueIdentifier"];
-          history.push(`/lock/${updatedLockId}`);
+          history.push(`/joelock/${updatedLockId}`);
         }
       });
     });
   };
 
+  const hi = () => console.log("hi");
+
   return (
-    <>
-      <Input
-        onChange={(e) => getLockId(e)}
-        placeholder="Enter a Lock Id..."
-        action={{
-          color: "purple",
-          basic: true,
-          size: "massive",
-          onClick: getDirectionJoin,
-          content: "Join a Lock",
-        }}
-      />
-    </>
+    <Button
+      basic
+      onClick={getDirectionJoin}
+      opacity="0"
+      style={{ marginTop: "4vh", opacity: "100", padding: "4vh" }}
+    >
+      Joe
+    </Button>
   );
 }
