@@ -85,6 +85,7 @@ export default function Lock({ user }) {
   };
 
   const localeData = () => {
+    // get weather data, I'll have to run one on each GPS
     let myLat;
     let myLong;
 
@@ -134,7 +135,8 @@ export default function Lock({ user }) {
     const theirLongRad = theirLong * (Math.PI / 180);
 
     console.log(myLat, myLong, theirLat, theirLong);
-    console.log(myLatRad, myLongRad, theirLatRad, theirLongRad);
+    console.log(myLatRad, myLongRad, theirLatRad, theirLongRad); // correct
+    // Lock.js:136 40.750638 -73.993899 40.763771 -73.98304
 
     const R = 6371e3;
     const φ1 = (myLat * Math.PI) / 180;
@@ -148,7 +150,7 @@ export default function Lock({ user }) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distanceInMeters = R * c;
 
-    console.log(distanceInMeters / 1000);
+    console.log("km", distanceInMeters / 1000); // correct
 
     setKMDistance(distanceInMeters / 1000);
 
@@ -161,20 +163,26 @@ export default function Lock({ user }) {
     const theta = Math.atan2(y, x);
     const bearing = ((theta * 180) / Math.PI + 360) % 360;
 
+    console.log("bearing", bearing); // a little off, but close
     setBearing(bearing);
 
     // midpoint calculation
-    const Bx = Math.cos(φ2) + Math.cos(theirLongRad - myLongRad);
-    const By = Math.cos(φ2) * Math.sin(theirLongRad - myLongRad);
-    const φ3 = Math.atan2(
-      Math.sin(φ1) + Math.sin(φ2),
-      Math.sqrt((Math.cos(φ1) + Bx) * (Math.cos(φ1) + Bx) + By * By)
+    const Bx = Math.cos(theirLatRad) * Math.cos(theirLongRad - myLongRad);
+    const By = Math.cos(theirLatRad) * Math.sin(theirLongRad - myLongRad);
+    const midwayLatRad = Math.atan2(
+      Math.sin(myLatRad) + Math.sin(theirLatRad),
+      Math.sqrt((Math.cos(myLatRad) + Bx) ** 2 + By ** 2)
     );
-    const λ3 = myLongRad + Math.atan2(By, Math.cos(φ1) + Bx);
+    const midwayLongRad = myLongRad + Math.atan2(By, Math.cos(myLatRad) + Bx);
 
-    const midwayLatitude = φ3 * (180 / Math.PI);
-    const midwayLongitude = λ3 * (180 / Math.PI);
-    console.log(midwayLatitude, midwayLongitude);
+    console.log("midway GPS rads", midwayLatRad, midwayLongRad);
+
+    let midwayLatitude = midwayLatRad * (180 / Math.PI);
+    midwayLatitude = ((midwayLatitude + 270) % 180) - 90;
+    let midwayLongitude = midwayLongRad * (180 / Math.PI);
+    midwayLongitude = ((midwayLongitude + 540) % 360) - 180;
+
+    console.log("midway GPS", midwayLatitude, midwayLongitude);
 
     let midwayPointCity = "";
     const radius = 100;
@@ -186,12 +194,13 @@ export default function Lock({ user }) {
         headers: {
           "x-rapidapi-key":
             "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
-          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com", // not needed to work so far, but they have it in the api docs on rapid api
         },
       }
     ).then((result) => {
+      console.log("result", result);
       result.json().then((data) => {
-        const cities = result["data"];
+        const cities = data["data"];
         console.log("cities", cities);
         if (cities !== undefined) {
           midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
@@ -385,7 +394,9 @@ export default function Lock({ user }) {
                       miles away
                       {partnerIsLocked ? "You're partner is locked on!" : null}
                     </Message>
-                    <div>{midwayGPS["midwayPointCity"]}</div>
+                    <div>
+                      {midwayGPS["midwayPointCity"]} is halfway between you
+                    </div>
                   </>
                 )}
               </Grid.Column>

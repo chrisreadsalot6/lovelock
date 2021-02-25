@@ -9,8 +9,6 @@ import { useDrag, useDrop } from "react-dnd";
 
 import { logout } from "../services/auth";
 
-const type = "Image";
-
 const NavBar = ({ authenticated, setAuthenticated, setUser, image, index }) => {
   const [dynamicPadding, setDynamicPadding] = useState({
     loggedIn: "0vh 0vh 1vh 0vh",
@@ -100,12 +98,12 @@ const NavBar = ({ authenticated, setAuthenticated, setUser, image, index }) => {
   //   }
   // }, [currentTimeStamp]);
 
-  const ref = useRef(null);
+  // const ref = useRef(null);
 
-  const [, drop] = useDrop({
-    accept: type,
-    hover(item) {},
-  });
+  // const [, drop] = useDrop({
+  //   accept: type,
+  //   hover(item) {},
+  // });
 
   return (
     <>
