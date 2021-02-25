@@ -1,27 +1,21 @@
-import { Button } from "semantic-ui-react";
+import { Button, Input, Modal } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export default function EnterJoeLock({
   getDirection,
-  joelock,
   readings,
   setUser,
   user,
 }) {
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState(null);
+
+  const updatePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
   const [lockId, setLockId] = useState("09");
-
-  // const thisJoelock = joelock;
-
-  // if (joelock !== null) {
-  //   setLockId("09");
-  // }
-
-  // useEffect(() => {
-  //   if (lockId === "09" && joelock !== null) {
-  //     getDirectionJoin();
-  //   }
-  // }, [lockId]);
 
   const history = useHistory();
   const [join, setJoin] = useState(null);
@@ -33,10 +27,15 @@ export default function EnterJoeLock({
   }, [readings]);
 
   const getDirectionJoin = () => {
-    setJoin(true);
-    const userCopy = { ...user, initiatorOrJoiner: "joiner" };
-    setUser(userCopy);
-    getDirection();
+    if (password === "septemberjoe2020") {
+      setJoin(true);
+      const userCopy = { ...user, initiatorOrJoiner: "joiner" };
+      setUser(userCopy);
+      getDirection();
+    } else {
+      alert("experimental feature");
+      setOpen(false);
+    }
   };
 
   const getLockId = (e) => {
@@ -76,16 +75,33 @@ export default function EnterJoeLock({
     });
   };
 
-  const hi = () => console.log("hi");
-
   return (
-    <Button
-      basic
-      onClick={getDirectionJoin}
-      opacity="0"
-      style={{ marginTop: "4vh", opacity: "100", padding: "4vh" }}
-    >
-      Joe
-    </Button>
+    <>
+      <Button
+        basic
+        onClick={() => setOpen(true)}
+        style={{ marginTop: "4vh", opacity: "0", padding: "4vh" }}
+      >
+        Joe
+      </Button>
+      <Modal color="purple" size="mini" open={open}>
+        <Modal.Header color="purple" style={{ textAlign: "center" }}>
+          Password
+        </Modal.Header>
+        <Input
+          fluid
+          style={{ padding: "1vh 1vh 1vh 1vh" }}
+          onChange={updatePassword}
+        ></Input>
+        <Modal.Actions>
+          <Button color="purple" basic onClick={() => getDirectionJoin()}>
+            Submit
+          </Button>
+          <Button color="purple" basic onClick={() => setOpen(false)}>
+            Exit
+          </Button>
+        </Modal.Actions>
+      </Modal>
+    </>
   );
 }

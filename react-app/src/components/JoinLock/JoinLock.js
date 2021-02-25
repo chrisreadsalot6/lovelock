@@ -2,26 +2,8 @@ import { Button, Input } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function JoinLock({
-  getDirection,
-  joelock,
-  readings,
-  setUser,
-  user,
-}) {
+export default function JoinLock({ getDirection, readings, setUser, user }) {
   const [lockId, setLockId] = useState(null);
-
-  const thisJoelock = joelock;
-
-  // if (joelock !== null) {
-  //   setLockId("09");
-  // }
-
-  // useEffect(() => {
-  //   if (lockId === "09" && joelock !== null) {
-  //     getDirectionJoin();
-  //   }
-  // }, [lockId]);
 
   const history = useHistory();
   const [join, setJoin] = useState(null);

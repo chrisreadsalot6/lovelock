@@ -1,13 +1,17 @@
 import { Icon, Image, Menu, Segment } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { animated, useSpring } from "react-spring";
-import { useDrag, useHover } from "react-use-gesture";
+// import { animated, useSpring } from "react-spring";
+// import { useDrag, useHover } from "react-use-gesture";
+
+import { useDrag, useDrop } from "react-dnd";
 
 import { logout } from "../services/auth";
 
-const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
+const type = "Image";
+
+const NavBar = ({ authenticated, setAuthenticated, setUser, image, index }) => {
   const [dynamicPadding, setDynamicPadding] = useState({
     loggedIn: "0vh 0vh 1vh 0vh",
     loggedOut: "1vh",
@@ -59,42 +63,49 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
   //   set({ x: down ? mx : 0, y: down ? my : 0 });
   // });
 
-  const [previousTimeStamp, setPreviousTimeStamp] = useState(null);
-  const [currentTimeStamp, setCurrentTimeStamp] = useState(null);
-  // const [duration, setDuration] = useState(null);
-  const [showLock, setShowLock] = useState(false);
+  // const [previousTimeStamp, setPreviousTimeStamp] = useState(null);
+  // const [currentTimeStamp, setCurrentTimeStamp] = useState(null);
+  // // const [duration, setDuration] = useState(null);
+  // const [showLock, setShowLock] = useState(false);
 
-  const bindHover = useHover((state) => {
-    const { event, timeStamp } = state;
-    console.log(event);
-    setPreviousTimeStamp(timeStamp);
-    setTimeout(() => {
-      // setDuration(timeStamp + 3000);
-      setCurrentTimeStamp(timeStamp + 3000);
-    }, 3000);
-    // if (start === null) {
-    //   setStart(timeStamp);
-    // } else {
-    //   if (timeStamp - start > 3000) {
-    //     console.log("yes");
-    //     setStart(timeStamp);
-    //   }
-    // }
+  // const bindHover = useHover((state) => {
+  //   const { event, timeStamp } = state;
+  //   console.log(event);
+  //   setPreviousTimeStamp(timeStamp);
+  //   setTimeout(() => {
+  //     // setDuration(timeStamp + 3000);
+  //     setCurrentTimeStamp(timeStamp + 3000);
+  //   }, 3000);
+  //   // if (start === null) {
+  //   //   setStart(timeStamp);
+  //   // } else {
+  //   //   if (timeStamp - start > 3000) {
+  //   //     console.log("yes");
+  //   //     setStart(timeStamp);
+  //   //   }
+  //   // }
 
-    // console.log(timeStamp);
-    // one elapsed time, and the other, to get the number of seconds
+  //   // console.log(timeStamp);
+  //   // one elapsed time, and the other, to get the number of seconds
+  // });
+
+  // useEffect(() => {
+  //   console.log("1");
+  //   if (currentTimeStamp !== null) {
+  //     console.log("2", previousTimeStamp, currentTimeStamp);
+  //     if (currentTimeStamp - previousTimeStamp > 3000) {
+  //       console.log("3");
+  //       setShowLock(true);
+  //     }
+  //   }
+  // }, [currentTimeStamp]);
+
+  const ref = useRef(null);
+
+  const [, drop] = useDrop({
+    accept: type,
+    hover(item) {},
   });
-
-  useEffect(() => {
-    console.log("1");
-    if (currentTimeStamp !== null) {
-      console.log("2", previousTimeStamp, currentTimeStamp);
-      if (currentTimeStamp - previousTimeStamp > 3000) {
-        console.log("3");
-        setShowLock(true);
-      }
-    }
-  }, [currentTimeStamp]);
 
   return (
     <>
@@ -134,7 +145,7 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
                 size="mini"
                 // style={{ ...bind() }}
               ></Image> */}
-              <div {...bindHover()}>
+              <div>
                 <i className="ui icon lock big purple inverted"></i>
               </div>
             </Menu.Item>
