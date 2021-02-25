@@ -1,4 +1,4 @@
-import { Button, Input } from "semantic-ui-react";
+import { Button, Form, Grid, Input } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -60,17 +60,25 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
 
   return (
     <>
-      <Input
-        onChange={(e) => getLockId(e)}
-        placeholder="Enter a Lock Id..."
-        action={{
-          color: "purple",
-          basic: true,
-          size: "massive",
-          onClick: getDirectionJoin,
-          content: "Join a Lock",
-        }}
-      />
+      {/* <Grid>
+        <Grid.Column>
+          <Form>
+            <Form.Field> */}
+              <Input
+                onChange={(e) => getLockId(e)}
+                placeholder="Enter a Lock Id..."
+                action={{
+                  color: "purple",
+                  basic: true,
+                  size: "massive",
+                  onClick: getDirectionJoin,
+                  content: "Join a Lock",
+                }}
+              />
+            {/* </Form.Field>
+          </Form>
+        </Grid.Column>
+      </Grid> */}
     </>
   );
 }

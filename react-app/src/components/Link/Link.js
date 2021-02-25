@@ -80,8 +80,8 @@ export default function Link({ noLock, setUser, user }) {
       alert("Please kindly login or signup to get your location.");
     } else {
       if (
-        navigator.geolocation.getCurrentPosition((placeholder) =>
-          console.log("no print")
+        navigator.geolocation.getCurrentPosition(
+          (placeholder) => placeholder
         ) === undefined
       ) {
         alert(

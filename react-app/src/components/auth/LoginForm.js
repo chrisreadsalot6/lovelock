@@ -7,6 +7,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [middleOrTop, setMiddleOrTop] = useState("top");
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
@@ -14,6 +15,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
 
     if (isMobile === false) {
       setViewHeight("86.5vh");
+      setMiddleOrTop("middle");
     }
   }, []);
 
@@ -60,7 +62,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
     <>
       <Grid
         style={{ height: viewHeight, margin: "0px" }}
-        verticalAlign="middle"
+        verticalAlign={middleOrTop}
         id="login"
       >
         <Grid.Column textAlign="center">

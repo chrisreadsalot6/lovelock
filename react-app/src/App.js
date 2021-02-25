@@ -87,7 +87,11 @@ function App() {
         </BrowserRouter>
       </DndProvider>
       <MetaTags>
-        <meta name="viewport" content={`width=${window.screen.width * 1.25}`} />
+        {/* <meta http-equiv="ScreenOrientation" content= /> */}
+        <meta
+          name="viewport"
+          content={`width=${window.screen.width * 1.25}, user-scalable=no`}
+        />
       </MetaTags>
     </>
   );

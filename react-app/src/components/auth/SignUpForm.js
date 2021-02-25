@@ -9,6 +9,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [errors, setErrors] = useState([]);
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [middleOrTop, setMiddleOrTop] = useState("top");
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
@@ -16,6 +17,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
 
     if (isMobile === false) {
       setViewHeight("86.5vh");
+      setMiddleOrTop("middle");
     }
   }, []);
 
@@ -72,7 +74,10 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
   }
 
   return (
-    <Grid style={{ height: viewHeight, margin: "0px" }} verticalAlign="middle">
+    <Grid
+      style={{ height: viewHeight, margin: "0px" }}
+      verticalAlign={middleOrTop}
+    >
       <Grid.Column textAlign="center">
         <Image
           src="/lovelock.png"
