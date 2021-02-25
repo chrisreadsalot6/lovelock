@@ -18,6 +18,8 @@ export default function Lock({ user }) {
 
   const [partnerIsLocked, setPartnerIsLocked] = useState(false);
 
+  const [runningCompass, setRunningCompass] = useState(false);
+
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
@@ -60,9 +62,6 @@ export default function Lock({ user }) {
   }, [geolocation]);
 
   useEffect(() => {
-    // console.log("compasscount", compassReadingCount);
-    // if (compassReadingCount > 0 && compassReadingCount % 10 === 0) {
-    //   console.log("HERE");
     checkIfLocked();
     pushAndPullData();
     // }
@@ -88,7 +87,6 @@ export default function Lock({ user }) {
   const [yourWeather, setYourWeather] = useState(null);
 
   const localeData = () => {
-    // get weather data, I'll have to run one on each GPS
     let myLat;
     let myLong;
     let yourLat;
@@ -184,6 +182,7 @@ export default function Lock({ user }) {
     }
 
     // do we lose any precision here?
+    // and what level of precision do we need, to 4 places?
     myLat = parseFloat(myLat);
     myLong = parseFloat(myLong);
     theirLat = parseFloat(theirLat);
@@ -257,6 +256,7 @@ export default function Lock({ user }) {
     console.log("here I am");
     setToggleButton(true);
     setBearing(null);
+    setRunningCompass(false);
     if (detectIfMobileBrowser() === true) {
       console.log("now, here");
       window.removeEventListener("deviceorientation", inner);
@@ -308,8 +308,6 @@ export default function Lock({ user }) {
       userId: user.id,
     };
 
-    // if (Date.now() % (1000 * 10) === 0) {
-    //   console.log(Date.now());
     fetch(`/api/lock/${lockId}/push-compass`, {
       method: "post",
       headers: {
@@ -351,15 +349,28 @@ export default function Lock({ user }) {
       });
       pullCompassData();
     } else {
-      window.addEventListener("deviceorientation", inner); //, { once: true });
+      setRunningCompass(true);
     }
   };
 
+  useEffect(() => {
+    if (runningCompass === true) {
+      window.addEventListener("deviceorientation", inner);
+
+      return () => {
+        window.removeEventListener("deviceorientation", inner);
+      };
+    }
+  }, [runningCompass]);
+
   const inner = (event) => {
-    const newCount = compassReadingCount + 1;
-    console.log("inner compass count", newCount);
-    setCompassReadingCount(newCount);
-    setMyCompassDirection(event.webkitCompassHeading);
+    // setCompassReadingCount(newCount);
+    console.log("hi");
+    if (event.webkitCompassHeading) {
+      setMyCompassDirection(event.webkitCompassHeading);
+    } else {
+      setMyCompassDirection(null);
+    }
   };
 
   return (

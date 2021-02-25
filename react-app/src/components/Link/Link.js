@@ -1,4 +1,4 @@
-import { Button, Grid, Message, Segment } from "semantic-ui-react";
+import { Dimmer, Grid, Loader, Message, Segment } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
@@ -10,6 +10,7 @@ export default function Link({ noLock, setUser, user }) {
   const [viewHeightThird, setViewHeightThird] = useState("20vh");
   const [mobile, setMobile] = useState(null);
   const [readings, setReadings] = useState(null);
+  const [loaderToggle, setLoaderToggle] = useState(false);
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
@@ -45,12 +46,10 @@ export default function Link({ noLock, setUser, user }) {
       );
       const fakeDirection = 10;
       setCompass(fakeDirection);
+      console.log("permission mobile false", true);
     } else {
-      // if (compass !== null) {
-      //   console.log(compass);
-      //   setCompass(compass + 1);
-      // } else {
       DeviceOrientationEvent.requestPermission().then((permission) => {
+        console.log("permission", permission);
         if (permission === "granted") {
           window.addEventListener(
             "deviceorientation",
@@ -65,7 +64,6 @@ export default function Link({ noLock, setUser, user }) {
           );
         }
       });
-      // }
     }
   };
 
@@ -75,90 +73,90 @@ export default function Link({ noLock, setUser, user }) {
     }
   }, [compass]);
 
+  const getLocationRun = (position) => {
+    console.log(position);
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    const readingsDict = {
+      compassDirection: compass,
+      GPSLatitude: latitude,
+      GPSLongitude: longitude,
+      userId: user.id,
+    };
+    setReadings(readingsDict);
+
+    const localTimezoneOffset = new Date().getTimezoneOffset();
+
+    const postData = {
+      localTimezoneOffset: localTimezoneOffset,
+      GPSLatitude: latitude,
+      GPSLongitude: longitude,
+      userId: user.id,
+    };
+
+    fetch("/api/locale/optional", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    }).then((response) => {
+      response.json().then((data) => console.log(data));
+    });
+  };
+
+  const getLocationError = (error) => {
+    alert(
+      "No device geolocation data accessible. Using the location of Penn Station, in New York as a substitute. To access your location, please try another browser or another device."
+    );
+    const latitude = "40.750638";
+    const longitude = "-73.993899";
+
+    const readingsDict = {
+      compassDirection: compass,
+      GPSLatitude: latitude,
+      GPSLongitude: longitude,
+      userId: user.id,
+    };
+    setReadings(readingsDict);
+
+    const localTimezoneOffset = new Date().getTimezoneOffset();
+
+    const postData = {
+      localTimezoneOffset: localTimezoneOffset,
+      GPSLatitude: latitude,
+      GPSLongitude: longitude,
+      userId: user.id,
+    };
+
+    fetch("/api/locale/optional", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    }).then((response) => {
+      response.json().then((data) => console.log(data));
+    });
+  };
+
+  const getLocationOptionsObject = {
+    enableHighAccuracy: true,
+    maximumAge: 60000,
+    timeout: 5000,
+  };
+
   const getLocation = () => {
     if (user.id === null) {
       alert("Please kindly login or signup to get your location.");
     } else {
-      console.log("We made it here.");
-      if (
-        navigator.geolocation.getCurrentPosition(
-          (placeholder) => {
-            console.log(placeholder);
-            return placeholder;
-          },
-          (error) => {
-            console.log("hi mr. error", error);
-            debugger;
-          }
-        ) === undefined
-      ) {
-        alert(
-          "No device geolocation data accessible. Using the location of Penn Station, in New York as a substitute. For your location, please try another browser or another device."
-        );
-        const latitude = "40.750638";
-        const longitude = "-73.993899";
-
-        const readingsDict = {
-          compassDirection: compass,
-          GPSLatitude: latitude,
-          GPSLongitude: longitude,
-          userId: user.id,
-        };
-        setReadings(readingsDict);
-
-        const localTimezoneOffset = new Date().getTimezoneOffset();
-
-        const postData = {
-          localTimezoneOffset: localTimezoneOffset,
-          GPSLatitude: latitude,
-          GPSLongitude: longitude,
-          userId: user.id,
-        };
-
-        fetch("/api/locale/optional", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        }).then((response) => {
-          response.json().then((data) => console.log(data));
-        });
-      } else {
-      }
-      console.log("Did we make it here, lower?");
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        const readingsDict = {
-          compassDirection: compass,
-          GPSLatitude: latitude,
-          GPSLongitude: longitude,
-          userId: user.id,
-        };
-        setReadings(readingsDict);
-
-        const localTimezoneOffset = new Date().getTimezoneOffset();
-
-        const postData = {
-          localTimezoneOffset: localTimezoneOffset,
-          GPSLatitude: latitude,
-          GPSLongitude: longitude,
-          userId: user.id,
-        };
-
-        fetch("/api/locale/optional", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postData),
-        }).then((response) => {
-          response.json().then((data) => console.log(data));
-        });
-      });
+      setLoaderToggle(true);
+      navigator.geolocation.getCurrentPosition(
+        position => getLocationRun(position),
+        error => getLocationError(error),
+        getLocationOptionsObject
+      );
     }
   };
 
@@ -212,6 +210,9 @@ export default function Link({ noLock, setUser, user }) {
             ></Grid.Row>
           </Grid.Column>
         </Grid>
+        <Dimmer active={loaderToggle} inverted>
+          <Loader content="Accessing geolocation data" inverted />
+        </Dimmer>
       </Segment>
     </>
   );
