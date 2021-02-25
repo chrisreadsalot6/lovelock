@@ -79,9 +79,17 @@ export default function Link({ noLock, setUser, user }) {
     if (user.id === null) {
       alert("Please kindly login or signup to get your location.");
     } else {
+      console.log("We made it here.");
       if (
         navigator.geolocation.getCurrentPosition(
-          (placeholder) => placeholder
+          (placeholder) => {
+            console.log(placeholder);
+            return placeholder;
+          },
+          (error) => {
+            console.log("hi mr. error", error);
+            debugger;
+          }
         ) === undefined
       ) {
         alert(
@@ -118,7 +126,9 @@ export default function Link({ noLock, setUser, user }) {
         });
       } else {
       }
+      console.log("Did we make it here, lower?");
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 

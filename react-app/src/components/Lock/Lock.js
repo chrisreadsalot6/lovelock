@@ -84,6 +84,9 @@ export default function Lock({ user }) {
     }
   };
 
+  const [myWeather, setMyWeather] = useState(null);
+  const [yourWeather, setYourWeather] = useState(null);
+
   const localeData = () => {
     // get weather data, I'll have to run one on each GPS
     let myLat;
@@ -106,13 +109,25 @@ export default function Lock({ user }) {
     fetch(`/api/locale/${user.id}/${myLat}/${myLong}`, {
       method: "GET",
     }).then((result) => {
-      result.json().then((data) => console.log("my over here", data));
+      result.json().then((data) => {
+        console.log("my over here", data);
+        setMyWeather({
+          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
+          weatherDescription: data.weatherDescription,
+        });
+      });
     });
 
     fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
       method: "GET",
     }).then((result) => {
-      result.json().then((data) => console.log("your over here", data));
+      result.json().then((data) => {
+        console.log("your over here", data);
+        setYourWeather({
+          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
+          weatherDescription: data.weatherDescription,
+        });
+      });
     });
   };
 
@@ -352,22 +367,20 @@ export default function Lock({ user }) {
       <Container>
         <Grid textAlign="center" style={{ height: viewHeight, margin: "0px" }}>
           <Grid.Row style={{ paddingTop: "10vh" }}>
-            <Grid.Column>
-              {toggleButton ? (
-                <Button
-                  onClick={pushCompassData}
-                  basic
-                  color="purple"
-                  size="massive"
-                >
-                  Start Lock
-                </Button>
-              ) : (
-                <Button onClick={endLock} basic color="purple" size="massive">
-                  End Lock
-                </Button>
-              )}
-            </Grid.Column>
+            {toggleButton ? (
+              <Button
+                onClick={pushCompassData}
+                basic
+                color="purple"
+                size="massive"
+              >
+                Start Lock
+              </Button>
+            ) : (
+              <Button onClick={endLock} basic color="purple" size="massive">
+                End Lock
+              </Button>
+            )}
           </Grid.Row>
           {!locked ? (
             <Grid.Row>
@@ -399,35 +412,76 @@ export default function Lock({ user }) {
                 {bearing === null ||
                 linkedCompassDirection === "None" ? null : (
                   <>
-                    <div>
-                      <i className="ui icon lock massive purple inverted"></i>
-                    </div>
-                    <Message size="massive" color="purple" compact>
-                      Straight That-A-Way!
-                      <br />
-                      Over the Horizon
-                      <br />
-                      You are{" "}
-                      {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
-                      miles away
-                      {partnerIsLocked ? "You're partner is locked on!" : null}
-                    </Message>
-                    <div>
-                      {midwayGPS["midwayPointCity"]} is halfway between you
-                    </div>
+                    <Grid.Row>
+                      <div>
+                        <i className="ui icon lock massive purple inverted"></i>
+                      </div>
+                      <Message size="massive" color="purple" compact>
+                        Straight That-A-Way!
+                        <br />
+                        Over the Horizon
+                        <br />
+                        You are{" "}
+                        {parseInt(
+                          parseFloat(KMDistance) * 0.62137119223733
+                        )}{" "}
+                        miles away
+                        {partnerIsLocked
+                          ? "You're partner is locked on!"
+                          : null}
+                      </Message>
+                      {midwayGPS["midwayPointCity"] ===
+                      "No major city within 100 miles!" ? null : (
+                        <div>
+                          {midwayGPS["midwayPointCity"]} is halfway between you
+                        </div>
+                      )}
+                    </Grid.Row>
+                    <Grid.Row>
+                      <Grid.Column>
+                        {/* <div> */}
+                        {myWeather === null ? null : (
+                          <>
+                            <div>
+                              Your weather:{" "}
+                              {myWeather["temperatureFeelsLikeFahrenheit"]}
+                              &deg;F
+                            </div>
+                            <div>{myWeather["weatherDescription"]}</div>
+                          </>
+                        )}
+                        {/* </div> */}
+                      </Grid.Column>
+                      <Grid.Column>
+                        {/* <div> */}
+                        {yourWeather === null ? null : (
+                          <>
+                            <div>
+                              Their weather:{" "}
+                              {yourWeather["temperatureFeelsLikeFahrenheit"]}
+                              &deg;F
+                            </div>
+                            <div>{yourWeather["weatherDescription"]}</div>
+                          </>
+                        )}
+                        {/* </div> */}
+                      </Grid.Column>
+                    </Grid.Row>
                   </>
                 )}
               </Grid.Column>
             </Grid.Row>
           )}
-          <Grid.Row>
-            <Grid.Column verticalAlign="middle">
-              <Message color={lockIdColor} size="large" compact>
-                <Message.Header>Your unique lock id</Message.Header>
-                {lockId}
-              </Message>
-            </Grid.Column>
-          </Grid.Row>
+          {toggleButton ? (
+            <Grid.Row>
+              <Grid.Column verticalAlign="middle">
+                <Message color={lockIdColor} size="large" compact>
+                  <Message.Header>Your unique lock id</Message.Header>
+                  {lockId}
+                </Message>
+              </Grid.Column>
+            </Grid.Row>
+          ) : null}
         </Grid>
       </Container>
       <MetaTags>
