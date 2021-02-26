@@ -499,6 +499,23 @@ export default function Lock({ joeColor, revealJoe, user }) {
                           )}{" "}
                           miles away
                         </Header.Subheader>
+                        <Header.Subheader
+                          color={revealJoe ? null : "purple"}
+                          size="massive"
+                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                        >
+                          {partnerIsLocked === true ? (
+                            <span>Partner is locked on!</span>
+                          ) : null}
+                          {partnerIsLocked === false &&
+                          midwayGPS["midwayPointCity"] !==
+                            "No major city within 100 miles!" &&
+                          midwayGPS["midwayPointCity"] !== null ? (
+                            <span>
+                              Midway point city {midwayGPS["midwayPointCity"]}
+                            </span>
+                          ) : null}
+                        </Header.Subheader>
                       </Header>
                     ) : (
                       <Header
