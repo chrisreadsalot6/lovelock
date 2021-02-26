@@ -1,160 +1,37 @@
-import { Button, Container, Grid, Message } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Grid,
+  Icon,
+  Image,
+  Message,
+} from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Arrow from "../Arrow/Arrow";
 
-export default function Lock({ user }) {
+export default function Lock({ joeColor, revealJoe, user }) {
   const [bearing, setBearing] = useState(null);
+  const [compassReadingCount, setCompassReadingCount] = useState(0);
   const [geolocation, setGeolocation] = useState(null);
   const [KMDistance, setKMDistance] = useState(null);
+  const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
+  const [locked, setLocked] = useState(false);
+  const { lockId } = useParams();
   const [midwayGPS, setMidwayGPS] = useState({
     midwayGPSLatitude: null,
     midwayGPSLongitude: null,
     midwayPointCity: null,
   });
-  const [toggleButton, setToggleButton] = useState(true);
-
-  const [partnerIsLocked, setPartnerIsLocked] = useState(false);
-
-  const [runningCompass, setRunningCompass] = useState(false);
-
-  const [viewHeight, setViewHeight] = useState("74.5vh");
-  useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
-
-    if (isMobile === false) {
-      setViewHeight("86.5vh");
-    }
-  }, []);
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
-  };
-
-  const [lockIdColor, setLockIdColor] = useState("purple");
-
-  const [locked, setLocked] = useState(false);
-
-  const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
   const [myCompassDirection, setMyCompassDirection] = useState(null);
-  const [compassReadingCount, setCompassReadingCount] = useState(0);
-
-  const { lockId } = useParams();
-
-  useEffect(() => {
-    if (geolocation !== null) {
-      calculateBearing();
-    }
-  }, [geolocation]);
-
-  useEffect(() => {
-    checkIfLocked();
-    pushAndPullData();
-    // }
-  }, [myCompassDirection]);
-
-  useEffect(() => {
-    if (bearing === null) {
-      setLockIdColor("purple");
-    } else {
-      setLockIdColor("grey");
-    }
-  }, [bearing]);
-
-  const checkIfLocked = () => {
-    if (parseInt(bearing) === parseInt(myCompassDirection)) {
-      setLocked(true);
-    } else {
-      setLocked(false);
-    }
-  };
-
   const [myWeather, setMyWeather] = useState(null);
+  const [partnerIsLocked, setPartnerIsLocked] = useState(false);
+  const [runningCompass, setRunningCompass] = useState(false);
+  const [themeColor, setThemeColor] = useState("purple");
+  const [toggleButton, setToggleButton] = useState(true);
+  const [viewHeight, setViewHeight] = useState("74.5vh");
   const [yourWeather, setYourWeather] = useState(null);
-
-  const localeData = () => {
-    let myLat;
-    let myLong;
-    let yourLat;
-    let yourLong;
-
-    if (user["initiatorOrJoiner"] === "initiator") {
-      myLat = geolocation.initiatorGPSLatitude;
-      myLong = geolocation.initiatorGPSLongitude;
-      yourLat = geolocation.joinerGPSLatitude;
-      yourLong = geolocation.joinerGPSLongitude;
-    } else {
-      myLat = geolocation.joinerGPSLatitude;
-      myLong = geolocation.joinerGPSLongitude;
-      yourLat = geolocation.initiatorGPSLatitude;
-      yourLong = geolocation.initiatorGPSLongitude;
-    }
-
-    fetch(`/api/locale/${user.id}/${myLat}/${myLong}`, {
-      method: "GET",
-    }).then((result) => {
-      result.json().then((data) => {
-        setMyWeather({
-          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
-          weatherDescription: data.weatherDescription,
-        });
-      });
-    });
-
-    fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
-      method: "GET",
-    }).then((result) => {
-      result.json().then((data) => {
-        setYourWeather({
-          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
-          weatherDescription: data.weatherDescription,
-        });
-      });
-    });
-  };
-
-  const midwayData = (midwayLatitude, midwayLongitude, radius) => {
-    fetch(
-      `https://wft-geo-db.p.rapidapi.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`,
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-key":
-            "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
-          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com", // not needed to work so far, but they have it in the api docs on rapid api
-        },
-      }
-    ).then((result) => {
-      result.json().then((data) => {
-        const cities = data["data"];
-        let midwayPointCity = "";
-        if (cities !== undefined && cities.length > 0) {
-          midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
-        } else {
-          midwayPointCity = `No major city within ${radius} miles!`;
-        }
-
-        setMidwayGPS({
-          midwayGPSLatitude: midwayLatitude,
-          midwayGPSLongitude: midwayLongitude,
-          midwayPointCity: midwayPointCity,
-        });
-      });
-    });
-  };
 
   const calculateBearing = () => {
     let myLat;
@@ -235,6 +112,30 @@ export default function Lock({ user }) {
     return bearing;
   };
 
+  const checkIfLocked = () => {
+    if (parseInt(bearing) === parseInt(myCompassDirection)) {
+      setLocked(true);
+    } else {
+      setLocked(false);
+    }
+  };
+
+  const detectIfMobileBrowser = () => {
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i,
+    ];
+
+    return toMatch.some((element) => {
+      return navigator.userAgent.match(element);
+    });
+  };
+
   const endLock = () => {
     setToggleButton(true);
     setBearing(null);
@@ -250,6 +151,85 @@ export default function Lock({ user }) {
     }).then((response) => {
       response.json().then((data) => {
         setGeolocation(data);
+      });
+    });
+  };
+
+  const inner = (event) => {
+    if (event.webkitCompassHeading) {
+      setMyCompassDirection(event.webkitCompassHeading);
+    } else {
+      setMyCompassDirection(null);
+    }
+  };
+
+  const localeData = () => {
+    let myLat;
+    let myLong;
+    let yourLat;
+    let yourLong;
+
+    if (user["initiatorOrJoiner"] === "initiator") {
+      myLat = geolocation.initiatorGPSLatitude;
+      myLong = geolocation.initiatorGPSLongitude;
+      yourLat = geolocation.joinerGPSLatitude;
+      yourLong = geolocation.joinerGPSLongitude;
+    } else {
+      myLat = geolocation.joinerGPSLatitude;
+      myLong = geolocation.joinerGPSLongitude;
+      yourLat = geolocation.initiatorGPSLatitude;
+      yourLong = geolocation.initiatorGPSLongitude;
+    }
+
+    fetch(`/api/locale/${user.id}/${myLat}/${myLong}`, {
+      method: "GET",
+    }).then((result) => {
+      result.json().then((data) => {
+        setMyWeather({
+          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
+          weatherDescription: data.weatherDescription,
+        });
+      });
+    });
+
+    fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
+      method: "GET",
+    }).then((result) => {
+      result.json().then((data) => {
+        setYourWeather({
+          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
+          weatherDescription: data.weatherDescription,
+        });
+      });
+    });
+  };
+
+  const midwayData = (midwayLatitude, midwayLongitude, radius) => {
+    fetch(
+      `https://wft-geo-db.p.rapidapi.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com", // not needed to work so far, but they have it in the api docs on rapid api
+        },
+      }
+    ).then((result) => {
+      result.json().then((data) => {
+        const cities = data["data"];
+        let midwayPointCity = "";
+        if (cities !== undefined && cities.length > 0) {
+          midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
+        } else {
+          midwayPointCity = `No major city within ${radius} miles!`;
+        }
+
+        setMidwayGPS({
+          midwayGPSLatitude: midwayLatitude,
+          midwayGPSLongitude: midwayLongitude,
+          midwayPointCity: midwayPointCity,
+        });
       });
     });
   };
@@ -331,6 +311,33 @@ export default function Lock({ user }) {
   };
 
   useEffect(() => {
+    const isMobile = detectIfMobileBrowser();
+
+    if (isMobile === false) {
+      setViewHeight("86.5vh");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (geolocation !== null) {
+      calculateBearing();
+    }
+  }, [geolocation]);
+
+  useEffect(() => {
+    checkIfLocked();
+    pushAndPullData();
+  }, [myCompassDirection]);
+
+  useEffect(() => {
+    if (revealJoe === true) {
+      setThemeColor(joeColor);
+    } else {
+      setThemeColor("purple");
+    }
+  }, [revealJoe]);
+
+  useEffect(() => {
     if (runningCompass === true) {
       window.addEventListener("deviceorientation", inner);
 
@@ -340,31 +347,45 @@ export default function Lock({ user }) {
     }
   }, [runningCompass]);
 
-  const inner = (event) => {
-    if (event.webkitCompassHeading) {
-      setMyCompassDirection(event.webkitCompassHeading);
-    } else {
-      setMyCompassDirection(null);
-    }
-  };
-
   return (
     <>
       <Container>
         <Grid textAlign="center" style={{ height: viewHeight, margin: "0px" }}>
+          <Grid.Row style={{ margin: "0", padding: "0" }}>
+            <Image
+              margin="0"
+              padding="0"
+              size="small"
+              src={revealJoe ? "/joelock/joelock.png" : "/logo-title.png"}
+              verticalAlign="middle"
+            />
+          </Grid.Row>
           <Grid.Row style={{ paddingTop: "10vh" }}>
             {toggleButton ? (
               <Button
                 onClick={pushCompassData}
-                basic
-                color="purple"
+                // basic
+                // color={themeColor}
+                color="white"
+                inverted
                 size="massive"
+                style={
+                  revealJoe
+                    ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                    : null
+                }
               >
-                Start Lock
+                {revealJoe ? "Start a JoeLock" : "Start Lock"}
               </Button>
             ) : (
-              <Button onClick={endLock} basic color="purple" size="massive">
-                End Lock
+              <Button
+                onClick={endLock}
+                // basic
+                // color={themeColor}
+                size="massive"
+                style={revealJoe ? { backgroundColor: themeColor } : null}
+              >
+                {revealJoe ? "End the JoeLock" : "End Lock"}
               </Button>
             )}
           </Grid.Row>
@@ -372,7 +393,7 @@ export default function Lock({ user }) {
             <Grid.Row>
               <Grid.Column>
                 {bearing === null ? null : (
-                  <div className="ui message compact massive purple">
+                  <Message color={themeColor} compact size="massive">
                     Pointing {parseInt(myCompassDirection)}&deg;
                     <br />
                     {isNaN(bearing) ? (
@@ -380,7 +401,7 @@ export default function Lock({ user }) {
                     ) : (
                       <div>Look towards {parseInt(bearing)}&deg;</div>
                     )}
-                  </div>
+                  </Message>
                 )}
                 {bearing === null ||
                 isNaN(bearing) ||
@@ -399,10 +420,11 @@ export default function Lock({ user }) {
                 linkedCompassDirection === "None" ? null : (
                   <>
                     <Grid.Row>
-                      <div>
+                      {/* <div>
                         <i className="ui icon lock massive purple inverted"></i>
-                      </div>
-                      <Message size="massive" color="purple" compact>
+                      </div> */}
+                      <Icon color={themeColor} inverted lock massive />
+                      <Message color={themeColor} compact size="massive">
                         Straight That-A-Way!
                         <br />
                         Over the Horizon
@@ -411,7 +433,7 @@ export default function Lock({ user }) {
                         {parseInt(
                           parseFloat(KMDistance) * 0.62137119223733
                         )}{" "}
-                        miles away
+                        miles away {revealJoe ? "from Joe" : "null"}
                         {partnerIsLocked
                           ? "You're partner is locked on!"
                           : null}
@@ -425,7 +447,6 @@ export default function Lock({ user }) {
                     </Grid.Row>
                     <Grid.Row>
                       <Grid.Column>
-                        {/* <div> */}
                         {myWeather === null ? null : (
                           <>
                             <div>
@@ -436,10 +457,8 @@ export default function Lock({ user }) {
                             <div>{myWeather["weatherDescription"]}</div>
                           </>
                         )}
-                        {/* </div> */}
                       </Grid.Column>
                       <Grid.Column>
-                        {/* <div> */}
                         {yourWeather === null ? null : (
                           <>
                             <div>
@@ -450,7 +469,6 @@ export default function Lock({ user }) {
                             <div>{yourWeather["weatherDescription"]}</div>
                           </>
                         )}
-                        {/* </div> */}
                       </Grid.Column>
                     </Grid.Row>
                   </>
@@ -461,8 +479,20 @@ export default function Lock({ user }) {
           {toggleButton ? (
             <Grid.Row>
               <Grid.Column verticalAlign="middle">
-                <Message color={lockIdColor} size="large" compact>
-                  <Message.Header>Your unique lock id</Message.Header>
+                <Message
+                  color={revealJoe ? null : themeColor}
+                  compact
+                  inverted={revealJoe ? true : false}
+                  size="large"
+                  style={
+                    revealJoe
+                      ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                      : null
+                  }
+                >
+                  <Message.Header>
+                    {revealJoe ? "JoeLock Id" : "Lock Id"}
+                  </Message.Header>
                   {lockId}
                 </Message>
               </Grid.Column>

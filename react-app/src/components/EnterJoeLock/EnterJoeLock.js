@@ -10,6 +10,7 @@ export default function EnterJoeLock({
   user,
 }) {
   const history = useHistory();
+  const [joeVisibility, setjoeVisibility] = useState("hidden");
   const [join, setJoin] = useState(null);
   const [lockId, setLockId] = useState("09");
   const [open, setOpen] = useState(false);
@@ -57,20 +58,11 @@ export default function EnterJoeLock({
         } else {
           console.log("data here", data);
           const updatedLockId = data["uniqueIdentifier"];
-          history.push(`/joelock/${updatedLockId}`);
+          history.push(`/lock/${updatedLockId}`);
         }
       });
     });
   };
-
-  const [joeVisibility, setjoeVisibility] = useState("hidden");
-  useEffect(() => {
-    if (revealJoe === true) {
-      setjoeVisibility("visible");
-    } else {
-      setjoeVisibility("hidden");
-    }
-  }, [revealJoe]);
 
   const updatePassword = (e) => {
     setPassword(e.target.value);
@@ -82,19 +74,27 @@ export default function EnterJoeLock({
     }
   }, [readings]);
 
+  useEffect(() => {
+    if (revealJoe === true) {
+      setjoeVisibility("visible");
+    } else {
+      setjoeVisibility("hidden");
+    }
+  }, [revealJoe]);
+
   return (
     <>
       <Button
-        color="red"
         onClick={() => setOpen(true)}
         style={{
+          backgroundColor: "#F20D2D",
           margin: "0vh",
           marginTop: "1vh",
           padding: "1vh",
           visibility: joeVisibility,
         }}
       />
-      <Modal color="purple" size="mini" open={open}>
+      <Modal color="purple" open={open} size="mini">
         <Modal.Header
           color="purple"
           style={{ textAlign: "center" }}
@@ -105,10 +105,10 @@ export default function EnterJoeLock({
           onChange={updatePassword}
         ></Input>
         <Modal.Actions>
-          <Button color="purple" basic onClick={() => getDirectionJoin()}>
+          <Button basic color="purple" onClick={() => getDirectionJoin()}>
             Submit
           </Button>
-          <Button color="purple" basic onClick={() => setOpen(false)}>
+          <Button basic color="purple" onClick={() => setOpen(false)}>
             Exit
           </Button>
         </Modal.Actions>

@@ -17,6 +17,7 @@ import SignUpForm from "./components/auth/SignUpForm";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const joeColor = "#F20D2D";
   const [loaded, setLoaded] = useState(false);
   const [revealJoe, setRevealJoe] = useState(false);
   const [user, setUser] = useState(null);
@@ -43,6 +44,7 @@ function App() {
       <BrowserRouter>
         <NavBar
           authenticated={authenticated}
+          joeColor={joeColor}
           revealJoe={revealJoe}
           setAuthenticated={setAuthenticated}
           setRevealJoe={setRevealJoe}
@@ -73,6 +75,7 @@ function App() {
           <Route path="/link/no-lock">
             <Link
               noLock={true}
+              joeColor={joeColor}
               revealJoe={revealJoe}
               setRevealJoe={setRevealJoe}
               setUser={setUser}
@@ -81,20 +84,22 @@ function App() {
           </Route>
           <Route path="/link/">
             <Link
+              joeColor={joeColor}
               revealJoe={revealJoe}
               setRevealJoe={setRevealJoe}
               setUser={setUser}
               user={user}
             />
           </Route>
-          <Route path="/joelock/:lockId">
-            <JoeLock user={user} />
-          </Route>
+          {/* <Route path="/joelock/:lockId">
+            <JoeLock joeColor={joeColor} user={user} />
+          </Route> */}
           <Route path="/lock/:lockId">
-            <Lock user={user} />
+            <Lock joeColor={joeColor} revealJoe={revealJoe} user={user} />
           </Route>
           <ProtectedRoute path="/" authenticated={authenticated}>
             <Link
+              joeColor={joeColor}
               revealJoe={revealJoe}
               setRevealJoe={setRevealJoe}
               setUser={setUser}
@@ -102,7 +107,7 @@ function App() {
             />
           </ProtectedRoute>
         </Switch>
-        <Footer />
+        <Footer joeColor={joeColor} revealJoe={revealJoe} />
       </BrowserRouter>
       <MetaTags>
         <meta

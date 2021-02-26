@@ -197,7 +197,7 @@ export default function Link({ noLock, revealJoe, setUser, user }) {
                 margin="0"
                 padding="0"
                 size="small"
-                src="logo-title.png"
+                src="/logo-title.png"
                 verticalAlign="middle"
               />
             </Grid.Row>
