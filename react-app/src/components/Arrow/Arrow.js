@@ -27,8 +27,6 @@ export default function Arrow({
     setIsLeft(true);
   }
 
-  console.log("Arrow left or right", goLeftOrRight);
-
   return (
     <div>
       {goLeftOrRight === "left" ? (

@@ -197,16 +197,19 @@ export default function Lock({ joeColor, revealJoe, user }) {
       });
     });
 
-    fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
-      method: "GET",
-    }).then((result) => {
-      result.json().then((data) => {
-        setYourWeather({
-          temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
-          weatherDescription: data.weatherDescription,
+    console.log("your gps", yourLat, yourLong, typeof yourLat, typeof yourLong);
+    if (yourLat !== "None" && yourLong !== "None") {
+      fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
+        method: "GET",
+      }).then((result) => {
+        result.json().then((data) => {
+          setYourWeather({
+            temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
+            weatherDescription: data.weatherDescription,
+          });
         });
       });
-    });
+    }
   };
 
   const midwayData = (midwayLatitude, midwayLongitude, radius) => {
@@ -324,14 +327,21 @@ export default function Lock({ joeColor, revealJoe, user }) {
   }, []);
 
   useEffect(() => {
-    if (geolocation !== null) {
+    if (
+      geolocation !== null &&
+      geolocation.initiatorGPSLatitude !== undefined &&
+      geolocation.joinerGPSLatitude !== undefined
+    ) {
       calculateBearing();
     }
   }, [geolocation]);
 
   useEffect(() => {
     checkIfLockedOn();
-    pushAndPullData();
+    console.log("mycompassdirection lock", myCompassDirection);
+    if (myCompassDirection !== null) {
+      pushAndPullData();
+    }
   }, [myCompassDirection]);
 
   useEffect(() => {
@@ -441,6 +451,58 @@ export default function Lock({ joeColor, revealJoe, user }) {
                     style={{ margin: "0", padding: "0" }}
                   />
                 ) : null}
+                {lockedOn && myWeather !== null ? (
+                  <div style={{ margin: "0", padding: "0" }}>
+                    <Segment
+                      circular
+                      color={revealJoe ? null : "purple"}
+                      floated="left"
+                      size="medium"
+                      style={
+                        revealJoe
+                          ? {
+                              backgroundColor: joeColor,
+                              color: "#F1F1F1",
+                              margin: "2.75vw",
+                              padding: "1vw",
+                              height: "20vw",
+                              width: "20w",
+                            }
+                          : {
+                              // margin: "0",
+                              margin: "2.75vw",
+                              padding: "1vw",
+                              height: "20vw",
+                              width: "20w",
+                            }
+                      }
+                    >
+                      <Header
+                        color={revealJoe ? null : "purple"}
+                        centered
+                        verticalAlign="middle"
+                        size="medium"
+                        style={
+                          revealJoe
+                            ? { color: "#F1F1F1", paddingTop: "1.5vh" }
+                            : { paddingTop: "1.5vh" }
+                        }
+                      >
+                        For Me
+                        <Header.Subheader
+                          color={revealJoe ? null : "purple"}
+                          centered
+                          // verticalAlign="middle"
+                          size="medium"
+                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                        >
+                          {myWeather["temperatureFeelsLikeFahrenheit"]}&deg;F |{" "}
+                          {myWeather["weatherDescription"]}
+                        </Header.Subheader>
+                      </Header>
+                    </Segment>
+                  </div>
+                ) : null}
               </Grid.Row>
             </Grid.Column>
             <Grid.Column style={{ margin: "0", padding: "0", width: "45vw" }}>
@@ -494,9 +556,13 @@ export default function Lock({ joeColor, revealJoe, user }) {
                           />
                           <br />
                           <br />
-                          {parseInt(
-                            parseFloat(KMDistance) * 0.62137119223733
-                          )}{" "}
+                          {revealJoe ? (
+                            <>
+                              <span>Joe is</span>
+                              <br />
+                            </>
+                          ) : null}
+                          {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
                           miles away
                         </Header.Subheader>
                         <Header.Subheader
@@ -571,6 +637,53 @@ export default function Lock({ joeColor, revealJoe, user }) {
                   myCompassDirection={myCompassDirection}
                   style={{ margin: "0", padding: "0" }}
                 />
+              ) : null}
+              {lockedOn && yourWeather !== null ? (
+                <div style={{ margin: "0", padding: "0" }}>
+                  <Segment
+                    circular
+                    color={revealJoe ? null : "purple"}
+                    floated="right"
+                    size="medium"
+                    style={
+                      revealJoe
+                        ? {
+                            backgroundColor: joeColor,
+                            color: "#F1F1F1",
+                            margin: "2.75vw",
+                            padding: "1vw",
+                            height: "20vw",
+                            width: "20w",
+                          }
+                        : {
+                            margin: "2.75vw",
+                            padding: "1vw",
+                            height: "20vw",
+                            width: "20w",
+                          }
+                    }
+                  >
+                    <Header
+                      color={revealJoe ? null : "purple"}
+                      size="medium"
+                      style={
+                        revealJoe
+                          ? { color: "#F1F1F1", paddingTop: "1.5vh" }
+                          : { paddingTop: "1.5vh" }
+                      }
+                    >
+                      For Thee
+                      <Header.Subheader
+                        color={revealJoe ? null : "purple"}
+                        size="medium"
+                        style={revealJoe ? { color: "#F1F1F1" } : null}
+                      >
+                        {yourWeather["temperatureFeelsLikeFahrenheit"]}&deg;F |{" "}
+                        {yourWeather["weatherDescription"]}
+                      </Header.Subheader>
+                    </Header>
+                  </Segment>
+                </div>
               ) : null}
             </Grid.Column>
           </>

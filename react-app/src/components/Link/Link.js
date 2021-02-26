@@ -34,7 +34,7 @@ export default function Link({
 
   const places = () => setShowPlaces(!showPlaces);
 
-  const [viewHeight, setViewHeight] = useState("74.5vh"); // 74.5 -> 
+  const [viewHeight, setViewHeight] = useState("74.5vh"); // 74.5 ->
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
     setMobile(isMobile);
@@ -91,6 +91,7 @@ export default function Link({
 
   useEffect(() => {
     if (compass !== null) {
+      console.log("compass link", compass);
       getLocation();
     }
   }, [compass]);
@@ -100,7 +101,7 @@ export default function Link({
     const longitude = position.coords.longitude;
 
     const readingsDict = {
-      compassDirection: compass,
+      compassDirection: String(compass),
       GPSLatitude: latitude,
       GPSLongitude: longitude,
       userId: user.id,
@@ -135,7 +136,7 @@ export default function Link({
     const longitude = "-73.993899";
 
     const readingsDict = {
-      compassDirection: compass,
+      compassDirection: String(compass),
       GPSLatitude: latitude,
       GPSLongitude: longitude,
       userId: user.id,

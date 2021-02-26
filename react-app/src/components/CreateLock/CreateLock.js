@@ -7,6 +7,7 @@ export default function CreateLock({ getDirection, readings, setUser, user }) {
   const history = useHistory();
 
   useEffect(() => {
+    console.log("create lock readings", readings);
     if (readings !== null && create === true) {
       createALock();
     }
