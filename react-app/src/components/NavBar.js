@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import { logout } from "../services/auth";
 
-const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
+const NavBar = ({
+  authenticated,
+  revealJoe,
+  setAuthenticated,
+  setRevealJoe,
+  setUser,
+}) => {
   const [dynamicPadding, setDynamicPadding] = useState({
     loggedIn: "1vh",
     loggedOut: "1vh",
@@ -45,6 +51,11 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
     setLoggedInNavBar(authenticated);
   }, [authenticated]);
 
+  const lockClicked = () => {
+    console.log("am I revealing joe in navbar?", revealJoe);
+    setRevealJoe(!revealJoe);
+  };
+
   return (
     <>
       <Segment
@@ -71,9 +82,12 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
               Demo
             </Menu.Item>
           ) : (
-            <Menu.Item as={NavLink} to="/" exact={true} size="normal">
+            <Menu.Item size="normal">
               <div>
-                <i className=" icon inverted lock purple ui"></i>
+                <i
+                  className="icon inverted lock purple ui"
+                  onClick={lockClicked}
+                ></i>
               </div>
             </Menu.Item>
           )}

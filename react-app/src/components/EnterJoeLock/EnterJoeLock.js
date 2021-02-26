@@ -5,30 +5,20 @@ import { useHistory } from "react-router-dom";
 export default function EnterJoeLock({
   getDirection,
   readings,
+  revealJoe,
   setUser,
   user,
 }) {
-  const [open, setOpen] = useState(false);
-  const [password, setPassword] = useState(null);
-
-  const updatePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const [lockId, setLockId] = useState("09");
-
   const history = useHistory();
   const [join, setJoin] = useState(null);
-
-  useEffect(() => {
-    if (readings !== null && join === true) {
-      joinALock();
-    }
-  }, [readings]);
+  const [lockId, setLockId] = useState("09");
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState(null);
 
   const getDirectionJoin = () => {
     if (password === "septemberjoe") {
       setJoin(true);
+      setOpen(false);
       const userCopy = { ...user, initiatorOrJoiner: "joiner" };
       setUser(userCopy);
       getDirection();
@@ -38,10 +28,6 @@ export default function EnterJoeLock({
       );
       setOpen(false);
     }
-  };
-
-  const getLockId = (e) => {
-    setLockId(e.target.value);
   };
 
   const joinALock = () => {
@@ -77,19 +63,42 @@ export default function EnterJoeLock({
     });
   };
 
+  const [joeVisibility, setjoeVisibility] = useState("hidden");
+  useEffect(() => {
+    if (revealJoe === true) {
+      setjoeVisibility("visible");
+    } else {
+      setjoeVisibility("hidden");
+    }
+  }, [revealJoe]);
+
+  const updatePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  useEffect(() => {
+    if (readings !== null && join === true) {
+      joinALock();
+    }
+  }, [readings]);
+
   return (
     <>
       <Button
-        basic
+        color="red"
         onClick={() => setOpen(true)}
-        style={{ marginTop: "4vh", opacity: "0", padding: "4vh" }}
-      >
-        Joe
-      </Button>
+        style={{
+          margin: "0vh",
+          marginTop: "1vh",
+          padding: "1vh",
+          visibility: joeVisibility,
+        }}
+      />
       <Modal color="purple" size="mini" open={open}>
-        <Modal.Header color="purple" style={{ textAlign: "center" }}>
-          Password
-        </Modal.Header>
+        <Modal.Header
+          color="purple"
+          style={{ textAlign: "center" }}
+        ></Modal.Header>
         <Input
           fluid
           style={{ padding: "1vh 1vh 1vh 1vh" }}

@@ -9,15 +9,14 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
+import InfiniteScroll from "react-bidirectional-infinite-scroll";
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
 import EnterJoeLock from "../EnterJoeLock/EnterJoeLock";
 import JoinLock from "../JoinLock/JoinLock";
 
-import InfiniteScroll from "react-bidirectional-infinite-scroll";
-
-export default function Link({ noLock, setUser, user }) {
+export default function Link({ noLock, revealJoe, setUser, user }) {
   const [compass, setCompass] = useState(null);
   const [viewHeightThird, setViewHeightThird] = useState("20vh");
   const [mobile, setMobile] = useState(null);
@@ -54,12 +53,8 @@ export default function Link({ noLock, setUser, user }) {
     });
   };
 
-  // const [orientationModal, setOrientationModal] = useState(false);
-  // const openOrientation = () => setOrientationModal(true);
-
   const getDirection = () => {
     if (mobile === false) {
-      // openOrientation();
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );
@@ -93,7 +88,6 @@ export default function Link({ noLock, setUser, user }) {
   }, [compass]);
 
   const getLocationRun = (position) => {
-    console.log(position);
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
@@ -179,6 +173,8 @@ export default function Link({ noLock, setUser, user }) {
     }
   };
 
+  console.log("joe reveal in link", revealJoe);
+
   return (
     <>
       {/* <Confirm
@@ -225,16 +221,6 @@ export default function Link({ noLock, setUser, user }) {
                 user={user}
               />
             </Grid.Row>
-            {/* <Grid.Row
-              style={{ margin: "0", padding: "0", height: viewHeightThird }}
-            >
-              <EnterJoeLock
-                getDirection={getDirection}
-                readings={readings}
-                setUser={setUser}
-                user={user}
-              />
-            </Grid.Row> */}
             <Grid.Row
               verticalAlign="middle"
               style={{ margin: "0", padding: "0" }}
@@ -254,7 +240,6 @@ export default function Link({ noLock, setUser, user }) {
             >
               <>
                 <br />
-                {/* <br /> */}
                 <Button color="purple" inverted size="tiny" onClick={places}>
                   {showPlaces ? "Hide" : "Show"} Places
                 </Button>
@@ -266,37 +251,37 @@ export default function Link({ noLock, setUser, user }) {
                     onReachLeft={(f) => f}
                     onReachRight={(f) => f}
                   >
-                    <Segment circular size="medium">
+                    <Segment circular size="tiny">
                       <Header color="purple">
                         Harvard Yard
                         <Header.Subheader>Lock Id - 1636</Header.Subheader>
                       </Header>
                     </Segment>
-                    <Segment circular size="medium">
+                    <Segment circular size="tiny">
                       <Header color="purple">
                         Mecca
                         <Header.Subheader>Lock Id - 570</Header.Subheader>
                       </Header>
                     </Segment>
-                    <Segment circular size="medium">
+                    <Segment circular size="tiny">
                       <Header color="purple">
                         Stephen Colbert
                         <Header.Subheader>Lock Id - 1997</Header.Subheader>
                       </Header>
                     </Segment>
-                    <Segment circular size="medium">
+                    <Segment circular size="tiny">
                       <Header color="purple">
                         The Sphinx
                         <Header.Subheader>Lock Id - 12000</Header.Subheader>
                       </Header>
                     </Segment>
-                    <Segment circular size="medium">
+                    <Segment circular size="tiny">
                       <Header color="purple">
                         The White House
                         <Header.Subheader>Lock Id - 1776</Header.Subheader>
                       </Header>
                     </Segment>
-                    <Segment circular size="medium">
+                    <Segment circular size="tiny">
                       <Header color="purple">
                         Willard Beach
                         <Header.Subheader>Lock Id - 04106</Header.Subheader>
@@ -304,6 +289,17 @@ export default function Link({ noLock, setUser, user }) {
                     </Segment>
                   </InfiniteScroll>
                 ) : null}
+                <Grid.Row
+                  style={{ margin: "0", padding: "0", height: viewHeightThird }}
+                >
+                  <EnterJoeLock
+                    getDirection={getDirection}
+                    readings={readings}
+                    revealJoe={revealJoe}
+                    setUser={setUser}
+                    user={user}
+                  />
+                </Grid.Row>
               </>
             </Grid.Row>
           </Grid.Column>

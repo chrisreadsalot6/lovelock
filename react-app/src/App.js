@@ -18,6 +18,7 @@ import SignUpForm from "./components/auth/SignUpForm";
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [revealJoe, setRevealJoe] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -35,19 +36,16 @@ function App() {
     return null;
   }
 
-  // window.screen.orientation.lock("portrait");
-  // // screen.lockOrientation("portrait");
-  // window.screen.orientation.creenScreenOrientation.lock("portrait");
-  // console.dir(screen.orientation);
-  // o9n.orientation.lock("portrait");
-  // window.onorientationchange;
+  console.log("what is reveal Joe in app?", revealJoe);
 
   return (
     <>
       <BrowserRouter>
         <NavBar
           authenticated={authenticated}
+          revealJoe={revealJoe}
           setAuthenticated={setAuthenticated}
+          setRevealJoe={setRevealJoe}
           setUser={setUser}
         />
         <Switch>
@@ -73,10 +71,21 @@ function App() {
             />
           </Route>
           <Route path="/link/no-lock">
-            <Link noLock={true} setUser={setUser} user={user} />
+            <Link
+              noLock={true}
+              revealJoe={revealJoe}
+              setRevealJoe={setRevealJoe}
+              setUser={setUser}
+              user={user}
+            />
           </Route>
           <Route path="/link/">
-            <Link setUser={setUser} user={user} />
+            <Link
+              revealJoe={revealJoe}
+              setRevealJoe={setRevealJoe}
+              setUser={setUser}
+              user={user}
+            />
           </Route>
           <Route path="/joelock/:lockId">
             <JoeLock user={user} />
@@ -85,7 +94,12 @@ function App() {
             <Lock user={user} />
           </Route>
           <ProtectedRoute path="/" authenticated={authenticated}>
-            <Link setUser={setUser} user={user} />
+            <Link
+              revealJoe={revealJoe}
+              setRevealJoe={setRevealJoe}
+              setUser={setUser}
+              user={user}
+            />
           </ProtectedRoute>
         </Switch>
         <Footer />
