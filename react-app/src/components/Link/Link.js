@@ -1,9 +1,23 @@
-import { Dimmer, Grid, Loader, Message, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Dimmer,
+  Grid,
+  Header,
+  Loader,
+  Message,
+  Placeholder,
+  Segment,
+  Table,
+  Transition,
+  Visibility,
+} from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
 import EnterJoeLock from "../EnterJoeLock/EnterJoeLock";
 import JoinLock from "../JoinLock/JoinLock";
+
+import InfiniteScroll from "react-bidirectional-infinite-scroll";
 
 export default function Link({ noLock, setUser, user }) {
   const [compass, setCompass] = useState(null);
@@ -11,6 +25,9 @@ export default function Link({ noLock, setUser, user }) {
   const [mobile, setMobile] = useState(null);
   const [readings, setReadings] = useState(null);
   const [loaderToggle, setLoaderToggle] = useState(false);
+  const [showPlaces, setShowPlaces] = useState(false);
+
+  const places = () => setShowPlaces(!showPlaces);
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
@@ -153,8 +170,8 @@ export default function Link({ noLock, setUser, user }) {
     } else {
       setLoaderToggle(true);
       navigator.geolocation.getCurrentPosition(
-        position => getLocationRun(position),
-        error => getLocationError(error),
+        (position) => getLocationRun(position),
+        (error) => getLocationError(error),
         getLocationOptionsObject
       );
     }
@@ -172,7 +189,7 @@ export default function Link({ noLock, setUser, user }) {
             style={{ margin: "0", height: viewHeight }}
             verticalAlign="middle"
           >
-            <Grid.Row style={{ margin: "0", height: viewHeightThird }}>
+            <Grid.Row style={{ margin: "0", height: "10vh" }}>
               {noLock === true ? (
                 <Message color="purple" compact="true">
                   The Lock Id you have entered does not exist.
@@ -206,8 +223,67 @@ export default function Link({ noLock, setUser, user }) {
               />
             </Grid.Row>
             <Grid.Row
-              style={{ margin: "0", height: viewHeightThird }}
-            ></Grid.Row>
+              style={{
+                margin: "0",
+                // height: viewHeightThird,
+                // paddingLeft: "20vw",
+                // paddingTop: "6vh",
+                paddingTop: "2vh",
+              }}
+            >
+              <>
+                <Button color="purple" inverted onClick={places}>
+                  {showPlaces ? "Hide" : "Show"} Places
+                </Button>
+                <br />
+                <br />
+                {showPlaces ? (
+                  <InfiniteScroll
+                    onReachLeft={(f) => f}
+                    onReachRight={(f) => f}
+                    horizontal
+                    position={100}
+                  >
+                    <Segment circular size="medium">
+                      <Header color="purple">
+                        Harvard Yard
+                        <Header.Subheader>Lock Id - 1636</Header.Subheader>
+                      </Header>
+                    </Segment>
+                    <Segment circular size="medium">
+                      <Header color="purple">
+                        Mecca
+                        <Header.Subheader>Lock Id - 570</Header.Subheader>
+                      </Header>
+                    </Segment>
+                    <Segment circular size="medium">
+                      <Header color="purple">
+                        Stephen Colbert
+                        <Header.Subheader>Lock Id - 1997</Header.Subheader>
+                      </Header>
+                    </Segment>
+                    <Segment circular size="medium">
+                      <Header color="purple">
+                        The Sphinx
+                        <Header.Subheader>Lock Id - 12000</Header.Subheader>
+                      </Header>
+                    </Segment>
+                    <Segment circular size="medium">
+                      <Header color="purple">
+                        The White House
+                        <Header.Subheader>Lock Id - 1776</Header.Subheader>
+                      </Header>
+                    </Segment>
+                    <Segment circular size="medium">
+                      <Header color="purple">
+                        Willard Beach
+                        <Header.Subheader>Lock Id - 04106</Header.Subheader>
+                      </Header>
+                    </Segment>
+                  </InfiniteScroll>
+                ) : null}
+              </>
+            </Grid.Row>
           </Grid.Column>
         </Grid>
         <Dimmer active={loaderToggle} inverted>

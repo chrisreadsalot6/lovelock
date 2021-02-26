@@ -71,7 +71,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
             alt="image"
             verticalAlign="middle"
             size="small"
-            style={{ margin: "2em" }}
+            style={{ marginBottom: "2vh" }}
           />
           <Form onSubmit={onLogin}>
             <Form.Field inline>

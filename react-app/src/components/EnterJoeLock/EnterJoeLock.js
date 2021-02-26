@@ -27,7 +27,7 @@ export default function EnterJoeLock({
   }, [readings]);
 
   const getDirectionJoin = () => {
-    if (password === "septemberjoe2020") {
+    if (password === "septemberjoe") {
       setJoin(true);
       const userCopy = { ...user, initiatorOrJoiner: "joiner" };
       setUser(userCopy);
