@@ -33,7 +33,9 @@ export default function EnterJoeLock({
       setUser(userCopy);
       getDirection();
     } else {
-      alert("experimental feature");
+      alert(
+        "experimental feature. please continue to use the other features of the app."
+      );
       setOpen(false);
     }
   };

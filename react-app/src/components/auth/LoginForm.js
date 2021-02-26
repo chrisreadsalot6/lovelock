@@ -67,11 +67,10 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
       >
         <Grid.Column textAlign="center">
           <Image
-            src="/lovelock.png"
+            src="/welcome.png"
             alt="image"
             verticalAlign="middle"
             size="small"
-            style={{ marginBottom: "2vh" }}
           />
           <Form onSubmit={onLogin}>
             <Form.Field inline>
@@ -79,7 +78,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
                 name="email"
                 type="text"
                 placeholder="email"
-                size="massive"
+                size="large"
                 value={email}
                 onChange={updateEmail}
               />
@@ -100,7 +99,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
                 name="password"
                 type="password"
                 placeholder="password"
-                size="massive"
+                size="large"
                 value={password}
                 onChange={updatePassword}
               />
@@ -116,7 +115,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
                 }
               })}
             </Form.Field>
-            <Button type="submit" basic color="purple" size="massive">
+            <Button type="submit" basic color="purple" size="large">
               Login
             </Button>
           </Form>

@@ -93,7 +93,7 @@ function App() {
       <MetaTags>
         <meta
           name="viewport"
-          content={`width=${window.screen.width * 1.25}, user-scalable=no`}
+          content={`width=${window.screen.width * 1.1}, user-scalable=no`}
         />
       </MetaTags>
     </>

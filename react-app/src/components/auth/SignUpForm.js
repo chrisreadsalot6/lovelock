@@ -80,11 +80,10 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
     >
       <Grid.Column textAlign="center">
         <Image
-          src="/lovelock.png"
+          src="/welcome.png"
           alt="image"
           verticalAlign="middle"
           size="small"
-          style={{ marginBottom: "2vh" }}
         />
         <Form onSubmit={onSignUp}>
           <Form.Field inline>
@@ -95,7 +94,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
               onChange={updateUsername}
               value={username}
               required={true}
-              size="massive"
+              size="big"
             />
           </Form.Field>
           <Form.Field inline>
@@ -107,7 +106,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
               onChange={updateEmail}
               value={email}
               required={true}
-              size="massive"
+              size="big"
             />
           </Form.Field>
           <Form.Field inline>
@@ -118,7 +117,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
               onChange={updatePassword}
               value={password}
               required={true}
-              size="massive"
+              size="big"
             />
           </Form.Field>
           <Form.Field inline>
@@ -129,7 +128,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
               onChange={updateRepeatPassword}
               value={repeatPassword}
               required={true}
-              size="massive"
+              size="big"
             />
             {errors.map((error) => {
               if (error.includes("password")) {
@@ -143,7 +142,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
               }
             })}
           </Form.Field>
-          <Button type="submit" basic color="purple" size="massive">
+          <Button type="submit" basic color="purple" size="big">
             Sign Up
           </Button>
         </Form>

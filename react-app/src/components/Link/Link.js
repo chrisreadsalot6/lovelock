@@ -1,15 +1,12 @@
 import {
   Button,
+  Confirm,
   Dimmer,
   Grid,
   Header,
   Loader,
   Message,
-  Placeholder,
   Segment,
-  Table,
-  Transition,
-  Visibility,
 } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
@@ -56,8 +53,12 @@ export default function Link({ noLock, setUser, user }) {
     });
   };
 
+  // const [orientationModal, setOrientationModal] = useState(false);
+  // const openOrientation = () => setOrientationModal(true);
+
   const getDirection = () => {
     if (mobile === false) {
+      // openOrientation();
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );
@@ -179,6 +180,11 @@ export default function Link({ noLock, setUser, user }) {
 
   return (
     <>
+      {/* <Confirm
+        open={orientationModal}
+        onCancel={setOrientationModal(false)}
+        onConfirm={setOrientationModal(false)}
+      /> */}
       <Segment style={{ height: viewHeight, margin: "0px" }}>
         <Grid
           textAlign="center"
@@ -196,7 +202,20 @@ export default function Link({ noLock, setUser, user }) {
                   <br />
                   Please try again.
                 </Message>
-              ) : null}
+              ) : (
+                // <Message
+                //   // color="purple"
+                //   // compact
+                //   inverted
+                //   size="massive"
+                //   style={{ fontFamily: "Courier New" }}
+                // >
+                //   Welcome to LoveLock
+                // </Message>
+                <div style={{ fontSize: "30px", fontFamily: "Galada" }}>
+                  LoveLock
+                </div>
+              )}
             </Grid.Row>
             <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
               <CreateLock
