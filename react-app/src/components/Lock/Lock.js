@@ -378,9 +378,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
                 <div>
                   <br />
                   <br />
-                  <br />
-                  <br />
-                  <br />
                   <Button
                     onClick={pushCompassData}
                     centered
@@ -389,8 +386,13 @@ export default function Lock({ joeColor, revealJoe, user }) {
                     size="massive"
                     style={
                       revealJoe
-                        ? { backgroundColor: joeColor, color: "#F1F1F1" }
-                        : null
+                        ? {
+                            backgroundColor: joeColor,
+                            color: "#F1F1F1",
+                            width: "40vw",
+                            height: "40vw",
+                          }
+                        : { width: "40vw", height: "40vw" }
                     }
                   >
                     {revealJoe ? "Start a JoeLock" : "Start Lock"}
@@ -405,7 +407,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
                   size="large"
                   style={
                     revealJoe
-                      ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                      ? { backgroundColor: joeColor, color: "#F1F1F1" }
                       : null
                   }
                 >
@@ -418,7 +420,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
             </Grid.Column>
           </>
         ) : (
-          // this to build on top of
           <>
             <Grid.Column
               style={{
@@ -430,7 +431,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
               verticalAlign="middle"
             >
               <Grid.Row style={{ margin: "0", padding: "0" }}>
-                {isLeft === true && lockedOn !== true ? (
+                {isLeft === true && lockedOn !== true && !isNaN(bearing) ? (
                   <Arrow
                     bearing={parseInt(bearing)}
                     setIsLeft={setIsLeft}
@@ -448,21 +449,46 @@ export default function Lock({ joeColor, revealJoe, user }) {
                   <br />
                   <Segment
                     circular
-                    color="purple"
+                    color={revealJoe ? null : "purple"}
                     size="massive"
-                    style={{
-                      margin: "0",
-                      padding: "0",
-                      height: "45vw",
-                      width: "45vw",
-                    }}
+                    style={
+                      revealJoe
+                        ? {
+                            backgroundColor: joeColor,
+                            color: "#F1F1F1",
+                            margin: "0",
+                            padding: "0",
+                            height: "45vw",
+                            width: "45vw",
+                          }
+                        : {
+                            margin: "0",
+                            padding: "0",
+                            height: "45vw",
+                            width: "45vw",
+                          }
+                    }
                   >
-                    <Header color="purple" size="massive">
-                      {parseInt(myCompassDirection)}&deg;
-                      <Header.Subheader color="purple" size="massive">
-                        {parseInt(bearing)}&deg; Lock
-                      </Header.Subheader>
-                    </Header>
+                    {isNaN(bearing) === true ? (
+                      <Header color="purple" size="massive">
+                        Waiting for Partner
+                      </Header>
+                    ) : (
+                      <Header
+                        color={revealJoe ? null : "purple"}
+                        size="massive"
+                        style={revealJoe ? { color: "#F1F1F1" } : null}
+                      >
+                        {parseInt(myCompassDirection)}&deg;
+                        <Header.Subheader
+                          color={revealJoe ? null : "purple"}
+                          size="massive"
+                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                        >
+                          {parseInt(bearing)}&deg; Lock
+                        </Header.Subheader>
+                      </Header>
+                    )}
                   </Segment>
                   <br />
                   <br />
@@ -478,7 +504,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
                         : null
                     }
                   >
-                    {revealJoe ? "End the JoeLock" : "End Lock"}
+                    {revealJoe ? "Stop this JoeLock" : "Stop Lock"}
                   </Button>
                 </div>
               </Grid.Row>
@@ -492,7 +518,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
               }}
               verticalAlign="middle"
             >
-              {!isLeft && lockedOn !== true ? (
+              {!isLeft && lockedOn !== true && !isNaN(bearing) ? (
                 <Arrow
                   bearing={parseInt(bearing)}
                   setIsLeft={setIsLeft}
