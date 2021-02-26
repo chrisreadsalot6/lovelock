@@ -2,6 +2,7 @@ import {
   Button,
   Confirm,
   Dimmer,
+  Image,
   Grid,
   Header,
   Loader,
@@ -185,39 +186,38 @@ export default function Link({ noLock, setUser, user }) {
         onCancel={setOrientationModal(false)}
         onConfirm={setOrientationModal(false)}
       /> */}
-      <Segment style={{ height: viewHeight, margin: "0px" }}>
+      <Segment style={{ height: viewHeight, margin: "0px", padding: "0" }}>
         <Grid
           textAlign="center"
           verticalAlign="middle"
-          style={{ margin: "0", height: viewHeight }}
+          style={{ margin: "0", padding: "0", height: viewHeight }}
         >
           <Grid.Column
-            style={{ margin: "0", height: viewHeight }}
+            style={{ margin: "0", height: viewHeight, padding: "0" }}
             verticalAlign="middle"
           >
-            <Grid.Row style={{ margin: "0", height: "10vh" }}>
+            <Grid.Row style={{ margin: "0", padding: "0" }}>
+              <Image
+                margin="0"
+                padding="0"
+                size="small"
+                src="logo-title.png"
+                verticalAlign="middle"
+              />
+            </Grid.Row>
+            <Grid.Row style={{ margin: "0", padding: "0" }}>
               {noLock === true ? (
                 <Message color="purple" compact="true">
                   The Lock Id you have entered does not exist.
                   <br />
                   Please try again.
                 </Message>
-              ) : (
-                // <Message
-                //   // color="purple"
-                //   // compact
-                //   inverted
-                //   size="massive"
-                //   style={{ fontFamily: "Courier New" }}
-                // >
-                //   Welcome to LoveLock
-                // </Message>
-                <div style={{ fontSize: "30px", fontFamily: "Galada" }}>
-                  LoveLock
-                </div>
-              )}
+              ) : null}
             </Grid.Row>
-            <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
+            <Grid.Row
+              verticalAlign="middle"
+              style={{ margin: "0", padding: "0" }}
+            >
               <CreateLock
                 getDirection={getDirection}
                 readings={readings}
@@ -225,15 +225,20 @@ export default function Link({ noLock, setUser, user }) {
                 user={user}
               />
             </Grid.Row>
-            <Grid.Row style={{ margin: "0", height: viewHeightThird }}>
+            {/* <Grid.Row
+              style={{ margin: "0", padding: "0", height: viewHeightThird }}
+            >
               <EnterJoeLock
                 getDirection={getDirection}
                 readings={readings}
                 setUser={setUser}
                 user={user}
               />
-            </Grid.Row>
-            <Grid.Row verticalAlign="middle" style={{ margin: "0" }}>
+            </Grid.Row> */}
+            <Grid.Row
+              verticalAlign="middle"
+              style={{ margin: "0", padding: "0" }}
+            >
               <JoinLock
                 getDirection={getDirection}
                 readings={readings}
@@ -244,24 +249,22 @@ export default function Link({ noLock, setUser, user }) {
             <Grid.Row
               style={{
                 margin: "0",
-                // height: viewHeightThird,
-                // paddingLeft: "20vw",
-                // paddingTop: "6vh",
-                paddingTop: "2vh",
+                padding: "0",
               }}
             >
               <>
-                <Button color="purple" inverted onClick={places}>
+                <br />
+                {/* <br /> */}
+                <Button color="purple" inverted size="tiny" onClick={places}>
                   {showPlaces ? "Hide" : "Show"} Places
                 </Button>
                 <br />
                 <br />
                 {showPlaces ? (
                   <InfiniteScroll
+                    horizontal
                     onReachLeft={(f) => f}
                     onReachRight={(f) => f}
-                    horizontal
-                    position={100}
                   >
                     <Segment circular size="medium">
                       <Header color="purple">

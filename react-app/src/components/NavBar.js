@@ -6,14 +6,14 @@ import { logout } from "../services/auth";
 
 const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
   const [dynamicPadding, setDynamicPadding] = useState({
-    loggedIn: "0vh 0vh 1vh 0vh",
+    loggedIn: "1vh",
     loggedOut: "1vh",
   });
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
 
     if (isMobile === false) {
-      setDynamicPadding({ loggedIn: ".85vh", loggedOut: null });
+      setDynamicPadding({ loggedIn: null, loggedOut: null });
     }
   }, []);
 
@@ -67,19 +67,13 @@ const NavBar = ({ authenticated, setAuthenticated, setUser }) => {
       >
         <Menu secondary size="big">
           {!authenticated ? (
-            <Menu.Item
-              as={NavLink}
-              to="/demo"
-              exact={true}
-              color="purple"
-              size="normal"
-            >
+            <Menu.Item as={NavLink} to="/demo" exact={true} size="normal">
               Demo
             </Menu.Item>
           ) : (
-            <Menu.Item as={NavLink} to="/" exact={true}>
-              <div style={{ paddingTop: "1vh" }}>
-                <i className=" icon inverted large lock purple ui"></i>
+            <Menu.Item as={NavLink} to="/" exact={true} size="normal">
+              <div>
+                <i className=" icon inverted lock purple ui"></i>
               </div>
             </Menu.Item>
           )}

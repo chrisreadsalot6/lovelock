@@ -62,25 +62,23 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
 
   return (
     <>
-      {/* <Grid>
-        <Grid.Column>
-          <Form>
-            <Form.Field> */}
+      <br />
+      <br />
       <Input
         onChange={(e) => getLockId(e)}
         placeholder="Enter a Lock Id..."
-        action={{
-          color: "purple",
-          basic: true,
-          size: "massive",
-          onClick: getDirectionJoin,
-          content: "Join a Lock",
-        }}
+        size="large"
+        style={{ width: "50vw" }}
       />
-      {/* </Form.Field>
-          </Form>
-        </Grid.Column>
-      </Grid> */}
+      <Button
+        color="purple"
+        inverted
+        onClick={getDirectionJoin}
+        size="big"
+        style={{ width: "50vw" }}
+      >
+        Join a Lock
+      </Button>
     </>
   );
 }

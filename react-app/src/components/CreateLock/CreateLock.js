@@ -41,7 +41,13 @@ export default function CreateLock({ getDirection, readings, setUser, user }) {
   };
 
   return (
-    <Button onClick={getDirectionCreate} basic color="purple" size="massive">
+    <Button
+      color="purple"
+      inverted
+      onClick={getDirectionCreate}
+      size="big"
+      style={{ width: "50vw" }}
+    >
       Create a Lock
     </Button>
   );
