@@ -473,6 +473,33 @@ export default function Lock({ joeColor, revealJoe, user }) {
                       <Header color="purple" size="massive">
                         Waiting for Partner
                       </Header>
+                    ) : lockedOn === true ? (
+                      <Header
+                        color={revealJoe ? null : "purple"}
+                        size="massive"
+                        style={revealJoe ? { color: "#F1F1F1" } : null}
+                      >
+                        <Header.Subheader
+                          color={revealJoe ? null : "purple"}
+                          size="massive"
+                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                        >
+                          <i
+                            className={
+                              revealJoe
+                                ? "icon lock huge ui"
+                                : "icon inverted lock huge purple ui"
+                            }
+                            style={revealJoe ? { color: "#F1F1F1" } : null}
+                          />
+                          <br />
+                          <br />
+                          {parseInt(
+                            parseFloat(KMDistance) * 0.62137119223733
+                          )}{" "}
+                          miles away
+                        </Header.Subheader>
+                      </Header>
                     ) : (
                       <Header
                         color={revealJoe ? null : "purple"}
