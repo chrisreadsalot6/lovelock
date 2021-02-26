@@ -12,10 +12,10 @@ class User(db.Model, UserMixin):
     createdWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updatedWhen = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    firstName = db.Column(db.String(100), nullable=False)
+    firstName = db.Column(db.String(100))
     hashed_password = db.Column(db.String(255), nullable=False)
-    lastName = db.Column(db.String(100), nullable=False)
-    phoneNumber = db.Column(db.String(20), nullable=False, unique=True)
+    lastName = db.Column(db.String(100))
+    phoneNumber = db.Column(db.String(20), unique=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
 
     def check_password(self, password):

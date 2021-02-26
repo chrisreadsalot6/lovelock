@@ -43,7 +43,7 @@ def pull_compass_data(lockId):
 @lock_routes.route("/<int:lockId>/push-compass", methods=["POST"])
 def push_compass_data(lockId):
     json = request.json
-    print("push lockid", type(lockId))
+
     lock = Lock.query.filter_by(uniqueIdentifier=lockId).first()
 
     print("push-compass", json)
@@ -69,6 +69,8 @@ def push_compass_data(lockId):
 def create_lock():
     json = request.json
 
+    print("create lock json", json)
+
     uniqueIdentifier = uuid.uuid4().int
 
     lock = Lock(
@@ -78,6 +80,8 @@ def create_lock():
         initiatorUserId=int(json["initiatorUserId"]),
         uniqueIdentifier=uniqueIdentifier,
     )
+
+    print("create lock", lock.to_dict())
 
     db.session.add(lock)
     db.session.commit()
