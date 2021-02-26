@@ -6,6 +6,8 @@ export default function EnterJoeLock({
   getDirection,
   readings,
   revealJoe,
+  revealRedSquare,
+  setRevealJoe,
   setUser,
   user,
 }) {
@@ -20,6 +22,7 @@ export default function EnterJoeLock({
     if (password === "septemberjoe") {
       setJoin(true);
       setOpen(false);
+      setRevealJoe(true);
       const userCopy = { ...user, initiatorOrJoiner: "joiner" };
       setUser(userCopy);
       getDirection();
@@ -75,12 +78,12 @@ export default function EnterJoeLock({
   }, [readings]);
 
   useEffect(() => {
-    if (revealJoe === true) {
+    if (revealRedSquare === true) {
       setjoeVisibility("visible");
     } else {
       setjoeVisibility("hidden");
     }
-  }, [revealJoe]);
+  }, [revealRedSquare]);
 
   return (
     <>

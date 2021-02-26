@@ -20,6 +20,7 @@ function App() {
   const joeColor = "#F20D2D";
   const [loaded, setLoaded] = useState(false);
   const [revealJoe, setRevealJoe] = useState(false);
+  const [revealRedSquare, setRevealRedSquare] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -46,8 +47,10 @@ function App() {
           authenticated={authenticated}
           joeColor={joeColor}
           revealJoe={revealJoe}
+          revealRedSquare={revealRedSquare}
           setAuthenticated={setAuthenticated}
           setRevealJoe={setRevealJoe}
+          setRevealRedSquare={setRevealRedSquare}
           setUser={setUser}
         />
         <Switch>
@@ -77,7 +80,9 @@ function App() {
               noLock={true}
               joeColor={joeColor}
               revealJoe={revealJoe}
+              revealRedSquare={revealRedSquare}
               setRevealJoe={setRevealJoe}
+              setRevealRedSquare={setRevealRedSquare}
               setUser={setUser}
               user={user}
             />
@@ -86,14 +91,13 @@ function App() {
             <Link
               joeColor={joeColor}
               revealJoe={revealJoe}
+              revealRedSquare={revealRedSquare}
               setRevealJoe={setRevealJoe}
+              setRevealRedSquare={setRevealRedSquare}
               setUser={setUser}
               user={user}
             />
           </Route>
-          {/* <Route path="/joelock/:lockId">
-            <JoeLock joeColor={joeColor} user={user} />
-          </Route> */}
           <Route path="/lock/:lockId">
             <Lock joeColor={joeColor} revealJoe={revealJoe} user={user} />
           </Route>
@@ -101,7 +105,9 @@ function App() {
             <Link
               joeColor={joeColor}
               revealJoe={revealJoe}
+              revealRedSquare={revealRedSquare}
               setRevealJoe={setRevealJoe}
+              setRevealRedSquare={setRevealRedSquare}
               setUser={setUser}
               user={user}
             />

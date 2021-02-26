@@ -1,7 +1,7 @@
 import { Icon, Segment } from "semantic-ui-react";
 import React from "react";
 
-export default function Footer(joeColor, revealJoe) {
+export default function Footer({ joeColor, revealJoe }) {
   const angellist = () => {
     window.location.href = "https://angel.co/u/rcreadii";
   };

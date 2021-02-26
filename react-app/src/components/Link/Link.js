@@ -16,7 +16,15 @@ import CreateLock from "../CreateLock/CreateLock";
 import EnterJoeLock from "../EnterJoeLock/EnterJoeLock";
 import JoinLock from "../JoinLock/JoinLock";
 
-export default function Link({ noLock, revealJoe, setUser, user }) {
+export default function Link({
+  noLock,
+  revealJoe,
+  revealRedSquare,
+  setRevealJoe,
+  setRevealRedSquare,
+  setUser,
+  user,
+}) {
   const [compass, setCompass] = useState(null);
   const [viewHeightThird, setViewHeightThird] = useState("20vh");
   const [mobile, setMobile] = useState(null);
@@ -296,6 +304,8 @@ export default function Link({ noLock, revealJoe, setUser, user }) {
                     getDirection={getDirection}
                     readings={readings}
                     revealJoe={revealJoe}
+                    revealRedSquare={revealRedSquare}
+                    setRevealJoe={setRevealJoe}
                     setUser={setUser}
                     user={user}
                   />

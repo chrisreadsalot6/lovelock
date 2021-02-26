@@ -8,8 +8,10 @@ const NavBar = ({
   authenticated,
   joeColor,
   revealJoe,
+  revealRedSquare,
   setAuthenticated,
   setRevealJoe,
+  setRevealRedSquare,
   setUser,
 }) => {
   const [dynamicPadding, setDynamicPadding] = useState({
@@ -53,8 +55,8 @@ const NavBar = ({
   }, [authenticated]);
 
   const lockClicked = () => {
-    console.log("am I revealing joe in navbar?", revealJoe);
-    setRevealJoe(!revealJoe);
+    console.log("am I revealing joe in navbar?", revealRedSquare);
+    setRevealRedSquare(!revealRedSquare);
   };
 
   return (
