@@ -2,6 +2,7 @@ import React from "react";
 
 export default function Arrow({
   bearing,
+  setIsLeft,
   joeColor,
   myCompassDirection,
   revealJoe,
@@ -20,9 +21,13 @@ export default function Arrow({
   let goLeftOrRight;
   if (clockwise <= counterclockwise) {
     goLeftOrRight = "right";
+    setIsLeft(false);
   } else {
     goLeftOrRight = "left";
+    setIsLeft(true);
   }
+
+  console.log("Arrow left or right", goLeftOrRight);
 
   return (
     <div>

@@ -17,9 +17,10 @@ export default function Lock({ joeColor, revealJoe, user }) {
   const [bearing, setBearing] = useState(null);
   const [compassReadingCount, setCompassReadingCount] = useState(0);
   const [geolocation, setGeolocation] = useState(null);
+  const [isLeft, setIsLeft] = useState(null);
   const [KMDistance, setKMDistance] = useState(null);
   const [linkedCompassDirection, setLinkedCompassDirection] = useState(null);
-  const [locked, setLocked] = useState(false);
+  const [lockedOn, setLockedOn] = useState(false);
   const { lockId } = useParams();
   const [midwayGPS, setMidwayGPS] = useState({
     midwayGPSLatitude: null,
@@ -32,8 +33,10 @@ export default function Lock({ joeColor, revealJoe, user }) {
   const [runningCompass, setRunningCompass] = useState(false);
   const [themeColor, setThemeColor] = useState("purple");
   const [toggleButton, setToggleButton] = useState(true);
-  const [viewHeight, setViewHeight] = useState("74.5vh");
+  const [viewHeight, setViewHeight] = useState("74.5vh"); // to 68 and back again??
   const [yourWeather, setYourWeather] = useState(null);
+
+  console.log(isLeft);
 
   const calculateBearing = () => {
     let myLat;
@@ -114,11 +117,11 @@ export default function Lock({ joeColor, revealJoe, user }) {
     return bearing;
   };
 
-  const checkIfLocked = () => {
+  const checkIfLockedOn = () => {
     if (parseInt(bearing) === parseInt(myCompassDirection)) {
-      setLocked(true);
+      setLockedOn(true);
     } else {
-      setLocked(false);
+      setLockedOn(false);
     }
   };
 
@@ -259,7 +262,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
     const postData = {
       compassDirection: myCompassDirection,
       initiatorOrJoiner: user["initiatorOrJoiner"],
-      locked: locked,
+      locked: lockedOn,
       lockId: lockId,
       midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
       midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
@@ -291,7 +294,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
         // this breaks on a page refresh
         // it'd be better to add it to the original user object
         initiatorOrJoiner: user["initiatorOrJoiner"],
-        locked: locked,
+        locked: lockedOn,
         lockId: lockId,
         midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
         midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
@@ -327,7 +330,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
   }, [geolocation]);
 
   useEffect(() => {
-    checkIfLocked();
+    checkIfLockedOn();
     pushAndPullData();
   }, [myCompassDirection]);
 
@@ -367,13 +370,14 @@ export default function Lock({ joeColor, revealJoe, user }) {
           </Grid.Row>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row style={{ height: "41vh", margin: "0", padding: "0" }}>
+      <Grid.Row style={{ height: "48vh", margin: "0", padding: "0" }}>
         {toggleButton ? (
           <>
-            <Grid.Row style={{ height: "32vh", margin: "0", padding: "0" }}>
-              <Grid.Column style={{ margin: "0", padding: "0" }}>
-                {/* {toggleButton ? ( */}
+            <Grid.Column style={{ height: "38vh", margin: "0", padding: "0" }}>
+              <Grid.Row style={{ height: "38vh", margin: "0", padding: "0" }}>
                 <div>
+                  <br />
+                  <br />
                   <br />
                   <br />
                   <br />
@@ -392,45 +396,114 @@ export default function Lock({ joeColor, revealJoe, user }) {
                     {revealJoe ? "Start a JoeLock" : "Start Lock"}
                   </Button>
                 </div>
-                {/* ) : null} */}
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row style={{ margin: "0", padding: "0" }}>
-              {/* {toggleButton ? ( */}
-              <Message
-                color={revealJoe ? null : themeColor}
-                compact
-                inverted={revealJoe ? true : false}
-                size="large"
-                style={
-                  revealJoe
-                    ? { backgroundColor: themeColor, color: "#F1F1F1" }
-                    : null
-                }
-              >
-                <Message.Header>
-                  {revealJoe ? "JoeLock Id" : "Lock Id"}
-                </Message.Header>
-                {lockId}
-              </Message>
-            </Grid.Row>
+              </Grid.Row>
+              <Grid.Row style={{ margin: "0", padding: "0" }}>
+                <Message
+                  color={revealJoe ? null : themeColor}
+                  compact
+                  inverted={revealJoe ? true : false}
+                  size="large"
+                  style={
+                    revealJoe
+                      ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                      : null
+                  }
+                >
+                  <Message.Header>
+                    {revealJoe ? "JoeLock Id" : "Lock Id"}
+                  </Message.Header>
+                  {lockId}
+                </Message>
+              </Grid.Row>
+            </Grid.Column>
           </>
         ) : (
-          <Grid.Column>
-            <Button
-              onClick={endLock}
-              color={revealJoe ? null : themeColor}
-              inverted
-              size="massive"
-              style={
-                revealJoe
-                  ? { backgroundColor: themeColor, color: "#F1F1F1" }
-                  : null
-              }
+          // this to build on top of
+          <>
+            <Grid.Column
+              style={{
+                margin: "0",
+                padding: "0",
+                height: "38vw",
+                width: "27.5vw",
+              }}
+              verticalAlign="middle"
             >
-              {revealJoe ? "End the JoeLock" : "End Lock"}
-            </Button>
-          </Grid.Column>
+              <Grid.Row style={{ margin: "0", padding: "0" }}>
+                {isLeft === true && lockedOn !== true ? (
+                  <Arrow
+                    bearing={parseInt(bearing)}
+                    setIsLeft={setIsLeft}
+                    joeColor={joeColor}
+                    revealJoe={revealJoe}
+                    myCompassDirection={myCompassDirection}
+                    style={{ margin: "0", padding: "0" }}
+                  />
+                ) : null}
+              </Grid.Row>
+            </Grid.Column>
+            <Grid.Column style={{ margin: "0", padding: "0", width: "45vw" }}>
+              <Grid.Row style={{ margin: "0", padding: "0" }}>
+                <div>
+                  <br />
+                  <Segment
+                    circular
+                    color="purple"
+                    size="massive"
+                    style={{
+                      margin: "0",
+                      padding: "0",
+                      height: "45vw",
+                      width: "45vw",
+                    }}
+                  >
+                    <Header color="purple" size="massive">
+                      {parseInt(myCompassDirection)}&deg;
+                      <Header.Subheader color="purple" size="massive">
+                        {parseInt(bearing)}&deg; Lock
+                      </Header.Subheader>
+                    </Header>
+                  </Segment>
+                  <br />
+                  <br />
+                  <br />
+                  <Button
+                    onClick={endLock}
+                    color={revealJoe ? null : themeColor}
+                    inverted
+                    size="massive"
+                    style={
+                      revealJoe
+                        ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                        : null
+                    }
+                  >
+                    {revealJoe ? "End the JoeLock" : "End Lock"}
+                  </Button>
+                </div>
+              </Grid.Row>
+            </Grid.Column>
+            <Grid.Column
+              style={{
+                margin: "0",
+                padding: "0",
+                height: "38vw",
+                width: "27.5vw",
+              }}
+              verticalAlign="middle"
+            >
+              {!isLeft && lockedOn !== true ? (
+                <Arrow
+                  bearing={parseInt(bearing)}
+                  setIsLeft={setIsLeft}
+                  joeColor={joeColor}
+                  revealJoe={revealJoe}
+                  myCompassDirection={myCompassDirection}
+                  style={{ margin: "0", padding: "0" }}
+                />
+              ) : null}
+            </Grid.Column>
+          </>
         )}
       </Grid.Row>
     </Grid>
