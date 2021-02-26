@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function Arrow({ bearing, myCompassDirection }) {
+export default function Arrow({
+  bearing,
+  joeColor,
+  myCompassDirection,
+  revealJoe,
+}) {
   let clockwise;
   let counterclockwise;
 
@@ -23,17 +28,25 @@ export default function Arrow({ bearing, myCompassDirection }) {
     <div>
       {goLeftOrRight === "left" ? (
         <>
-          <div>
-            <i className="long arrow alternative left icon massive purple inverted" />
-          </div>
-          <i>Turn Left!</i>
+          <i
+            className={
+              revealJoe
+                ? "arrow circle left icon inverted huge"
+                : "arrow circle left icon inverted huge purple"
+            }
+            style={revealJoe ? { color: joeColor } : null}
+          />
         </>
       ) : (
         <>
-          <div>
-            <i className="long arrow alternative right icon massive purple inverted" />
-          </div>
-          <i>Turn Right!</i>
+          <i
+            className={
+              revealJoe
+                ? "arrow circle right icon inverted huge"
+                : "arrow circle right icon inverted huge purple"
+            }
+            style={revealJoe ? { color: joeColor } : null}
+          />
         </>
       )}
     </div>

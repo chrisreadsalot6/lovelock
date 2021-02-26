@@ -6,6 +6,7 @@ import { logout } from "../services/auth";
 
 const NavBar = ({
   authenticated,
+  joeColor,
   revealJoe,
   setAuthenticated,
   setRevealJoe,
@@ -59,7 +60,7 @@ const NavBar = ({
   return (
     <>
       <Segment
-        color="purple"
+        color={revealJoe ? "red" : "purple"}
         style={
           loggedInNavBar
             ? {
@@ -85,7 +86,11 @@ const NavBar = ({
             <Menu.Item size="normal">
               <div>
                 <i
-                  className="icon inverted lock purple ui"
+                  className={
+                    revealJoe
+                      ? "icon inverted lock red ui"
+                      : "icon inverted lock purple ui"
+                  }
                   onClick={lockClicked}
                 ></i>
               </div>

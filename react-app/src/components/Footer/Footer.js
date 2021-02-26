@@ -1,7 +1,7 @@
 import { Icon, Segment } from "semantic-ui-react";
 import React from "react";
 
-export default function Footer() {
+export default function Footer(joeColor, revealJoe) {
   const angellist = () => {
     window.location.href = "https://angel.co/u/rcreadii";
   };
@@ -16,7 +16,7 @@ export default function Footer() {
 
   return (
     <Segment
-      color="purple"
+      color={revealJoe ? "red" : "purple"}
       id="footer"
       textAlign="center"
       style={{ height: "5vh", margin: "0px", padding: "1vh 0vh 1vh 0vh" }}

@@ -2,9 +2,11 @@ import {
   Button,
   Container,
   Grid,
+  Header,
   Icon,
   Image,
   Message,
+  Segment,
 } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -348,158 +350,89 @@ export default function Lock({ joeColor, revealJoe, user }) {
   }, [runningCompass]);
 
   return (
-    <>
-      <Container>
-        <Grid textAlign="center" style={{ height: viewHeight, margin: "0px" }}>
+    <Grid
+      style={{ height: viewHeight, margin: "0", padding: "0" }}
+      textAlign="center"
+    >
+      <Grid.Row style={{ height: "16.5vh", margin: "0", padding: "0" }}>
+        <Grid.Column style={{ margin: "0", padding: "0" }}>
           <Grid.Row style={{ margin: "0", padding: "0" }}>
             <Image
               margin="0"
               padding="0"
+              centered
               size="small"
               src={revealJoe ? "/joelock/joelock.png" : "/logo-title.png"}
-              verticalAlign="middle"
             />
           </Grid.Row>
-          <Grid.Row style={{ paddingTop: "10vh" }}>
-            {toggleButton ? (
-              <Button
-                onClick={pushCompassData}
-                // basic
-                // color={themeColor}
-                color="white"
-                inverted
-                size="massive"
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row style={{ height: "41vh", margin: "0", padding: "0" }}>
+        {toggleButton ? (
+          <>
+            <Grid.Row style={{ height: "32vh", margin: "0", padding: "0" }}>
+              <Grid.Column style={{ margin: "0", padding: "0" }}>
+                {/* {toggleButton ? ( */}
+                <div>
+                  <br />
+                  <br />
+                  <br />
+                  <Button
+                    onClick={pushCompassData}
+                    centered
+                    color={revealJoe ? null : themeColor}
+                    inverted
+                    size="massive"
+                    style={
+                      revealJoe
+                        ? { backgroundColor: joeColor, color: "#F1F1F1" }
+                        : null
+                    }
+                  >
+                    {revealJoe ? "Start a JoeLock" : "Start Lock"}
+                  </Button>
+                </div>
+                {/* ) : null} */}
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row style={{ margin: "0", padding: "0" }}>
+              {/* {toggleButton ? ( */}
+              <Message
+                color={revealJoe ? null : themeColor}
+                compact
+                inverted={revealJoe ? true : false}
+                size="large"
                 style={
                   revealJoe
                     ? { backgroundColor: themeColor, color: "#F1F1F1" }
                     : null
                 }
               >
-                {revealJoe ? "Start a JoeLock" : "Start Lock"}
-              </Button>
-            ) : (
-              <Button
-                onClick={endLock}
-                // basic
-                // color={themeColor}
-                size="massive"
-                style={revealJoe ? { backgroundColor: themeColor } : null}
-              >
-                {revealJoe ? "End the JoeLock" : "End Lock"}
-              </Button>
-            )}
-          </Grid.Row>
-          {!locked ? (
-            <Grid.Row>
-              <Grid.Column>
-                {bearing === null ? null : (
-                  <Message color={themeColor} compact size="massive">
-                    Pointing {parseInt(myCompassDirection)}&deg;
-                    <br />
-                    {isNaN(bearing) ? (
-                      <div>Waiting for Partner to Join</div>
-                    ) : (
-                      <div>Look towards {parseInt(bearing)}&deg;</div>
-                    )}
-                  </Message>
-                )}
-                {bearing === null ||
-                isNaN(bearing) ||
-                linkedCompassDirection === "None" ? null : (
-                  <Arrow
-                    bearing={parseInt(bearing)}
-                    myCompassDirection={myCompassDirection}
-                  />
-                )}
-              </Grid.Column>
+                <Message.Header>
+                  {revealJoe ? "JoeLock Id" : "Lock Id"}
+                </Message.Header>
+                {lockId}
+              </Message>
             </Grid.Row>
-          ) : (
-            <Grid.Row>
-              <Grid.Column>
-                {bearing === null ||
-                linkedCompassDirection === "None" ? null : (
-                  <>
-                    <Grid.Row>
-                      {/* <div>
-                        <i className="ui icon lock massive purple inverted"></i>
-                      </div> */}
-                      <Icon color={themeColor} inverted lock massive />
-                      <Message color={themeColor} compact size="massive">
-                        Straight That-A-Way!
-                        <br />
-                        Over the Horizon
-                        <br />
-                        You are{" "}
-                        {parseInt(
-                          parseFloat(KMDistance) * 0.62137119223733
-                        )}{" "}
-                        miles away {revealJoe ? "from Joe" : "null"}
-                        {partnerIsLocked
-                          ? "You're partner is locked on!"
-                          : null}
-                      </Message>
-                      {midwayGPS["midwayPointCity"] ===
-                      "No major city within 100 miles!" ? null : (
-                        <div>
-                          {midwayGPS["midwayPointCity"]} is halfway between you
-                        </div>
-                      )}
-                    </Grid.Row>
-                    <Grid.Row>
-                      <Grid.Column>
-                        {myWeather === null ? null : (
-                          <>
-                            <div>
-                              Your weather:{" "}
-                              {myWeather["temperatureFeelsLikeFahrenheit"]}
-                              &deg;F
-                            </div>
-                            <div>{myWeather["weatherDescription"]}</div>
-                          </>
-                        )}
-                      </Grid.Column>
-                      <Grid.Column>
-                        {yourWeather === null ? null : (
-                          <>
-                            <div>
-                              Their weather:{" "}
-                              {yourWeather["temperatureFeelsLikeFahrenheit"]}
-                              &deg;F
-                            </div>
-                            <div>{yourWeather["weatherDescription"]}</div>
-                          </>
-                        )}
-                      </Grid.Column>
-                    </Grid.Row>
-                  </>
-                )}
-              </Grid.Column>
-            </Grid.Row>
-          )}
-          {toggleButton ? (
-            <Grid.Row>
-              <Grid.Column verticalAlign="middle">
-                <Message
-                  color={revealJoe ? null : themeColor}
-                  compact
-                  inverted={revealJoe ? true : false}
-                  size="large"
-                  style={
-                    revealJoe
-                      ? { backgroundColor: themeColor, color: "#F1F1F1" }
-                      : null
-                  }
-                >
-                  <Message.Header>
-                    {revealJoe ? "JoeLock Id" : "Lock Id"}
-                  </Message.Header>
-                  {lockId}
-                </Message>
-              </Grid.Column>
-            </Grid.Row>
-          ) : null}
-        </Grid>
-      </Container>
-    </>
+          </>
+        ) : (
+          <Grid.Column>
+            <Button
+              onClick={endLock}
+              color={revealJoe ? null : themeColor}
+              inverted
+              size="massive"
+              style={
+                revealJoe
+                  ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                  : null
+              }
+            >
+              {revealJoe ? "End the JoeLock" : "End Lock"}
+            </Button>
+          </Grid.Column>
+        )}
+      </Grid.Row>
+    </Grid>
   );
 }
