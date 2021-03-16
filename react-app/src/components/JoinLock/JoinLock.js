@@ -26,7 +26,6 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
   };
 
   const joinALock = () => {
-    console.log("lockId here", lockId);
     const localTimezoneOffset = new Date().getTimezoneOffset();
     const postData = {
       active: true,
@@ -48,11 +47,9 @@ export default function JoinLock({ getDirection, readings, setUser, user }) {
     }).then((response) => {
       response.json().then((data) => {
         if (data === false) {
-          console.log("No join lock with this id");
           history.push("/link/no-lock");
           setJoin(false);
         } else {
-          console.log("data here", data);
           const updatedLockId = data["uniqueIdentifier"];
           history.push(`/lock/${updatedLockId}`);
         }

@@ -37,8 +37,6 @@ function App() {
     return null;
   }
 
-  console.log("what is reveal Joe in app?", revealJoe);
-
   return (
     <>
       <BrowserRouter>

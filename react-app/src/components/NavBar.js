@@ -55,7 +55,6 @@ const NavBar = ({
   }, [authenticated]);
 
   const lockClicked = () => {
-    console.log("am I revealing joe in navbar?", revealRedSquare);
     setRevealRedSquare(!revealRedSquare);
   };
 

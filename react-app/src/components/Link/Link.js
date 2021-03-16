@@ -68,10 +68,8 @@ export default function Link({
       );
       const fakeDirection = 10;
       setCompass(fakeDirection);
-      console.log("permission mobile false", true);
     } else {
       DeviceOrientationEvent.requestPermission().then((permission) => {
-        console.log("permission", permission);
         if (permission === "granted") {
           window.addEventListener(
             "deviceorientation",
@@ -91,7 +89,6 @@ export default function Link({
 
   useEffect(() => {
     if (compass !== null) {
-      console.log("compass link", compass);
       getLocation();
     }
   }, [compass]);
@@ -181,8 +178,6 @@ export default function Link({
       );
     }
   };
-
-  console.log("joe reveal in link", revealJoe);
 
   return (
     <>

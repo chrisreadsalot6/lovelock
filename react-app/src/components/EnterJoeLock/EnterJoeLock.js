@@ -35,7 +35,6 @@ export default function EnterJoeLock({
   };
 
   const joinALock = () => {
-    console.log("lockId here", lockId);
     const postData = {
       active: true,
       joinerCompassDirection: readings.compassDirection,
@@ -55,11 +54,9 @@ export default function EnterJoeLock({
     }).then((response) => {
       response.json().then((data) => {
         if (data === false) {
-          console.log("No join lock with this id");
           history.push("/link/no-lock");
           setJoin(false);
         } else {
-          console.log("data here", data);
           const updatedLockId = data["uniqueIdentifier"];
           history.push(`/lock/${updatedLockId}`);
         }

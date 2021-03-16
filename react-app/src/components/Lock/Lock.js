@@ -36,8 +36,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
   const [viewHeight, setViewHeight] = useState("74.5vh"); // to 68 and back again??
   const [yourWeather, setYourWeather] = useState(null);
 
-  console.log(isLeft);
-
   const calculateBearing = () => {
     let myLat;
     let myLong;
@@ -197,7 +195,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
       });
     });
 
-    console.log("your gps", yourLat, yourLong, typeof yourLat, typeof yourLong);
     if (yourLat !== "None" && yourLong !== "None") {
       fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
         method: "GET",
@@ -338,7 +335,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
 
   useEffect(() => {
     checkIfLockedOn();
-    console.log("mycompassdirection lock", myCompassDirection);
     if (myCompassDirection !== null) {
       pushAndPullData();
     }
