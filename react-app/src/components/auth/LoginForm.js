@@ -1,14 +1,15 @@
 import { Button, Form, Grid, Image, Input, Label } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../services/auth";
 
 const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
+  const history = useHistory();
+
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [middleOrTop, setMiddleOrTop] = useState("top");
-
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
@@ -33,6 +34,11 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
     return toMatch.some((element) => {
       return navigator.userAgent.match(element);
     });
+  };
+
+  const onDemoLogin = async (e) => {
+    e.preventDefault();
+    history.push("/demo");
   };
 
   const onLogin = async (e) => {
@@ -115,8 +121,17 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
                 }
               })}
             </Form.Field>
-            <Button type="submit" basic color="purple" size="large">
+            <Button basic color="purple" size="large" type="submit">
               Login
+            </Button>
+            <Button
+              basic
+              color="purple"
+              onClick={onDemoLogin}
+              size="large"
+              type="button"
+            >
+              Demo
             </Button>
           </Form>
         </Grid.Column>

@@ -79,11 +79,7 @@ const NavBar = ({
         }
       >
         <Menu secondary size="big">
-          {!authenticated ? (
-            <Menu.Item as={NavLink} to="/demo" exact={true} size="normal">
-              Demo
-            </Menu.Item>
-          ) : (
+          {!authenticated ? null : (
             <Menu.Item size="normal">
               <div>
                 <i
