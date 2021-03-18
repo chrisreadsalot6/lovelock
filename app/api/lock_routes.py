@@ -27,15 +27,11 @@ def get_geolocation_data(lockId):
 @lock_routes.route("/<int:lockId>/pull-compass", methods=["GET"])
 def pull_compass_data(lockId):
     lock = Lock.query.filter_by(uniqueIdentifier=lockId).first()
-    print("pull lockid", lockId)
 
-    print("pull lock", lock)
     responseData = {
         "initiatorCompassDirection": str(lock.initiatorCompassDirection),
         "joinerCompassDirection": str(lock.joinerCompassDirection),
     }
-
-    print("pull-compass route", responseData)
 
     return jsonify(responseData)
 
@@ -45,8 +41,6 @@ def push_compass_data(lockId):
     json = request.json
 
     lock = Lock.query.filter_by(uniqueIdentifier=lockId).first()
-
-    print("push-compass", json)
 
     # breaks on page refresh, without going back to the link page
     if json["initiatorOrJoiner"] == "initiator":
@@ -69,8 +63,6 @@ def push_compass_data(lockId):
 def create_lock():
     json = request.json
 
-    print("create lock json", json)
-
     uniqueIdentifier = uuid.uuid4().int
 
     lock = Lock(
@@ -80,8 +72,6 @@ def create_lock():
         initiatorUserId=int(json["initiatorUserId"]),
         uniqueIdentifier=uniqueIdentifier,
     )
-
-    print("create lock", lock.to_dict())
 
     db.session.add(lock)
     db.session.commit()
@@ -131,7 +121,6 @@ def join_lock():
             "initiatorGPSLongitude": "31.13583279",
         },
     }
-    print("code here", code)
 
     lock = None
     if code in seedObject.keys():
@@ -149,8 +138,6 @@ def join_lock():
             uniqueIdentifier=uniqueIdentifier,
         )
 
-        print("lock dict here", lock.to_dict())
-
         postData = {
             "localTimezoneOffset": None,
             "GPSLatitude": initiatorGPSLatitude,
@@ -161,15 +148,12 @@ def join_lock():
 
         make_locale(postData)
 
-        print("Did we make it past locale?")
-
     else:
         lock = Lock.query.filter_by(uniqueIdentifier=code).first()
 
     if not lock:
         return jsonify(False)
     else:
-        print("lock here", lock)
         lock.active = True
         lock.joinerCompassDirection = json["joinerCompassDirection"]
         lock.joinerGPSLatitude = json["joinerGPSLatitude"]

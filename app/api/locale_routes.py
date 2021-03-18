@@ -16,18 +16,12 @@ def get_locale(userId, latitude, longitude):
         .first()
     )
 
-    print(locale)
-    if locale:
-        print("locale flask", locale.to_dict())
-
     responseData = {
         "name": locale.name,
         "temperatureFeelsLikeFahrenheit": locale.temperatureFeelsLikeFahrenheit,
         "weatherDescription": locale.weatherDescription,
         "weatherDescriptionDetailed": locale.weatherDescriptionDetailed,
     }
-
-    print(responseData)
 
     return jsonify(responseData)
 
@@ -57,7 +51,6 @@ def make_locale(optional_data):
     weatherDescription = weather["weather"][0]["main"]
     weatherDescriptionDetailed = weather["weather"][0]["description"]
 
-    print("weather data", weather["name"], weather)
     # wind_deg = weather["wind"]["deg"]
     # wind_speed = weather["wind"]["speed"]
 

@@ -120,8 +120,6 @@ export default function Link({
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
-    }).then((response) => {
-      response.json().then((data) => console.log(data));
     });
   };
 
@@ -155,8 +153,6 @@ export default function Link({
         "Content-Type": "application/json",
       },
       body: JSON.stringify(postData),
-    }).then((response) => {
-      response.json().then((data) => console.log(data));
     });
   };
 
