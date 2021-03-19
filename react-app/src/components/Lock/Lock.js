@@ -62,6 +62,9 @@ export default function Lock({ joeColor, revealJoe, user }) {
     theirLat = parseFloat(theirLat);
     theirLong = parseFloat(theirLong);
 
+    // Thank you to movable-type.co.uk for the following formulas
+    // Site can be found here: https://www.movable-type.co.uk/scripts/latlong.html
+
     const myLatRad = myLat * (Math.PI / 180);
     const myLongRad = myLong * (Math.PI / 180);
     const theirLatRad = theirLat * (Math.PI / 180);
