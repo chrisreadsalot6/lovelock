@@ -73,7 +73,7 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
       >
         <Grid.Column textAlign="center">
           <Image
-            src="/welcome.png"
+            src="https://lovelock-assets.s3.amazonaws.com/image-assets/welcome.png"
             alt="image"
             verticalAlign="middle"
             size="small"

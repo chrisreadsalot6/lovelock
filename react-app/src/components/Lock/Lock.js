@@ -371,7 +371,11 @@ export default function Lock({ joeColor, revealJoe, user }) {
               padding="0"
               centered
               size="small"
-              src={revealJoe ? "/joelock/joelock.png" : "/logo-title.png"}
+              src={
+                revealJoe
+                  ? "https://lovelock-assets.s3.amazonaws.com/image-assets/joelock/joelock.png"
+                  : "https://lovelock-assets.s3.amazonaws.com/image-assets/logo-title.png"
+              }
             />
           </Grid.Row>
         </Grid.Column>

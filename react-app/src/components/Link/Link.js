@@ -197,7 +197,7 @@ export default function Link({
                 margin="0"
                 padding="0"
                 size="small"
-                src="/logo-title.png"
+                src="https://lovelock-assets.s3.amazonaws.com/image-assets/logo-title.png"
                 verticalAlign="middle"
               />
             </Grid.Row>
