@@ -33,7 +33,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
   const [runningCompass, setRunningCompass] = useState(false);
   const [themeColor, setThemeColor] = useState("purple");
   const [toggleButton, setToggleButton] = useState(true);
-  const [viewHeight, setViewHeight] = useState("74.5vh"); // to 68 and back again??
+  const [viewHeight, setViewHeight] = useState("74.5vh");
   const [yourWeather, setYourWeather] = useState(null);
 
   const calculateBearing = () => {
@@ -472,7 +472,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
                               width: "20w",
                             }
                           : {
-                              // margin: "0",
                               margin: "2.75vw",
                               padding: "1vw",
                               height: "20vw",
@@ -495,7 +494,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
                         <Header.Subheader
                           color={revealJoe ? null : "purple"}
                           centered
-                          // verticalAlign="middle"
                           size="medium"
                           style={revealJoe ? { color: "#F1F1F1" } : null}
                         >

@@ -34,7 +34,7 @@ export default function Link({
 
   const places = () => setShowPlaces(!showPlaces);
 
-  const [viewHeight, setViewHeight] = useState("74.5vh"); // 74.5 ->
+  const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
     const isMobile = detectIfMobileBrowser();
     setMobile(isMobile);
