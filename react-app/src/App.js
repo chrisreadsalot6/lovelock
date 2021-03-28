@@ -3,8 +3,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 
-import o9n, { orientation } from "o9n";
-
 import DemoLogin from "./components/auth/DemoLogin";
 import Footer from "./components/Footer/Footer";
 import Link from "./components/Link/Link";
