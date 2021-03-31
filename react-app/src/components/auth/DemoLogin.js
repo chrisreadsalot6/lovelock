@@ -4,11 +4,15 @@ import { Redirect } from "react-router-dom";
 import { login } from "../../services/auth";
 
 const DemoLogin = ({ authenticated, setAuthenticated, setUser }) => {
+  const [isMobile, setIsMobile] = useState();
   const [viewHeight, setViewHeight] = useState("74.5vh");
-  useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
 
-    if (isMobile === false) {
+  useEffect(() => {
+    const isMobileLocal = detectIfMobileBrowser();
+    setIsMobile(isMobileLocal);
+    console.log("local", isMobileLocal);
+
+    if (isMobileLocal === false) {
       setViewHeight("86.5vh");
     }
   }, []);
@@ -42,6 +46,13 @@ const DemoLogin = ({ authenticated, setAuthenticated, setUser }) => {
     if (!user.errors) {
       setAuthenticated(true);
       setUser(user);
+      console.log("global", isMobile);
+      debugger;
+      if (isMobile) {
+        alert(
+          "Warning. Mobile browser not detected. For optimal viewing, please open the app on a mobile device. Thank you."
+        );
+      }
       return <Redirect to="/" />;
     } else {
       setErrors(user.errors);

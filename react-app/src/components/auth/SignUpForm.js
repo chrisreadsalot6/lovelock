@@ -142,7 +142,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
               }
             })}
           </Form.Field>
-          <Button type="submit" basic color="purple" size="big">
+          <Button color="purple" inverted size="big" type="submit">
             Sign Up
           </Button>
         </Form>

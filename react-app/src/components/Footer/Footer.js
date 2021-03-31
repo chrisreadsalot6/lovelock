@@ -14,6 +14,10 @@ export default function Footer({ joeColor, revealJoe }) {
     window.location.href = "https://www.linkedin.com/in/rcreadii";
   };
 
+  const portfolio = () => {
+    window.location.href = "https://rcreadii.dev";
+  };
+
   return (
     <Segment
       color={revealJoe ? "red" : "purple"}
@@ -24,7 +28,7 @@ export default function Footer({ joeColor, revealJoe }) {
       Developed by Chris Read <Icon link name="angellist" onClick={angellist} />
       <Icon link name="github" onClick={github} />{" "}
       <Icon link name="linkedin" onClick={linkedin} />
-      <Icon name="code" />
+      <Icon link name="code" onClick={portfolio} />
     </Segment>
   );
 }
