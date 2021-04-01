@@ -8,18 +8,19 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
 
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
-  const [isMobile, setIsMobile] = useState();
   const [password, setPassword] = useState("");
   const [middleOrTop, setMiddleOrTop] = useState("top");
   const [viewHeight, setViewHeight] = useState("74.5vh");
 
   useEffect(() => {
-    setIsMobile(detectIfMobileBrowser());
     const isMobileLocal = detectIfMobileBrowser();
 
     if (isMobileLocal === false) {
       setViewHeight("86.5vh");
       setMiddleOrTop("middle");
+      alert(
+        "Warning. Mobile browser not detected. For optimal viewing, please open the app on a mobile device. Styling will be off in all desktop browsers. Thank you very much."
+      );
     }
   }, []);
 
@@ -50,11 +51,6 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
     if (!user.errors) {
       setAuthenticated(true);
       setUser(user);
-      if (isMobile) {
-        alert(
-          "Warning. Mobile browser not detected. For optimal viewing, please open the app on a mobile device. Thank you."
-        );
-      }
     } else {
       setErrors(user.errors);
     }
