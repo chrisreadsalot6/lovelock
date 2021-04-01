@@ -1,9 +1,7 @@
 import {
   Button,
-  Container,
   Grid,
   Header,
-  Icon,
   Image,
   Message,
   Segment,

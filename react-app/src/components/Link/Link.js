@@ -1,6 +1,5 @@
 import {
   Button,
-  Confirm,
   Dimmer,
   Image,
   Grid,
