@@ -20,7 +20,29 @@ function App() {
   const [revealRedSquare, setRevealRedSquare] = useState(false);
   const [user, setUser] = useState(null);
 
+  const detectIfMobileBrowser = () => {
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i,
+    ];
+
+    return toMatch.some((element) => {
+      return navigator.userAgent.match(element);
+    });
+  };
+
   useEffect(() => {
+    const isMobileLocal = detectIfMobileBrowser();
+    if (isMobileLocal === false) {
+      alert(
+        "Warning. Mobile browser not detected.\n\nFor optimal viewing, please open the app on a mobile device. Styling will be poor on some pages in all desktop browsers. Thank you very much for your consideration."
+      );
+    }
     (async () => {
       const user = await authenticate();
       if (!user.errors) {

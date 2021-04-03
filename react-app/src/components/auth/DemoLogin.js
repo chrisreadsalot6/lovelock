@@ -11,9 +11,6 @@ const DemoLogin = ({ authenticated, setAuthenticated, setUser }) => {
 
     if (isMobileLocal === false) {
       setViewHeight("86.5vh");
-      alert(
-        "Warning. Mobile browser not detected. For optimal viewing, please open the app on a mobile device. Styling will be off in all desktop browsers. Thank you very much."
-      );
     }
   }, []);
 
