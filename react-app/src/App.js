@@ -12,6 +12,15 @@ import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
 
+import ReactGA from "react-ga";
+
+// function usePageViews() {
+//   let location = useLocation();
+//   React.useEffect(() => {
+//     ReactGA.pageview()
+//   })
+// }
+
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const joeColor = "#F20D2D";

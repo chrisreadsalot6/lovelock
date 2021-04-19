@@ -10,6 +10,7 @@
     "react": "^16.13.1",
     "react-bidirectional-infinite-scroll": "^2.0.1",
     "react-dom": "^16.13.1",
+    "react-ga": "^3.3.0",
     "react-meta-tags": "^1.0.1",
     "react-router-dom": "^5.2.0",
     "react-screen-orientation": "^0.0.4",
