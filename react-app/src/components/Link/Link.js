@@ -8,11 +8,12 @@ import {
   Message,
   Segment,
 } from "semantic-ui-react";
-import InfiniteScroll from "react-bidirectional-infinite-scroll";
+
 import React, { useEffect, useState } from "react";
 
 import CreateLock from "../CreateLock/CreateLock";
 import EnterJoeLock from "../EnterJoeLock/EnterJoeLock";
+import InfiniteScroll from "../InfiniteScroll/InfiniteScroll";
 import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link({
@@ -225,50 +226,7 @@ export default function Link({
                 </Button>
                 <br />
                 <br />
-                {showPlaces ? (
-                  <InfiniteScroll
-                    horizontal
-                    onReachLeft={(f) => f}
-                    onReachRight={(f) => f}
-                  >
-                    <Segment circular size="tiny">
-                      <Header color="purple">
-                        Harvard Yard
-                        <Header.Subheader>Lock Id - 1636</Header.Subheader>
-                      </Header>
-                    </Segment>
-                    <Segment circular size="tiny">
-                      <Header color="purple">
-                        Mecca
-                        <Header.Subheader>Lock Id - 570</Header.Subheader>
-                      </Header>
-                    </Segment>
-                    <Segment circular size="tiny">
-                      <Header color="purple">
-                        Stephen Colbert
-                        <Header.Subheader>Lock Id - 1997</Header.Subheader>
-                      </Header>
-                    </Segment>
-                    <Segment circular size="tiny">
-                      <Header color="purple">
-                        The Sphinx
-                        <Header.Subheader>Lock Id - 12000</Header.Subheader>
-                      </Header>
-                    </Segment>
-                    <Segment circular size="tiny">
-                      <Header color="purple">
-                        The White House
-                        <Header.Subheader>Lock Id - 1776</Header.Subheader>
-                      </Header>
-                    </Segment>
-                    <Segment circular size="tiny">
-                      <Header color="purple">
-                        Willard Beach
-                        <Header.Subheader>Lock Id - 04106</Header.Subheader>
-                      </Header>
-                    </Segment>
-                  </InfiniteScroll>
-                ) : null}
+                {showPlaces ? <InfiniteScroll /> : null}
                 <Grid.Row
                   style={{ margin: "0", padding: "0", height: viewHeightThird }}
                 >
