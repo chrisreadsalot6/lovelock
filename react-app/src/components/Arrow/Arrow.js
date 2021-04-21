@@ -29,25 +29,14 @@ export default function Arrow({
 
   return (
     <div>
-      {goLeftOrRight === "left" ? (
-        <i
-          className={
-            revealJoe
-              ? "arrow circle left icon inverted huge"
-              : "arrow circle left icon inverted huge purple"
-          }
-          style={revealJoe ? { color: joeColor } : null}
-        />
-      ) : (
-        <i
-          className={
-            revealJoe
-              ? "arrow circle right icon inverted huge"
-              : "arrow circle right icon inverted huge purple"
-          }
-          style={revealJoe ? { color: joeColor } : null}
-        />
-      )}
+      <i
+        className={
+          revealJoe
+            ? `arrow circle ${goLeftOrRight} icon inverted huge`
+            : `arrow circle ${goLeftOrRight} icon inverted huge purple`
+        }
+        style={revealJoe ? { color: joeColor } : null}
+      />
     </div>
   );
 }
