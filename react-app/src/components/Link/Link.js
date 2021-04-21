@@ -16,6 +16,7 @@ import EnterJoeLock from "../EnterJoeLock/EnterJoeLock";
 import JoinLock from "../JoinLock/JoinLock";
 
 export default function Link({
+  isMobile,
   noLock,
   revealJoe,
   revealRedSquare,
@@ -26,7 +27,6 @@ export default function Link({
 }) {
   const [compass, setCompass] = useState(null);
   const [viewHeightThird, setViewHeightThird] = useState("20vh");
-  const [mobile, setMobile] = useState(null);
   const [readings, setReadings] = useState(null);
   const [loaderToggle, setLoaderToggle] = useState(false);
   const [showPlaces, setShowPlaces] = useState(false);
@@ -35,33 +35,14 @@ export default function Link({
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
-    setMobile(isMobile);
-
     if (isMobile === false) {
       setViewHeight("86.5vh");
       setViewHeightThird("20vh");
     }
   }, []);
 
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
-  };
-
   const getDirection = () => {
-    if (mobile === false) {
+    if (isMobile === false) {
       alert(
         "No device orientation event. Inputting placeholder value for compass direction. Please kindly use a mobile device for dynamic compass readings."
       );

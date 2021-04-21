@@ -3,32 +3,14 @@ import { Redirect } from "react-router-dom";
 
 import { login } from "../../services/auth";
 
-const DemoLogin = ({ authenticated, setAuthenticated, setUser }) => {
+const DemoLogin = ({ authenticated, isMobile, setAuthenticated, setUser }) => {
   const [viewHeight, setViewHeight] = useState("74.5vh");
 
   useEffect(() => {
-    const isMobileLocal = detectIfMobileBrowser();
-
-    if (isMobileLocal === false) {
+    if (isMobile === false) {
       setViewHeight("86.5vh");
     }
   }, []);
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
-  };
 
   const [errors, setErrors] = useState([]);
 

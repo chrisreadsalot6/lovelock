@@ -6,6 +6,7 @@ import { logout } from "../services/auth";
 
 const NavBar = ({
   authenticated,
+  isMobile,
   joeColor,
   revealJoe,
   revealRedSquare,
@@ -19,28 +20,10 @@ const NavBar = ({
     loggedOut: "1vh",
   });
   useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
-
     if (isMobile === false) {
       setDynamicPadding({ loggedIn: null, loggedOut: null });
     }
   }, []);
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
-  };
 
   const logoutPlus = async () => {
     await logout();

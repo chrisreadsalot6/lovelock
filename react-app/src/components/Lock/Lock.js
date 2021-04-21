@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 
 import Arrow from "../Arrow/Arrow";
 
-export default function Lock({ joeColor, revealJoe, user }) {
+export default function Lock({ isMobile, joeColor, revealJoe, user }) {
   const [bearing, setBearing] = useState(null);
   const [compassReadingCount, setCompassReadingCount] = useState(0);
   const [geolocation, setGeolocation] = useState(null);
@@ -122,22 +122,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
     } else {
       setLockedOn(false);
     }
-  };
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
   };
 
   const endLock = () => {
@@ -286,7 +270,7 @@ export default function Lock({ joeColor, revealJoe, user }) {
     setToggleButton(false);
     getGeolocationData();
 
-    if (detectIfMobileBrowser() === false) {
+    if (isMobile === false) {
       const compassDirection = 20;
       setMyCompassDirection(compassDirection);
 
@@ -317,8 +301,6 @@ export default function Lock({ joeColor, revealJoe, user }) {
   };
 
   useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
-
     if (isMobile === false) {
       setViewHeight("86.5vh");
     }

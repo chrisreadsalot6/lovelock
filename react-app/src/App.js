@@ -23,6 +23,7 @@ import ReactGA from "react-ga";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [isMobile, SetIsMobile] = useState(false);
   const joeColor = "#F20D2D";
   const [loaded, setLoaded] = useState(false);
   const [revealJoe, setRevealJoe] = useState(false);
@@ -47,6 +48,7 @@ function App() {
 
   useEffect(() => {
     const isMobileLocal = detectIfMobileBrowser();
+    SetIsMobile(isMobileLocal);
     if (isMobileLocal === false) {
       alert(
         "Warning. Mobile browser not detected.\n\nFor optimal viewing, please open the app on a mobile device. Styling will be poor on some pages in all desktop browsers. Thank you very much for your consideration."
@@ -71,6 +73,7 @@ function App() {
       <BrowserRouter>
         <NavBar
           authenticated={authenticated}
+          isMobile={isMobile}
           joeColor={joeColor}
           revealJoe={revealJoe}
           revealRedSquare={revealRedSquare}
@@ -83,6 +86,7 @@ function App() {
           <Route path="/demo" exact={true}>
             <DemoLogin
               authenticated={authenticated}
+              isMobile={isMobile}
               setAuthenticated={setAuthenticated}
               setUser={setUser}
             />
@@ -90,6 +94,7 @@ function App() {
           <Route path="/login" exact={true}>
             <LoginForm
               authenticated={authenticated}
+              isMobile={isMobile}
               setAuthenticated={setAuthenticated}
               setUser={setUser}
             />
@@ -97,12 +102,14 @@ function App() {
           <Route path="/sign-up" exact={true}>
             <SignUpForm
               authenticated={authenticated}
+              isMobile={isMobile}
               setAuthenticated={setAuthenticated}
               setUser={setUser}
             />
           </Route>
           <Route path="/link/no-lock">
             <Link
+              isMobile={isMobile}
               noLock={true}
               joeColor={joeColor}
               revealJoe={revealJoe}
@@ -115,6 +122,7 @@ function App() {
           </Route>
           <Route path="/link/">
             <Link
+              isMobile={isMobile}
               joeColor={joeColor}
               revealJoe={revealJoe}
               revealRedSquare={revealRedSquare}
@@ -125,10 +133,16 @@ function App() {
             />
           </Route>
           <Route path="/lock/:lockId">
-            <Lock joeColor={joeColor} revealJoe={revealJoe} user={user} />
+            <Lock
+              isMobile={isMobile}
+              joeColor={joeColor}
+              revealJoe={revealJoe}
+              user={user}
+            />
           </Route>
           <ProtectedRoute path="/" authenticated={authenticated}>
             <Link
+              isMobile={isMobile}
               joeColor={joeColor}
               revealJoe={revealJoe}
               revealRedSquare={revealRedSquare}

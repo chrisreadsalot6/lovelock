@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../services/auth";
 
-const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
+const SignUpForm = ({ authenticated, isMobile, setAuthenticated, setUser }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
@@ -13,29 +13,11 @@ const SignUpForm = ({ authenticated, setAuthenticated, setUser }) => {
 
   const [viewHeight, setViewHeight] = useState("74.5vh");
   useEffect(() => {
-    const isMobile = detectIfMobileBrowser();
-
     if (isMobile === false) {
       setViewHeight("86.5vh");
       setMiddleOrTop("middle");
     }
   }, []);
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
-  };
 
   const onSignUp = async (e) => {
     e.preventDefault();

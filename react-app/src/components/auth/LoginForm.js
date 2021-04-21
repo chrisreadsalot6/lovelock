@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../services/auth";
 
-const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
+const LoginForm = ({ authenticated, isMobile, setAuthenticated, setUser }) => {
   const history = useHistory();
 
   const [errors, setErrors] = useState([]);
@@ -13,29 +13,11 @@ const LoginForm = ({ authenticated, setAuthenticated, setUser }) => {
   const [viewHeight, setViewHeight] = useState("74.5vh");
 
   useEffect(() => {
-    const isMobileLocal = detectIfMobileBrowser();
-
-    if (isMobileLocal === false) {
+    if (isMobile === false) {
       setViewHeight("86.5vh");
       setMiddleOrTop("middle");
     }
   }, []);
-
-  const detectIfMobileBrowser = () => {
-    const toMatch = [
-      /Android/i,
-      /webOS/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i,
-    ];
-
-    return toMatch.some((element) => {
-      return navigator.userAgent.match(element);
-    });
-  };
 
   const onDemoLogin = async (e) => {
     e.preventDefault();
