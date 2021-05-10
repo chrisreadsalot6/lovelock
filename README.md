@@ -3,6 +3,8 @@
 ## Overview
 Mobile web application pointing each of two users towards the other through a compass interface.
 
+Live at https://lovelockapp.herokuapp.com
+
 ## Technologies
 - React
 - React Router DOM
