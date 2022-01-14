@@ -34,7 +34,7 @@ Styling across multiple mobile device browsers.
 
 ## Code-Snippets
 
-Created at ray.so, itself made by Raycast
+Created at [ray.so](https://ray.so), itself made by Raycast
 
 ![](https://github.com/rcreadii/lovelock/blob/main/documentation/create%20a%20lock.png)
 
