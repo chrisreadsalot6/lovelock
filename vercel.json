@@ -1,11 +1,12 @@
 {
   "version": 2,
+  "name": "lovelock-app",
   "builds": [
-    { "src": "app/api/**", "use": "@vercel/python" },
-    { "src": "react-app/**", "use": "@vercel/static" }
+    { "src": "/app/**", "use": "@vercel/python" },
+    { "src": "/react-app/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/app/api/(.*)", "dest": "/app/api/$1" },
-    { "src": "/(.*)", "dest": "/react-app/$1" }
+    { "src": "/(.*)", "dest": "https://lovelock.vercel.app/" }
   ]
 }

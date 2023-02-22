@@ -1,6 +1,6 @@
-import { Button, Input, Modal } from "semantic-ui-react";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Button, Input, Modal } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function EnterJoeLock({
   getDirection,
@@ -12,23 +12,23 @@ export default function EnterJoeLock({
   user,
 }) {
   const history = useHistory();
-  const [joeVisibility, setjoeVisibility] = useState("hidden");
+  const [joeVisibility, setjoeVisibility] = useState('hidden');
   const [join, setJoin] = useState(null);
-  const [lockId, setLockId] = useState("09");
+  const [lockId, setLockId] = useState('09');
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState(null);
 
   const getDirectionJoin = () => {
-    if (password === "septemberjoe") {
+    if (password === 'septemberjoe') {
       setJoin(true);
       setOpen(false);
       setRevealJoe(true);
-      const userCopy = { ...user, initiatorOrJoiner: "joiner" };
+      const userCopy = { ...user, initiatorOrJoiner: 'joiner' };
       setUser(userCopy);
       getDirection();
     } else {
       alert(
-        "experimental feature. please continue to use the other features of the app."
+        'experimental feature. please continue to use the other features of the app.'
       );
       setOpen(false);
     }
@@ -45,19 +45,24 @@ export default function EnterJoeLock({
       uniqueIdentifier: lockId,
     };
 
-    fetch("/api/lock/join", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    }).then((response) => {
+    fetch(
+      (process.env.NODE_ENV === 'production'
+        ? '/app'
+        : 'http://127.0.0.1:5000') + '/api/lock/join',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      }
+    ).then((response) => {
       response.json().then((data) => {
         if (data === false) {
-          history.push("/link/no-lock");
+          history.push('/link/no-lock');
           setJoin(false);
         } else {
-          const updatedLockId = data["uniqueIdentifier"];
+          const updatedLockId = data['uniqueIdentifier'];
           history.push(`/lock/${updatedLockId}`);
         }
       });
@@ -76,9 +81,9 @@ export default function EnterJoeLock({
 
   useEffect(() => {
     if (revealRedSquare === true) {
-      setjoeVisibility("visible");
+      setjoeVisibility('visible');
     } else {
-      setjoeVisibility("hidden");
+      setjoeVisibility('hidden');
     }
   }, [revealRedSquare]);
 
@@ -87,21 +92,21 @@ export default function EnterJoeLock({
       <Button
         onClick={() => setOpen(true)}
         style={{
-          backgroundColor: "#F20D2D",
-          margin: "0vh",
-          marginTop: "1vh",
-          padding: "1vh",
+          backgroundColor: '#F20D2D',
+          margin: '0vh',
+          marginTop: '1vh',
+          padding: '1vh',
           visibility: joeVisibility,
         }}
       />
       <Modal color="purple" open={open} size="mini">
         <Modal.Header
           color="purple"
-          style={{ textAlign: "center" }}
+          style={{ textAlign: 'center' }}
         ></Modal.Header>
         <Input
           fluid
-          style={{ padding: "1vh 1vh 1vh 1vh" }}
+          style={{ padding: '1vh 1vh 1vh 1vh' }}
           onChange={updatePassword}
         ></Input>
         <Modal.Actions>
