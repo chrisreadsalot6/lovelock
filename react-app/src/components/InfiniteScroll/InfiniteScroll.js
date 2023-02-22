@@ -2,7 +2,7 @@ import { Header, Segment } from "semantic-ui-react";
 import InfiniteScroll from "react-bidirectional-infinite-scroll";
 import React from "react";
 
-export default function InfiniteScroll() {
+export default function InfiniteScrollParent() {
   return (
     <InfiniteScroll horizontal onReachLeft={(f) => f} onReachRight={(f) => f}>
       <Segment circular size="tiny">

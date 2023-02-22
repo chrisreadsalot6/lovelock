@@ -30,5 +30,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initializeGA() {
   ReactGA.initializeGA("UA-195008294-2");
-  pageview(location.pathname + location.hash);
+  pageview(window.location.pathname + window.location.hash);
 }
