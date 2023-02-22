@@ -3,14 +3,14 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import MetaTags from "react-meta-tags";
 import React, { useEffect, useState } from "react";
 
-import DemoLogin from "./components/auth/DemoLogin";
 import Footer from "./components/Footer/Footer";
 import Link from "./components/Link/Link";
 import Lock from "./components/Lock/Lock";
-import LoginForm from "./components/auth/LoginForm";
 import NavBar from "./components/NavBar";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
-import SignUpForm from "./components/auth/SignUpForm";
+// import DemoLogin from "./components/auth/DemoLogin";
+// import LoginForm from "./components/auth/LoginForm";
+// import ProtectedRoute from "./components/auth/ProtectedRoute";
+// import SignUpForm from "./components/auth/SignUpForm";
 
 // import ReactGA from "react-ga";
 
@@ -22,14 +22,13 @@ import SignUpForm from "./components/auth/SignUpForm";
 // }
 
 function App() {
-  console.log('Hi from app!')
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const [isMobile, SetIsMobile] = useState(false);
   const joeColor = "#F20D2D";
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const [revealJoe, setRevealJoe] = useState(false);
   const [revealRedSquare, setRevealRedSquare] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('me');
 
   const detectIfMobileBrowser = () => {
     const toMatch = [
@@ -84,30 +83,30 @@ function App() {
           setUser={setUser}
         />
         <Switch>
-          <Route path="/demo" exact={true}>
+          {/* <Route path="/demo" exact={true}>
             <DemoLogin
               authenticated={authenticated}
               isMobile={isMobile}
               setAuthenticated={setAuthenticated}
               setUser={setUser}
             />
-          </Route>
-          <Route path="/login" exact={true}>
+          </Route> */}
+          {/* <Route path="/login" exact={true}>
             <LoginForm
               authenticated={authenticated}
               isMobile={isMobile}
               setAuthenticated={setAuthenticated}
               setUser={setUser}
             />
-          </Route>
-          <Route path="/sign-up" exact={true}>
+          </Route> */}
+          {/* <Route path="/sign-up" exact={true}>
             <SignUpForm
               authenticated={authenticated}
               isMobile={isMobile}
               setAuthenticated={setAuthenticated}
               setUser={setUser}
             />
-          </Route>
+          </Route> */}
           <Route path="/link/no-lock">
             <Link
               isMobile={isMobile}
@@ -141,7 +140,7 @@ function App() {
               user={user}
             />
           </Route>
-          <ProtectedRoute path="/" authenticated={authenticated}>
+          {/* <ProtectedRoute path="/" authenticated={authenticated}> */}
             <Link
               isMobile={isMobile}
               joeColor={joeColor}
@@ -152,7 +151,7 @@ function App() {
               setUser={setUser}
               user={user}
             />
-          </ProtectedRoute>
+          {/* </ProtectedRoute> */}
         </Switch>
         <Footer joeColor={joeColor} revealJoe={revealJoe} />
       </BrowserRouter>
