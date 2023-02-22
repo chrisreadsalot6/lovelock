@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import SignUpForm from "./components/auth/SignUpForm";
 
-import ReactGA from "react-ga";
+// import ReactGA from "react-ga";
 
 // function usePageViews() {
 //   let location = useLocation();
@@ -22,6 +22,7 @@ import ReactGA from "react-ga";
 // }
 
 function App() {
+  console.log('Hi from app!')
   const [authenticated, setAuthenticated] = useState(false);
   const [isMobile, SetIsMobile] = useState(false);
   const joeColor = "#F20D2D";

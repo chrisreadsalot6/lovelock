@@ -2,10 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import ReactGA, { pageview } from "react-ga";
+// import ReactGA, { pageview } from "react-ga";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initializeGA();
+  // initializeGA();
   // let store;
   // if (window.currentUser) {
   //   const preloadedState = {
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 });
 
-function initializeGA() {
-  ReactGA.initializeGA("UA-195008294-2");
-  pageview(window.location.pathname + window.location.hash);
-}
+// function initializeGA() {
+//   ReactGA.initializeGA("UA-195008294-2");
+//   pageview(window.location.pathname + window.location.hash);
+// }
