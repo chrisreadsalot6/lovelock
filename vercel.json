@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "/react-app/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "react-app/build" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "app/api/(.*)",
+      "dest": "/api/__init__.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/react-app/src/index.html"
+    }
+  ]
+}
