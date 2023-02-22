@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "name": "my-docker-lovelock-app",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "https://lovelock.vercel.app/"
-    }
+  "builds": [
+    { "src": "app/api/**", "use": "@vercel/python" },
+    { "src": "react-app/**", "use": "@vercel/static" }
   ],
-  "env": {
-    "MY_ENV_VAR": "my-value"
-  }
+  "routes": [
+    { "src": "/app/api/(.*)", "dest": "/app/api/$1" },
+    { "src": "/(.*)", "dest": "/react-app/$1" }
+  ]
 }

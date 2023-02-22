@@ -1,6 +1,6 @@
-import { Button } from "semantic-ui-react";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Button } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function CreateLock({ getDirection, readings, setUser, user }) {
   const [create, setCreate] = useState(null);
@@ -20,13 +20,18 @@ export default function CreateLock({ getDirection, readings, setUser, user }) {
       initiatorUserId: readings.userId,
     };
 
-    fetch("/api/lock/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    }).then((result) => {
+    fetch(
+      (process.env.NODE_ENV === 'production'
+        ? '/app'
+        : 'http://127.0.0.1:5000') + '/api/lock/create',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      }
+    ).then((result) => {
       result.json().then((data) => {
         history.push(`/lock/${data}`);
       });
@@ -35,7 +40,7 @@ export default function CreateLock({ getDirection, readings, setUser, user }) {
 
   const getDirectionCreate = () => {
     setCreate(true);
-    const userCopy = { ...user, initiatorOrJoiner: "initiator" };
+    const userCopy = { ...user, initiatorOrJoiner: 'initiator' };
     setUser(userCopy);
     getDirection();
   };
@@ -46,7 +51,7 @@ export default function CreateLock({ getDirection, readings, setUser, user }) {
       inverted
       onClick={getDirectionCreate}
       size="big"
-      style={{ width: "50vw" }}
+      style={{ width: '50vw' }}
     >
       Create a Lock
     </Button>

@@ -5,11 +5,11 @@ import {
   Image,
   Message,
   Segment,
-} from "semantic-ui-react";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+} from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import Arrow from "../Arrow/Arrow";
+import Arrow from '../Arrow/Arrow';
 
 export default function Lock({ isMobile, joeColor, revealJoe, user }) {
   const [bearing, setBearing] = useState(null);
@@ -29,9 +29,9 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
   const [myWeather, setMyWeather] = useState(null);
   const [partnerIsLocked, setPartnerIsLocked] = useState(false);
   const [runningCompass, setRunningCompass] = useState(false);
-  const [themeColor, setThemeColor] = useState("purple");
+  const [themeColor, setThemeColor] = useState('purple');
   const [toggleButton, setToggleButton] = useState(true);
-  const [viewHeight, setViewHeight] = useState("74.5vh");
+  const [viewHeight, setViewHeight] = useState('74.5vh');
   const [yourWeather, setYourWeather] = useState(null);
 
   const calculateBearing = () => {
@@ -41,7 +41,7 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
     let theirLong;
 
     // why did I have to flip this direction?
-    if (user["initiatorOrJoiner"] === "initiator") {
+    if (user['initiatorOrJoiner'] === 'initiator') {
       myLat = geolocation.initiatorGPSLatitude;
       myLong = geolocation.initiatorGPSLongitude;
       theirLat = geolocation.joinerGPSLatitude;
@@ -131,12 +131,17 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
   };
 
   const getGeolocationData = () => {
-    fetch(`/api/lock/${lockId}/get-geolocation`, {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
+    fetch(
+      (process.env.NODE_ENV === 'production'
+        ? '/app'
+        : 'http://127.0.0.1:5000') + `/api/lock/${lockId}/get-geolocation`,
+      {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((response) => {
       response.json().then((data) => {
         setGeolocation(data);
       });
@@ -157,7 +162,7 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
     let yourLat;
     let yourLong;
 
-    if (user["initiatorOrJoiner"] === "initiator") {
+    if (user['initiatorOrJoiner'] === 'initiator') {
       myLat = geolocation.initiatorGPSLatitude;
       myLong = geolocation.initiatorGPSLongitude;
       yourLat = geolocation.joinerGPSLatitude;
@@ -169,9 +174,15 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
       yourLong = geolocation.initiatorGPSLongitude;
     }
 
-    fetch(`/api/locale/${user.id}/${myLat}/${myLong}`, {
-      method: "GET",
-    }).then((result) => {
+    fetch(
+      (process.env.NODE_ENV === 'production'
+        ? '/app'
+        : 'http://127.0.0.1:5000') +
+        `/api/locale/${user.id}/${myLat}/${myLong}`,
+      {
+        method: 'GET',
+      }
+    ).then((result) => {
       result.json().then((data) => {
         setMyWeather({
           temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
@@ -180,10 +191,16 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
       });
     });
 
-    if (yourLat !== "None" && yourLong !== "None") {
-      fetch(`/api/locale/${user.id}/${yourLat}/${yourLong}`, {
-        method: "GET",
-      }).then((result) => {
+    if (yourLat !== 'None' && yourLong !== 'None') {
+      fetch(
+        (process.env.NODE_ENV === 'production'
+          ? '/app'
+          : 'http://127.0.0.1:5000') +
+          `/api/locale/${user.id}/${yourLat}/${yourLong}`,
+        {
+          method: 'GET',
+        }
+      ).then((result) => {
         result.json().then((data) => {
           setYourWeather({
             temperatureFeelsLikeFahrenheit: data.temperatureFeelsLikeFahrenheit,
@@ -198,19 +215,19 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
     fetch(
       `https://wft-geo-db.p.rapidapi.com/v1/geo/locations/${midwayLatitude}${midwayLongitude}/nearbyCities?radius=${radius}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "x-rapidapi-key":
-            "5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a",
-          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com", // not needed to work so far, but they have it in the api docs on rapid api
+          'x-rapidapi-key':
+            '5ab0b683f6msha36a3d89e07fe53p15ec08jsne65a29cbe42a',
+          'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com', // not needed to work so far, but they have it in the api docs on rapid api
         },
       }
     ).then((result) => {
       result.json().then((data) => {
-        const cities = data["data"];
-        let midwayPointCity = "";
+        const cities = data['data'];
+        let midwayPointCity = '';
         if (cities !== undefined && cities.length > 0) {
-          midwayPointCity = cities[0]["city"] + ": " + cities[0]["region"];
+          midwayPointCity = cities[0]['city'] + ': ' + cities[0]['region'];
         } else {
           midwayPointCity = `No major city within ${radius} miles!`;
         }
@@ -225,14 +242,19 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
   };
 
   const pullCompassData = () => {
-    fetch(`/api/lock/${lockId}/pull-compass`, {
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
+    fetch(
+      (process.env.NODE_ENV === 'production'
+        ? '/app'
+        : 'http://127.0.0.1:5000') + `/api/lock/${lockId}/pull-compass`,
+      {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((response) => {
       response.json().then((data) => {
-        if (user["initiatorOrJoiner"] === "initiator") {
+        if (user['initiatorOrJoiner'] === 'initiator') {
           setLinkedCompassDirection(data.joinerCompassDirection);
           setPartnerIsLocked(data.joinerLocked);
         } else {
@@ -246,22 +268,27 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
   const pushAndPullData = () => {
     const postData = {
       compassDirection: myCompassDirection,
-      initiatorOrJoiner: user["initiatorOrJoiner"],
+      initiatorOrJoiner: user['initiatorOrJoiner'],
       locked: lockedOn,
       lockId: lockId,
-      midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
-      midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
-      midwayPointCity: midwayGPS["midwayPointCity"],
+      midwayGPSLatitude: midwayGPS['midwayGPSLatitude'],
+      midwayGPSLongitude: midwayGPS['midwayGPSLongitude'],
+      midwayPointCity: midwayGPS['midwayPointCity'],
       userId: user.id,
     };
 
-    fetch(`/api/lock/${lockId}/push-compass`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
+    fetch(
+      (process.env.NODE_ENV === 'production'
+        ? '/app'
+        : 'http://127.0.0.1:5000') + `/api/lock/${lockId}/push-compass`,
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      }
+    );
 
     pullCompassData();
   };
@@ -278,22 +305,27 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
         compassDirection: compassDirection,
         // this breaks on a page refresh
         // it'd be better to add it to the original user object
-        initiatorOrJoiner: user["initiatorOrJoiner"],
+        initiatorOrJoiner: user['initiatorOrJoiner'],
         locked: lockedOn,
         lockId: lockId,
-        midwayGPSLatitude: midwayGPS["midwayGPSLatitude"],
-        midwayGPSLongitude: midwayGPS["midwayGPSLongitude"],
-        midwayPointCity: midwayGPS["midwayPointCity"],
+        midwayGPSLatitude: midwayGPS['midwayGPSLatitude'],
+        midwayGPSLongitude: midwayGPS['midwayGPSLongitude'],
+        midwayPointCity: midwayGPS['midwayPointCity'],
         userId: user.id,
       };
 
-      fetch(`/api/lock/${lockId}/push-compass`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+      fetch(
+        (process.env.NODE_ENV === 'production'
+          ? '/app'
+          : 'http://127.0.0.1:5000') + `/api/lock/${lockId}/push-compass`,
+        {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData),
+        }
+      );
       pullCompassData();
     } else {
       setRunningCompass(true);
@@ -302,7 +334,7 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
 
   useEffect(() => {
     if (isMobile === false) {
-      setViewHeight("86.5vh");
+      setViewHeight('86.5vh');
     }
   }, []);
 
@@ -327,28 +359,28 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
     if (revealJoe === true) {
       setThemeColor(joeColor);
     } else {
-      setThemeColor("purple");
+      setThemeColor('purple');
     }
   }, [revealJoe]);
 
   useEffect(() => {
     if (runningCompass === true) {
-      window.addEventListener("deviceorientation", inner);
+      window.addEventListener('deviceorientation', inner);
 
       return () => {
-        window.removeEventListener("deviceorientation", inner);
+        window.removeEventListener('deviceorientation', inner);
       };
     }
   }, [runningCompass]);
 
   return (
     <Grid
-      style={{ height: viewHeight, margin: "0", padding: "0" }}
+      style={{ height: viewHeight, margin: '0', padding: '0' }}
       textAlign="center"
     >
-      <Grid.Row style={{ height: "16.5vh", margin: "0", padding: "0" }}>
-        <Grid.Column style={{ margin: "0", padding: "0" }}>
-          <Grid.Row style={{ margin: "0", padding: "0" }}>
+      <Grid.Row style={{ height: '16.5vh', margin: '0', padding: '0' }}>
+        <Grid.Column style={{ margin: '0', padding: '0' }}>
+          <Grid.Row style={{ margin: '0', padding: '0' }}>
             <Image
               margin="0"
               padding="0"
@@ -356,18 +388,18 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
               size="small"
               src={
                 revealJoe
-                  ? "https://lovelock-assets.s3.amazonaws.com/image-assets/joelock/joelock.png"
-                  : "https://lovelock-assets.s3.amazonaws.com/image-assets/logo-title.png"
+                  ? 'https://lovelock-assets.s3.amazonaws.com/image-assets/joelock/joelock.png'
+                  : 'https://lovelock-assets.s3.amazonaws.com/image-assets/logo-title.png'
               }
             />
           </Grid.Row>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row style={{ height: "48vh", margin: "0", padding: "0" }}>
+      <Grid.Row style={{ height: '48vh', margin: '0', padding: '0' }}>
         {toggleButton ? (
           <>
-            <Grid.Column style={{ height: "38vh", margin: "0", padding: "0" }}>
-              <Grid.Row style={{ height: "38vh", margin: "0", padding: "0" }}>
+            <Grid.Column style={{ height: '38vh', margin: '0', padding: '0' }}>
+              <Grid.Row style={{ height: '38vh', margin: '0', padding: '0' }}>
                 <div>
                   <br />
                   <br />
@@ -381,18 +413,18 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                       revealJoe
                         ? {
                             backgroundColor: joeColor,
-                            color: "#F1F1F1",
-                            width: "40vw",
-                            height: "40vw",
+                            color: '#F1F1F1',
+                            width: '40vw',
+                            height: '40vw',
                           }
-                        : { width: "40vw", height: "40vw" }
+                        : { width: '40vw', height: '40vw' }
                     }
                   >
-                    {revealJoe ? "Start a JoeLock" : "Start Lock"}
+                    {revealJoe ? 'Start a JoeLock' : 'Start Lock'}
                   </Button>
                 </div>
               </Grid.Row>
-              <Grid.Row style={{ margin: "0", padding: "0" }}>
+              <Grid.Row style={{ margin: '0', padding: '0' }}>
                 <Message
                   color={revealJoe ? null : themeColor}
                   compact
@@ -400,12 +432,12 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                   size="large"
                   style={
                     revealJoe
-                      ? { backgroundColor: joeColor, color: "#F1F1F1" }
+                      ? { backgroundColor: joeColor, color: '#F1F1F1' }
                       : null
                   }
                 >
                   <Message.Header>
-                    {revealJoe ? "JoeLock Id" : "Lock Id"}
+                    {revealJoe ? 'JoeLock Id' : 'Lock Id'}
                   </Message.Header>
                   {lockId}
                 </Message>
@@ -416,14 +448,14 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
           <>
             <Grid.Column
               style={{
-                margin: "0",
-                padding: "0",
-                height: "38vw",
-                width: "27.5vw",
+                margin: '0',
+                padding: '0',
+                height: '38vw',
+                width: '27.5vw',
               }}
               verticalAlign="middle"
             >
-              <Grid.Row style={{ margin: "0", padding: "0" }}>
+              <Grid.Row style={{ margin: '0', padding: '0' }}>
                 {isLeft === true && lockedOn !== true && !isNaN(bearing) ? (
                   <Arrow
                     bearing={parseInt(bearing)}
@@ -431,54 +463,54 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                     joeColor={joeColor}
                     revealJoe={revealJoe}
                     myCompassDirection={myCompassDirection}
-                    style={{ margin: "0", padding: "0" }}
+                    style={{ margin: '0', padding: '0' }}
                   />
                 ) : null}
                 {lockedOn && myWeather !== null ? (
-                  <div style={{ margin: "0", padding: "0" }}>
+                  <div style={{ margin: '0', padding: '0' }}>
                     <Segment
                       circular
-                      color={revealJoe ? null : "purple"}
+                      color={revealJoe ? null : 'purple'}
                       floated="left"
                       size="medium"
                       style={
                         revealJoe
                           ? {
                               backgroundColor: joeColor,
-                              color: "#F1F1F1",
-                              margin: "2.75vw",
-                              padding: "1vw",
-                              height: "20vw",
-                              width: "20w",
+                              color: '#F1F1F1',
+                              margin: '2.75vw',
+                              padding: '1vw',
+                              height: '20vw',
+                              width: '20w',
                             }
                           : {
-                              margin: "2.75vw",
-                              padding: "1vw",
-                              height: "20vw",
-                              width: "20w",
+                              margin: '2.75vw',
+                              padding: '1vw',
+                              height: '20vw',
+                              width: '20w',
                             }
                       }
                     >
                       <Header
-                        color={revealJoe ? null : "purple"}
+                        color={revealJoe ? null : 'purple'}
                         centered
                         verticalAlign="middle"
                         size="medium"
                         style={
                           revealJoe
-                            ? { color: "#F1F1F1", paddingTop: "1.5vh" }
-                            : { paddingTop: "1.5vh" }
+                            ? { color: '#F1F1F1', paddingTop: '1.5vh' }
+                            : { paddingTop: '1.5vh' }
                         }
                       >
                         For Me
                         <Header.Subheader
-                          color={revealJoe ? null : "purple"}
+                          color={revealJoe ? null : 'purple'}
                           centered
                           size="medium"
-                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                          style={revealJoe ? { color: '#F1F1F1' } : null}
                         >
-                          {myWeather["temperatureFeelsLikeFahrenheit"]}&deg;F |{" "}
-                          {myWeather["weatherDescription"]}
+                          {myWeather['temperatureFeelsLikeFahrenheit']}&deg;F |{' '}
+                          {myWeather['weatherDescription']}
                         </Header.Subheader>
                       </Header>
                     </Segment>
@@ -486,29 +518,29 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                 ) : null}
               </Grid.Row>
             </Grid.Column>
-            <Grid.Column style={{ margin: "0", padding: "0", width: "45vw" }}>
-              <Grid.Row style={{ margin: "0", padding: "0" }}>
+            <Grid.Column style={{ margin: '0', padding: '0', width: '45vw' }}>
+              <Grid.Row style={{ margin: '0', padding: '0' }}>
                 <div>
                   <br />
                   <Segment
                     circular
-                    color={revealJoe ? null : "purple"}
+                    color={revealJoe ? null : 'purple'}
                     size="massive"
                     style={
                       revealJoe
                         ? {
                             backgroundColor: joeColor,
-                            color: "#F1F1F1",
-                            margin: "0",
-                            padding: "0",
-                            height: "45vw",
-                            width: "45vw",
+                            color: '#F1F1F1',
+                            margin: '0',
+                            padding: '0',
+                            height: '45vw',
+                            width: '45vw',
                           }
                         : {
-                            margin: "0",
-                            padding: "0",
-                            height: "45vw",
-                            width: "45vw",
+                            margin: '0',
+                            padding: '0',
+                            height: '45vw',
+                            width: '45vw',
                           }
                     }
                   >
@@ -518,22 +550,22 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                       </Header>
                     ) : lockedOn === true ? (
                       <Header
-                        color={revealJoe ? null : "purple"}
+                        color={revealJoe ? null : 'purple'}
                         size="massive"
-                        style={revealJoe ? { color: "#F1F1F1" } : null}
+                        style={revealJoe ? { color: '#F1F1F1' } : null}
                       >
                         <Header.Subheader
-                          color={revealJoe ? null : "purple"}
+                          color={revealJoe ? null : 'purple'}
                           size="massive"
-                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                          style={revealJoe ? { color: '#F1F1F1' } : null}
                         >
                           <i
                             className={
                               revealJoe
-                                ? "icon lock huge ui"
-                                : "icon inverted lock huge purple ui"
+                                ? 'icon lock huge ui'
+                                : 'icon inverted lock huge purple ui'
                             }
-                            style={revealJoe ? { color: "#F1F1F1" } : null}
+                            style={revealJoe ? { color: '#F1F1F1' } : null}
                           />
                           <br />
                           <br />
@@ -543,38 +575,38 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                               <br />
                             </>
                           ) : null}
-                          {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{" "}
+                          {parseInt(parseFloat(KMDistance) * 0.62137119223733)}{' '}
                           miles away
                         </Header.Subheader>
                         <Header.Subheader
-                          color={revealJoe ? null : "purple"}
+                          color={revealJoe ? null : 'purple'}
                           size="massive"
-                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                          style={revealJoe ? { color: '#F1F1F1' } : null}
                         >
                           {partnerIsLocked === true ? (
                             <span>Partner is locked on!</span>
                           ) : null}
                           {partnerIsLocked === false &&
-                          midwayGPS["midwayPointCity"] !==
-                            "No major city within 100 miles!" &&
-                          midwayGPS["midwayPointCity"] !== null ? (
+                          midwayGPS['midwayPointCity'] !==
+                            'No major city within 100 miles!' &&
+                          midwayGPS['midwayPointCity'] !== null ? (
                             <span>
-                              Midway point city {midwayGPS["midwayPointCity"]}
+                              Midway point city {midwayGPS['midwayPointCity']}
                             </span>
                           ) : null}
                         </Header.Subheader>
                       </Header>
                     ) : (
                       <Header
-                        color={revealJoe ? null : "purple"}
+                        color={revealJoe ? null : 'purple'}
                         size="massive"
-                        style={revealJoe ? { color: "#F1F1F1" } : null}
+                        style={revealJoe ? { color: '#F1F1F1' } : null}
                       >
                         {parseInt(myCompassDirection)}&deg;
                         <Header.Subheader
-                          color={revealJoe ? null : "purple"}
+                          color={revealJoe ? null : 'purple'}
                           size="massive"
-                          style={revealJoe ? { color: "#F1F1F1" } : null}
+                          style={revealJoe ? { color: '#F1F1F1' } : null}
                         >
                           {parseInt(bearing)}&deg; Lock
                         </Header.Subheader>
@@ -591,21 +623,21 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                     size="massive"
                     style={
                       revealJoe
-                        ? { backgroundColor: themeColor, color: "#F1F1F1" }
+                        ? { backgroundColor: themeColor, color: '#F1F1F1' }
                         : null
                     }
                   >
-                    {revealJoe ? "Stop this JoeLock" : "Stop Lock"}
+                    {revealJoe ? 'Stop this JoeLock' : 'Stop Lock'}
                   </Button>
                 </div>
               </Grid.Row>
             </Grid.Column>
             <Grid.Column
               style={{
-                margin: "0",
-                padding: "0",
-                height: "38vw",
-                width: "27.5vw",
+                margin: '0',
+                padding: '0',
+                height: '38vw',
+                width: '27.5vw',
               }}
               verticalAlign="middle"
             >
@@ -616,51 +648,51 @@ export default function Lock({ isMobile, joeColor, revealJoe, user }) {
                   joeColor={joeColor}
                   revealJoe={revealJoe}
                   myCompassDirection={myCompassDirection}
-                  style={{ margin: "0", padding: "0" }}
+                  style={{ margin: '0', padding: '0' }}
                 />
               ) : null}
               {lockedOn && yourWeather !== null ? (
-                <div style={{ margin: "0", padding: "0" }}>
+                <div style={{ margin: '0', padding: '0' }}>
                   <Segment
                     circular
-                    color={revealJoe ? null : "purple"}
+                    color={revealJoe ? null : 'purple'}
                     floated="right"
                     size="medium"
                     style={
                       revealJoe
                         ? {
                             backgroundColor: joeColor,
-                            color: "#F1F1F1",
-                            margin: "2.75vw",
-                            padding: "1vw",
-                            height: "20vw",
-                            width: "20w",
+                            color: '#F1F1F1',
+                            margin: '2.75vw',
+                            padding: '1vw',
+                            height: '20vw',
+                            width: '20w',
                           }
                         : {
-                            margin: "2.75vw",
-                            padding: "1vw",
-                            height: "20vw",
-                            width: "20w",
+                            margin: '2.75vw',
+                            padding: '1vw',
+                            height: '20vw',
+                            width: '20w',
                           }
                     }
                   >
                     <Header
-                      color={revealJoe ? null : "purple"}
+                      color={revealJoe ? null : 'purple'}
                       size="medium"
                       style={
                         revealJoe
-                          ? { color: "#F1F1F1", paddingTop: "1.5vh" }
-                          : { paddingTop: "1.5vh" }
+                          ? { color: '#F1F1F1', paddingTop: '1.5vh' }
+                          : { paddingTop: '1.5vh' }
                       }
                     >
                       For Thee
                       <Header.Subheader
-                        color={revealJoe ? null : "purple"}
+                        color={revealJoe ? null : 'purple'}
                         size="medium"
-                        style={revealJoe ? { color: "#F1F1F1" } : null}
+                        style={revealJoe ? { color: '#F1F1F1' } : null}
                       >
-                        {yourWeather["temperatureFeelsLikeFahrenheit"]}&deg;F |{" "}
-                        {yourWeather["weatherDescription"]}
+                        {yourWeather['temperatureFeelsLikeFahrenheit']}&deg;F |{' '}
+                        {yourWeather['weatherDescription']}
                       </Header.Subheader>
                     </Header>
                   </Segment>
