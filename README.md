@@ -34,8 +34,8 @@ Styling across multiple mobile device browsers.
 
 ## Code-Snippets
 
-Created at [ray.so](https://ray.so), itself made by Raycast
-
 ![](https://github.com/rcreadii/lovelock/blob/main/documentation/create%20a%20lock.png)
 
 ![](https://github.com/rcreadii/lovelock/blob/main/documentation/pull%20compass%20data.png)
+
+Created at [ray.so](https://ray.so) by Raycast.
