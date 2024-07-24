@@ -4,7 +4,7 @@ WORKDIR /react-app
 COPY react-app/. .
 
 # You have to set this because it should be set during build time.
-ENV REACT_APP_BASE_URL=https://lovelock.vercel.app/
+ENV REACT_APP_BASE_URL=http://127.0.0.1:8000
 
 # Build our React App
 RUN npm install

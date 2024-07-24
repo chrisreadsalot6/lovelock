@@ -1,10 +1,10 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 import requests
+from flask_cors import CORS
 
 from app.models import db, Locale
 
 locale_routes = Blueprint("locale", __name__)
-
 
 @locale_routes.route("/<int:userId>/<latitude>/<longitude>", methods=["GET"])
 def get_locale(userId, latitude, longitude):
@@ -32,6 +32,8 @@ def make_locale(optional_data):
         json = request.json
     else:
         json = optional_data
+
+    print(json)
 
     sun_response = requests.get(
         f'https://api.sunrise-sunset.org/json?lat={json["GPSLatitude"]}&lng={json["GPSLongitude"]}'

@@ -1,12 +1,12 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 import requests
 import uuid
+from flask_cors import CORS
 
 from app.models import db, Lock
 from app.api.locale_routes import make_locale
 
 lock_routes = Blueprint("lock", __name__)
-
 
 @lock_routes.route("/<int:lockId>/get-geolocation", methods=["GET"])
 def get_geolocation_data(lockId):
@@ -62,6 +62,8 @@ def push_compass_data(lockId):
 @lock_routes.route("/create", methods=["POST"])
 def create_lock():
     json = request.json
+
+    current_app.logger.info(f"Creating lock with data: {json}")
 
     uniqueIdentifier = uuid.uuid4().int
 
